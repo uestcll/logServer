@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  CLBufferManager.cpp
+ *       Filename:  CLBuffer.cpp
  *
  *    Description:  
  *
@@ -16,29 +16,29 @@
  * =====================================================================================
  */
 
-CLBufferManager::m_bufferManager = NULL;
+CLBuffer::m_buffer = NULL;
 
-CLBufferManager* CLBufferManager::getInstance()
+CLBuffer* CLBuffer::getInstance()
 {
     if(NULL == m_bufferManager)
     {
-         m_bufferManager = new CLBufferManager;
+         m_bufferManager = new CLBuffer;
     }
 
     return m_bufferManager;
 }
 
-int CLBufferManager::addToBuffer()
+int CLBuffer::addToBuffer()
 {
 
 }
 
-int CLBufferManager::readBuffer()
+int CLBuffer::readBuffer()
 {
 
 }
 
-int CLBufferManager::writeBuffer()
+int CLBuffer::writeBuffer()
 {
 
 }

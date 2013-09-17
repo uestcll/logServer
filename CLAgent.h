@@ -20,6 +20,7 @@
 #define CLAGENT_H
 
 class CLSocket;
+class CLBuffer;
 
 class CLAgent
 {

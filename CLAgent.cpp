@@ -18,6 +18,8 @@
 
 #include "../include/CLSocket.h"
 #include "../include/CLAgent.h"
+#include "../include/headfile.h"
+#include "../include/CLBuffer.h"
 
 CLAgent::CLAgent(const int ID, const char *IPAddress, const int port) : m_id(ID), m_state(BEFORECONNECTTED)
 {

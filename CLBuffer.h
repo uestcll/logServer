@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  CLBufferManager.h
+ *       Filename:  CLBuffer.h
  *
  *    Description:  
  *
@@ -16,27 +16,27 @@
  * =====================================================================================
  */
 
-#ifndef CLBUFFERMANAGER_H
-#define CLBUFFERMANAGER_H
+#ifndef CLBUFFER_H
+#define CLBUFFER_H
 
-class CLBufferManager
+class CLBuffer
 {
     public:
-        CLBufferManager *getInstance();
+        CLBuffer *getInstance();
         int addToBuffer();
         int readBuffer();
         int writeBuffer();
 
     private:
-        explicit CLBufferManager();
-        ~CLBufferManager();
+        explicit CLBuffer();
+        ~CLBuffer();
 
     private:
-        CLBufferManager(CLBufferManager&);
-        CLBufferManager& operator=(CLBufferManager&);
+        CLBuffer(CLBuffer&);
+        CLBuffer& operator=(CLBuffer&);
 
     private:
-        static CLBufferManager *m_bufferManager;
+        static CLBuffer *m_buffer;
 };
 
 #endif

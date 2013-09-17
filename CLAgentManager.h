@@ -19,11 +19,14 @@
 #ifndef CLAGENTMANAGER_H
 #define CLAGENTMANAGER_H
 
+#include <map>
+#include <list>
+
 class CLAgentManager
 {
     public:
         static CLAgentManager *getInstance();
-        int createAgent(int type, int id);
+        CLAgent* createAgent(int type, int id);
         int deleteAgent(int id);
         int findAgent(int id);
 
@@ -35,6 +38,10 @@ class CLAgentManager
         CLBufferManager(const CLBufferManager&);
         CLBufferManager& operator=(const CLBufferManager&);
 
+    private:
+        static CLAgentManager *m_manager;
+        map<int, CLAgent*> m_map;
+        list<CLAgent*> m_list;
 };
 
 #endif
