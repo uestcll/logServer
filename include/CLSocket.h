@@ -1,10 +1,12 @@
 #ifndef CLSOCKET_H
 #define CLSOCKET_H
 
+struct SLAddress;
+
 class CLSocket
 {
     public:
-        explicit CLSocket(const char *IPAdress, const int port);
+        explicit CLSocket(const SLAddress address);
         ~CLSocket();
         int getFd();
         int readSocket(char *buffer, int len);

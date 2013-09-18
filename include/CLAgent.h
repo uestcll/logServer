@@ -21,23 +21,24 @@
 
 class CLSocket;
 class CLBuffer;
+struct SLAddress;
 
 class CLAgent
 {
     public:
-        explicit CLAgent(const int ID, const char *IPAddress, const int port);
+        explicit CLAgent(const SLAddress address);
         virtual ~CLAgent();
         virtual int recevData();
         virtual int sendData();
-        int getCurrentState();
+        //int getCurrentState();
         int getID();
         int getFd();
 
     protected:
         CLSocket *m_socket;
-        CLBuffer *m_buffer;
+        //CLBuffer *m_buffer;
         int m_ID;
-        int m_state;
+        //int m_state;
 };
 
 #endif

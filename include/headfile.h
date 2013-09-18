@@ -34,5 +34,7 @@ const int SUCCESSFUL = 0;
 const int FAILED = -1;
 const int BEFORECONNECTTED = -1;
 const int AFTERCONNECTTED = 0;
+const int IPV4 = 4;
+const int IPV6 = 6;
 
 #endif
