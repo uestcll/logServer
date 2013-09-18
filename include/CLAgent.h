@@ -35,6 +35,7 @@ class CLAgent
 
     protected:
         CLSocket *m_socket;
+        CLBuffer *m_buffer;
         int m_ID;
         int m_state;
 };

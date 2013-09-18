@@ -27,6 +27,7 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include <sys/epoll.h>
+ #include <sys/uio.h>
 using namespace std;
 
 const int SUCCESSFUL = 0;
