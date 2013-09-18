@@ -18,7 +18,7 @@
 #include "../include/CLSocket.h"
 #include "../include/headfile.h"
 
-CLSocket::CLSocket(const char *IPAdress, const int port) : Qlen(3000)
+CLSocket::CLSocket(const SLAddress address) : Qlen(3000)
 {
     m_socketfd = socket(PF_INET, SOCK_STREAM, 0);
 
@@ -29,8 +29,8 @@ CLSocket::CLSocket(const char *IPAdress, const int port) : Qlen(3000)
 
     bzero(m_adress, sizeof(m_adress));
     m_adress.sin_family = AF_INET;
-    m_adress.sin_port = htons(port);
-    inetpton(AF_INET, IPAdress, (void*)m_adress);
+    m_adress.sin_port = htons(address.port);
+    inetpton(AF_INET, address.IPAddress, (void*)m_adress);
 }
 
 CLSocket::~CLSocket()
