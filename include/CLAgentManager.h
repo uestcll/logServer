@@ -20,7 +20,6 @@
 #define CLAGENTMANAGER_H
 
 #include <map>
-#include <list>
 
 class CLAgentManager
 {
@@ -29,6 +28,8 @@ class CLAgentManager
         template<typename Type> Type* createAgent(int id)
         {
             Type *agent = new Type(id);
+
+            insertAgent(id, (CLAgent*)agent);
         }
 
         int insertAgent(int id, CLAgent *pAgent);
@@ -46,7 +47,6 @@ class CLAgentManager
     private:
         static CLAgentManager *m_manager;
         map<int, CLAgent*> m_map;
-        list<int> m_list;
 };
 
 #endif

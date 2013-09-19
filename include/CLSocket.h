@@ -9,13 +9,14 @@ class CLSocket
         explicit CLSocket(const SLAddress address);
         ~CLSocket();
         int getFd();
-        int readSocket(char *buffer, int len);
-        int writeSocket(char *buffer, int len);
+        int readSocket(const char *buffer, const int len);
+        int writeSocket(const struct iovec *iov, int cnt);
         int setNonBlock();
         int connectSocket();
         int listenSocket();
         int bindSocket();
         int acceptSocket();
+        //int closeSocket();
 
     private:
         CLSocket& CLSocket(CLSocket&);

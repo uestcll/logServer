@@ -19,23 +19,29 @@
 #ifndef CLBUFFER_H
 #define CLBUFFER_H
 
+#include "SLReponse.h"
+#include <list>
+ #include "CLSocket.h"
+ 
 class CLBuffer
 {
     public:
-        int addToBuffer();
-        int readBuffer();
-        int writeBuffer();
-
-    private:
         explicit CLBuffer();
         ~CLBuffer();
-
+        int addToBuffer(SLReponse response);
+        int readBuffer(CLSocket *mysocket, SLRequest request);
+        int writeBuffer(CLSokcet *mysocket);
+        void processError();
+               
     private:
         CLBuffer(CLBuffer&);
         CLBuffer& operator=(CLBuffer&);
 
     private:
-        list<iovec> m_list;
+        list<SLReponse> m_list;
+        char *m_lastchange;
+        int m_readlength;
+        SLRequest m_request;
 };
 
 #endif

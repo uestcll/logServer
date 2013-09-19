@@ -30,7 +30,6 @@ class CLAgent
         virtual ~CLAgent();
         virtual int recevData();
         virtual int sendData();
-        //int getCurrentState();
         int getID();
         int getFd();
 
