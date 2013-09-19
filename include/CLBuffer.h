@@ -23,6 +23,8 @@
 #include <list>
  #include "CLSocket.h"
  
+ class CLAgent;
+
 class CLBuffer
 {
     public:
@@ -32,6 +34,7 @@ class CLBuffer
         int readBuffer(CLSocket *mysocket, SLRequest request);
         int writeBuffer(CLSokcet *mysocket);
         void processError();
+        void setAgent(CLAgent *pAgent);
                
     private:
         CLBuffer(CLBuffer&);
@@ -42,6 +45,7 @@ class CLBuffer
         char *m_lastchange;
         int m_readlength;
         SLRequest m_request;
+        CLAgent *m_pAgent;
 };
 
 #endif

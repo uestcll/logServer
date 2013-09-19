@@ -27,6 +27,8 @@ class CLSQL
     private:
         explicit CLSQL();
         ~CLSQL();
+        int conncetSQL();
+        int querySQL();
 
     private:
         static CLSQL *m_sql;

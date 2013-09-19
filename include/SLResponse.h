@@ -6,7 +6,7 @@
 struct SLReponse
 {
 	struct iovec io;
-	bool mark;
+	bool finished;
 };
 
 #endif
