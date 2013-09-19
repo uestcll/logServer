@@ -22,7 +22,6 @@
 class CLBuffer
 {
     public:
-        CLBuffer *getInstance();
         int addToBuffer();
         int readBuffer();
         int writeBuffer();
@@ -36,7 +35,7 @@ class CLBuffer
         CLBuffer& operator=(CLBuffer&);
 
     private:
-        static CLBuffer *m_buffer;
+        list<iovec> m_list;
 };
 
 #endif

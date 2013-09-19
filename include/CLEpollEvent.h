@@ -24,6 +24,12 @@ class CLEpollEvent
     public:
         explicit CLEpollEvent();
         ~CLEpoll();
+
+    private:
+    	CLAgent *m_pAgent;
+    	int m_fd;
+    	int m_op;
+    	int events;
 };
 
 #endif

@@ -26,22 +26,27 @@ class CLAgentManager
 {
     public:
         static CLAgentManager *getInstance();
-        CLAgent* createAgent(int type, int id);
+        template<typename Type> Type* createAgent(int id)
+        {
+            Type *agent = new Type(id);
+        }
+
+        int insertAgent(int id, CLAgent *pAgent);
         int deleteAgent(int id);
-        int findAgent(int id);
+        int findAgent(int id, CLAgent **pAgent);
 
     private:
         explicit CLAgentManager();
         ~CLAgentManager();
        
     private:
-        CLBufferManager(const CLBufferManager&);
-        CLBufferManager& operator=(const CLBufferManager&);
+        CLAgentManager(const CLAgentManager&);
+        CLAgentManager& operator=(const CLAgentManager&);
 
     private:
         static CLAgentManager *m_manager;
         map<int, CLAgent*> m_map;
-        list<CLAgent*> m_list;
+        list<int> m_list;
 };
 
 #endif
