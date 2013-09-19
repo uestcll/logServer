@@ -69,7 +69,7 @@ int CLEpoll::deleteFromEpoll(const CLEpollEvent *event)
 
 void CLEpoll::runEpoll(const int waittime)
 {
-
+    int ndfs = epoll_wait(m_epfd, events, 3000);
 }
 
 CLEpoll::CLEpoll()
