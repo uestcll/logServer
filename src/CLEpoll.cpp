@@ -34,17 +34,37 @@ static CLEpoll* CLEpoll::getInstance()
 
 int CLEpoll::addToEpoll(const CLEpollEvent *event)
 {
-
+	struct epoll_event ev;
+    memset(&ev, 0, sizeof( struct epoll_event));
+    ev.events = event->events;
+    ev.data.ptr = event;
+    if( epoll_ctl( mEpollFd, event->op, event->fd, &ev) < 0)
+    {
+        return -1;
+    }
+    return 0; 
 }
 
 int CLEpoll::modifyEpollEvent(const CLEpollEvent *event)
 {
-
+	struct epoll_event ev;
+    memset(&ev, 0, sizeof( struct epoll_event));
+    ev.events = event->events;
+    ev.data.ptr = event;
+    if( epoll_ctl( mEpollFd, event->op, event->fd, &ev) < 0)
+    {
+        return -1;
+    }
+    return 0; 
 }
 
 int CLEpoll::deleteFromEpoll(const CLEpollEvent *event)
 {
-
+    if( epoll_ctl( mEpollFd, event->op, event->fd, NULL) < 0)
+    {
+        return -1;
+    }
+    return 0; 
 }
 
 void CLEpoll::runEpoll(const int waittime)
@@ -54,7 +74,7 @@ void CLEpoll::runEpoll(const int waittime)
 
 CLEpoll::CLEpoll()
 {
-
+	m_epfd = epoll_create(3000);
 }
 
 CLEpoll::~CLEpoll()

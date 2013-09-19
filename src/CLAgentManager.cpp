@@ -28,17 +28,41 @@ CLAgentManager* CLAgentManager::getInstance()
     return m_manager;
 }
 
-CLAgent* CLAgentManager::createAgent(int type, int id)
+int CLAgentManger::insertAgent(int id, CLAgent *pAgent)
 {
+	pair<map<int, CLAgent*>::iterator, bool> ret;
+	ret = m_map.insert(pair<int, CLAgent*>(id, pAgent));
+	if(!ret.second)
+	{
+		perror("insert error");
+		return -1;
+	}
 
+	return 0;
 }
 
-int CLAgentManger::deleteAgent(int id)
+int CLAgent::deleteAgent(int id)
 {
+	if(0 == m_map.erase(id))
+	{
+		perror("erase error");
+		return -1;
+	}
 
+	return 0;
 }
 
-int CLAgentManager::findAgent(int id)
+int CLAgentManager::findAgent(int id, CLAgent **pAgent)
 {
+	map<int, CLAgent*>::iterator it;
+	it = find(ID);
+	if(m_map.end() == it)
+	{
+		pAgent = NULL;
+		return -1;
+	}
 
+	*pAgent = it->second;
+
+	return 0;
 }
