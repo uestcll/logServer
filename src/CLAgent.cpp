@@ -45,11 +45,6 @@ int CLAgent::sendData()
     return SUCCESSFUL;
 }
 
-int CLAgent::getCurrentState()
-{
-    return m_state;
-}
-
 int CLAgent::getID()
 {
     return m_ID;

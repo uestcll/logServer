@@ -46,22 +46,24 @@ int CLSocket::getFd()
     return m_socketfd;
 }
 
-int CLSocket::readSocket(char *buffer, int len)
+int CLSocket::readSocket(const char *buffer, const int len)
 {
     int n = read(m_socketfd, buffer, len);
     if(n < 0)
     {
         perror("read error");
+        return FAILED;
     }
     return n;
 }
 
-int CLSocket::writeSocket(char *buffer, int len)
+int CLSocket::writeSocket(const struct iovec *iov, int len)
 {
-    int n = write(m_socketfd, buffer, len);
+    int n = writev(m_socketfd, iov, len);
     if(n < 0)
     {
         perror("write error");
+        return FAILED;
     }
     return n;
 }
@@ -73,10 +75,10 @@ int CLSocket::setNonBlock()
     if(fcntl(m_socketfd, F_SETFL, flag) < 0)
     {
         perror("F_SETFL error");
-        return -1;
+        return FAILED;
     }
 
-    return 0;
+    return SUCCESSFUL;
 }
 
 int CLSocket::connectSocket()
@@ -87,9 +89,10 @@ int CLSocket::connectSocket()
     if(n < 0)
     {
         perror("connect error");
+        return FAILED;
     }
 
-    return n;
+    return SUCCESSFUL;
 }
 
 int CLSocket::listenSocket()
@@ -98,8 +101,9 @@ int CLSocket::listenSocket()
     if(n < 0)
     {
         perror("listen error");
+        return FAILED;
     }
-    return n;
+    return SUCCESSFUL;
 }
 
 int CLSocket::bindSocket()
@@ -109,18 +113,22 @@ int CLSocket::bindSocket()
     if(n < 0)
     {
         perror("bin socket error");
+        return FAILED;
     }
-    return n;
+    return SUCCESSFUL;
 }
 
 int CLSocket::acceptSocket()
 {
     socklen_t len;
-    int n = accept(m_socketfd, (struct sockaddr*)&m_address, &len);
+    struct sockaddr_in temppeer;
+    len = sizeof(temppeer);
+    int n = accept(m_socketfd, (struct sockaddr*)&temppeer, &len);
     if(n < 0)
     {
         perror("accept error");
+        return FAILED;
     }
 
-    return n;
+    return SUCCESSFUL;
 }

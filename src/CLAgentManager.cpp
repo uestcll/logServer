@@ -15,6 +15,7 @@
  *
  * =====================================================================================
  */
+#include "../include/headfile.h"
 
 CLAgentManager::m_manager = NULL;
 
@@ -35,10 +36,10 @@ int CLAgentManger::insertAgent(int id, CLAgent *pAgent)
 	if(!ret.second)
 	{
 		perror("insert error");
-		return -1;
+		return FAILED;
 	}
 
-	return 0;
+	return SUCCESSFUL;
 }
 
 int CLAgent::deleteAgent(int id)
@@ -46,10 +47,10 @@ int CLAgent::deleteAgent(int id)
 	if(0 == m_map.erase(id))
 	{
 		perror("erase error");
-		return -1;
+		return FAILED;
 	}
 
-	return 0;
+	return SUCCESSFUL;
 }
 
 int CLAgentManager::findAgent(int id, CLAgent **pAgent)
@@ -59,10 +60,10 @@ int CLAgentManager::findAgent(int id, CLAgent **pAgent)
 	if(m_map.end() == it)
 	{
 		pAgent = NULL;
-		return -1;
+		return FAILED;
 	}
 
 	*pAgent = it->second;
 
-	return 0;
+	return SUCCESSFUL;
 }

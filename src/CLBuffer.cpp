@@ -15,32 +15,92 @@
  *
  * =====================================================================================
  */
+#include "../include/CLBuffer.h"
+#include "../include/CLSocket.h"
 
-CLBuffer::m_buffer = NULL;
-
-CLBuffer* CLBuffer::getInstance()
+CLBuffer::CLBuffer() : m_readlength(0)
 {
-    if(NULL == m_bufferManager)
-    {
-         m_bufferManager = new CLBuffer;
-    }
-
-    return m_bufferManager;
 }
 
-int CLBuffer::addToBuffer()
+CLBuffer::~CLBuffer()
 {
-
 }
 
-int CLBuffer::readBuffer()
+int CLBuffer::addToBuffer(SLResponse response)
 {
+	m_list.push_back(response);
 
+	return SUCCESSFUL;
 }
 
-int CLBuffer::writeBuffer()
+int CLBuffer::readBuffer(CLSocket *mysocket, SLRequest request)
 {
+	int len = sizeof(SLMessageHead);
 
+	if(m_readlength < len && !m_request.finished)
+	{
+		int n = mysocket->readSocket((char*)&m_request.head + m_readlength, len - m_readlength);
+	}
+	else if(m_readlength == len && !m_request.finished)
+	{
+		m_request.finished = true;
+		m_readlength = 0;
+		m_request.len = m_request.head.length;
+		if(0 != m_request.len)
+		{
+			m_request.readbuffer = new char[m_request.len];
+		}
+	}
+	else
+	{
+		int n = mysocket->readSocket(m_request.readbuffer + m_readlength, m_request.len - m_readlength);
+	}
+
+	if(n < 0)
+	{
+		if(errno != EWOULDBLOCK && errno != EINTR)
+		{
+			processError();
+
+			return FAILED;
+		}
+		else
+		{
+			return SUCCESSFUL;
+		}
+	}
+	else
+	{
+		m_readlength += n;
+		return SUCCESSFUL;
+	}
+}
+
+int CLBuffer::writeBuffer(CLSocket *mysocket)
+{
+	int len = m_list.length();
+	struct iovec *output;
+	output = new struct iovec[len]; 
+	for(int i = 0; i < len; ++i)
+	{
+		SLReponse tempReponse;
+		tempReponse = m_list[i];
+		output[i] = tempReponse.io;
+	}
+
+	int n = mysocket->writeSocket(output, len);
+	if(n < 0)
+	{
+		if(errno != EWOULDBLOCK && errno != EINTR)
+		{
+			processError();
+		}
+	}
+
+	while(n > )
+
+
+	delete[] output;
 }
 
 
