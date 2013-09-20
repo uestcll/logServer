@@ -19,20 +19,20 @@
 #ifndef CLBUFFER_H
 #define CLBUFFER_H
 
-#include "SLReponse.h"
-#include <list>
- #include "CLSocket.h"
- 
- class CLAgent;
+#include "SLResponse.h"
+#include "CLSocket.h"
+#include "headfile.h"
+#include "SLRequest.h"
+#include "CLAgent.h"
 
 class CLBuffer
 {
     public:
         explicit CLBuffer();
         ~CLBuffer();
-        int addToBuffer(SLReponse response);
-        int readBuffer(CLSocket *mysocket, SLRequest request);
-        int writeBuffer(CLSokcet *mysocket);
+        int addToBuffer(SLResponse response);
+        int readBuffer(CLSocket *mysocket);
+        int writeBuffer(CLSocket *mysocket);
         void processError();
         void setAgent(CLAgent *pAgent);
                
@@ -41,8 +41,8 @@ class CLBuffer
         CLBuffer& operator=(CLBuffer&);
 
     private:
-        list<SLReponse> m_list;
-        char *m_lastchange;
+        list<SLResponse> m_list;
+        void *m_lastchange;
         int m_readlength;
         SLRequest m_request;
         CLAgent *m_pAgent;

@@ -1,6 +1,8 @@
 #ifndef CLSOCKET_H
 #define CLSOCKET_H
 
+#include "headfile.h"
+
 struct SLAddress;
 
 class CLSocket
@@ -9,7 +11,7 @@ class CLSocket
         explicit CLSocket(const SLAddress address);
         ~CLSocket();
         int getFd();
-        int readSocket(const char *buffer, const int len);
+        int readSocket(char *buffer, const int len);
         int writeSocket(const struct iovec *iov, int cnt);
         int setNonBlock();
         int connectSocket();
@@ -19,7 +21,7 @@ class CLSocket
         //int closeSocket();
 
     private:
-        CLSocket& CLSocket(CLSocket&);
+        CLSocket(CLSocket&);
         CLSocket& operator=(CLSocket&);
 
     private:

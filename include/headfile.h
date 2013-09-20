@@ -27,10 +27,11 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include <sys/epoll.h>
- #include <sys/uio.h>
- #include <utility>
- #include <memory.h>
- #include <errno.h>
+#include <sys/uio.h>
+#include <utility>
+#include <memory.h>
+#include <errno.h>
+#include <list>
 using namespace std;
 
 const int SUCCESSFUL = 0;

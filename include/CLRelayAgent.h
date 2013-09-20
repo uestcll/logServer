@@ -1,7 +1,11 @@
 #ifndef CLRELAYAGENT_H
 #define CLRELAYAGENT_H
 
-class CLRelayAgent
+#include "SLAddress.h"
+#include "CLBuffer.h"
+#include "CLAgent.h"
+
+class CLRelayAgent : public CLAgent
 {
 public:
 	explicit CLRelayAgent(const SLAddress IPAddress);

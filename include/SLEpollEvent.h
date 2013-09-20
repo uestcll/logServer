@@ -19,17 +19,14 @@
 #ifndef SLEPOLLEVENT_H
 #define SLEPOLLEVENT_H
 
+class CLAgent;
+
 struct SLEpollEvent
 {
-    public:
-        explicit CLEpollEvent();
-        ~CLEpoll();
-
-    private:
-    	CLAgent *m_pAgent;
-    	int m_fd;
-    	int m_op;
-    	int events;
+    CLAgent *m_pAgent;
+    int fd;
+    int op;
+    int events;
 };
 
 #endif

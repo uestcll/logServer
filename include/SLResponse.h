@@ -3,7 +3,7 @@
 
 #include "headfile.h"
 
-struct SLReponse
+struct SLResponse
 {
 	struct iovec io;
 	bool finished;

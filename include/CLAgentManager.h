@@ -20,11 +20,12 @@
 #define CLAGENTMANAGER_H
 
 #include <map>
+class CLAgent;
 
 class CLAgentManager
 {
     public:
-        static CLAgentManager *getInstance();
+        static CLAgentManager* getInstance();
         template<typename Type> Type* createAgent(int id)
         {
             Type *agent = new Type(id);

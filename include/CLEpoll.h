@@ -19,14 +19,14 @@
 #ifndef CLEPOLL_H
 #define CLEPOLL_H
 
-class CLEpollEvent;
+struct SLEpollEvent;
 class CLEpoll
 {
     public:
-        static CLEpoll *getInstance();
-        int addToEpoll(const CLEpollEvent *event);
-        int modifyEpollEvent(const CLEpollEvent *event);
-        int deleteFromEpoll(const CLEpollEvent *event);
+        static CLEpoll* getInstance();
+        int addToEpoll(SLEpollEvent *event);
+        int modifyEpollEvent(SLEpollEvent *event);
+        int deleteFromEpoll(SLEpollEvent *event);
         void runEpoll(const int waittime = -1);
 
     private:

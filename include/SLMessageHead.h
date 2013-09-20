@@ -26,7 +26,7 @@ struct SLMessageHead
     uint32_t cmd;
     uint32_t reserved;
 
-    CLMessageHead() :
+    SLMessageHead() :
     length(0),
     cmd(0),
     reserved(0)
