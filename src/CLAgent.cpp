@@ -19,7 +19,6 @@
 #include "../include/CLSocket.h"
 #include "../include/CLAgent.h"
 #include "../include/headfile.h"
-#include "../include/CLBuffer.h"
 #include "../include/SLAddress.h"
 
 CLAgent::CLAgent(const SLAddress address)

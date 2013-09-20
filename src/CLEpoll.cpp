@@ -18,11 +18,11 @@
 
 #include "../include/headfile.h"
 #include "../include/CLEpoll.h"
-#include "../include/CLEpollEvent.h"
+#include "../include/SLEpollEvent.h"
 
-CLEpoll::m_epoll = NULL;
+CLEpoll* CLEpoll::m_epoll = NULL;
 
-static CLEpoll* CLEpoll::getInstance()
+CLEpoll* CLEpoll::getInstance()
 {
     if(NULL == m_epoll)
     {
@@ -32,35 +32,35 @@ static CLEpoll* CLEpoll::getInstance()
     return m_epoll;
 }
 
-int CLEpoll::addToEpoll(const CLEpollEvent *event)
+int CLEpoll::addToEpoll(SLEpollEvent *event)
 {
 	struct epoll_event ev;
     memset(&ev, 0, sizeof( struct epoll_event));
     ev.events = event->events;
     ev.data.ptr = event;
-    if( epoll_ctl( mEpollFd, event->op, event->fd, &ev) < 0)
+    if( epoll_ctl( m_epfd, event->op, event->fd, &ev) < 0)
     {
         return -1;
     }
     return 0; 
 }
 
-int CLEpoll::modifyEpollEvent(const CLEpollEvent *event)
+int CLEpoll::modifyEpollEvent(SLEpollEvent *event)
 {
 	struct epoll_event ev;
     memset(&ev, 0, sizeof( struct epoll_event));
     ev.events = event->events;
     ev.data.ptr = event;
-    if( epoll_ctl( mEpollFd, event->op, event->fd, &ev) < 0)
+    if( epoll_ctl(m_epfd, event->op, event->fd, &ev) < 0)
     {
         return -1;
     }
     return 0; 
 }
 
-int CLEpoll::deleteFromEpoll(const CLEpollEvent *event)
+int CLEpoll::deleteFromEpoll(SLEpollEvent *event)
 {
-    if( epoll_ctl( mEpollFd, event->op, event->fd, NULL) < 0)
+    if( epoll_ctl(m_epfd, event->op, event->fd, NULL) < 0)
     {
         return -1;
     }
@@ -69,7 +69,6 @@ int CLEpoll::deleteFromEpoll(const CLEpollEvent *event)
 
 void CLEpoll::runEpoll(const int waittime)
 {
-    int ndfs = epoll_wait(m_epfd, events, 3000);
 }
 
 CLEpoll::CLEpoll()

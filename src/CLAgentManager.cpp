@@ -16,8 +16,10 @@
  * =====================================================================================
  */
 #include "../include/headfile.h"
+#include "../include/CLAgentManager.h"
+#include "../include/CLAgent.h"
 
-CLAgentManager::m_manager = NULL;
+CLAgentManager* CLAgentManager::m_manager = NULL;
 
 CLAgentManager* CLAgentManager::getInstance()
 {
@@ -29,7 +31,7 @@ CLAgentManager* CLAgentManager::getInstance()
     return m_manager;
 }
 
-int CLAgentManger::insertAgent(int id, CLAgent *pAgent)
+int CLAgentManager::insertAgent(int id, CLAgent *pAgent)
 {
 	pair<map<int, CLAgent*>::iterator, bool> ret;
 	ret = m_map.insert(pair<int, CLAgent*>(id, pAgent));
@@ -42,7 +44,7 @@ int CLAgentManger::insertAgent(int id, CLAgent *pAgent)
 	return SUCCESSFUL;
 }
 
-int CLAgent::deleteAgent(int id)
+int CLAgentManager::deleteAgent(int id)
 {
 	if(0 == m_map.erase(id))
 	{
@@ -56,7 +58,7 @@ int CLAgent::deleteAgent(int id)
 int CLAgentManager::findAgent(int id, CLAgent **pAgent)
 {
 	map<int, CLAgent*>::iterator it;
-	it = find(ID);
+	it = m_map.find(id);
 	if(m_map.end() == it)
 	{
 		pAgent = NULL;
@@ -66,4 +68,14 @@ int CLAgentManager::findAgent(int id, CLAgent **pAgent)
 	*pAgent = it->second;
 
 	return SUCCESSFUL;
+}
+
+CLAgentManager::CLAgentManager()
+{
+
+}
+
+CLAgentManager::~CLAgentManager()
+{
+
 }

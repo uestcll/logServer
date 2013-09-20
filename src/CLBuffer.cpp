@@ -50,13 +50,14 @@ int CLBuffer::addToBuffer(SLResponse response)
 	return SUCCESSFUL;
 }
 
-int CLBuffer::readBuffer(CLSocket *mysocket, SLRequest request)
+int CLBuffer::readBuffer(CLSocket *mysocket)
 {
 	int len = sizeof(SLMessageHead);
+    int n;
 
 	if(m_readlength < len && !m_request.finished)
 	{
-		int n = mysocket->readSocket((char*)&m_request.head + m_readlength, len - m_readlength);
+		n = mysocket->readSocket((char*)&m_request.head + m_readlength, len - m_readlength);
 	}
 	else if(m_readlength == len && !m_request.finished)
 	{
@@ -70,7 +71,7 @@ int CLBuffer::readBuffer(CLSocket *mysocket, SLRequest request)
 	}
 	else
 	{
-		int n = mysocket->readSocket(m_request.readbuffer + m_readlength, m_request.len - m_readlength);
+		n = mysocket->readSocket(m_request.readbuffer + m_readlength, m_request.len - m_readlength);
 	}
 
 	if(n < 0)
@@ -95,14 +96,16 @@ int CLBuffer::readBuffer(CLSocket *mysocket, SLRequest request)
 
 int CLBuffer::writeBuffer(CLSocket *mysocket)
 {
-	int len = m_list.length();
+	int len = m_list.size();
+    int cnt = 0;
 	struct iovec *output;
 	output = new struct iovec[len]; 
-	for(int i = 0; i < len; ++i)
+	list<SLResponse>::iterator aIt, pIt;
+	for(aIt = m_list.begin(); aIt != m_list.end(); ++aIt)
 	{
-		SLReponse tempReponse;
-		tempReponse = m_list[i];
-		output[i] = tempReponse.io;
+		SLResponse tempReponse;
+		tempReponse = *aIt;
+		output[cnt++] = tempReponse.io;
 	}
 
 	int n = mysocket->writeSocket(output, len);
@@ -116,7 +119,6 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 	}
 
 	int ret = n;
-	list<SLReponse>::iterator aIt, pIt;
 	aIt = m_list.begin();
 	while(m_list.end() != aIt)
 	{
@@ -126,7 +128,7 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 			n -= (*pIt).io.iov_len;
 			if((*pIt).finished)
 			{
-				delete [] (char*)(*it).io.iov_base;
+				delete [] (char*)(*pIt).io.iov_base;
 			    (*pIt).io.iov_base = NULL;
 			}
 			else

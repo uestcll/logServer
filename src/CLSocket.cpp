@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 #include "../include/CLSocket.h"
-#include "../include/headfile.h"
+#include "../include/SLAddress.h"
 
 CLSocket::CLSocket(const SLAddress address) : Qlen(3000)
 {
@@ -27,10 +27,10 @@ CLSocket::CLSocket(const SLAddress address) : Qlen(3000)
         perror("socket create error\n");
     }
 
-    bzero(m_adress, sizeof(m_adress));
-    m_adress.sin_family = AF_INET;
-    m_adress.sin_port = htons(address.port);
-    inetpton(AF_INET, address.IPAddress, (void*)m_adress);
+    bzero(&m_address, sizeof(m_address));
+    m_address.sin_family = AF_INET;
+    m_address.sin_port = htons(address.port);
+    inet_pton(AF_INET, address.IPAddress, &m_address.sin_addr);
 }
 
 CLSocket::~CLSocket()
@@ -46,7 +46,7 @@ int CLSocket::getFd()
     return m_socketfd;
 }
 
-int CLSocket::readSocket(const char *buffer, const int len)
+int CLSocket::readSocket(char *buffer, const int len)
 {
     int n = read(m_socketfd, buffer, len);
     if(n < 0)
@@ -84,7 +84,7 @@ int CLSocket::setNonBlock()
 int CLSocket::connectSocket()
 {
     socklen_t len = sizeof(m_address);
-    int n = connect(m_socketfd, (struct sockaddr*)&m_sin, len);
+    int n = connect(m_socketfd, (struct sockaddr*)&m_address, len);
 
     if(n < 0)
     {
