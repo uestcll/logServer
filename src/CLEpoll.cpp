@@ -19,6 +19,7 @@
 #include "../include/headfile.h"
 #include "../include/CLEpoll.h"
 #include "../include/SLEpollEvent.h"
+#include "../include/CLAgent.h"
 
 CLEpoll* CLEpoll::m_epoll = NULL;
 
@@ -69,14 +70,38 @@ int CLEpoll::deleteFromEpoll(SLEpollEvent *event)
 
 void CLEpoll::runEpoll(const int waittime)
 {
+    struct epoll_event events[MAXN];
+    int ndfs = epoll_wait(m_epfd, events, MAXN, waittime);
+
+    for(int i = 0; i < ndfs; ++i)
+    {
+        SLEpollEvent *pEvent = (SLEpollEvent*)events[i].data.ptr;
+
+        if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR)
+        {
+            perror("EPOLLHUP or EPOLLERR happened");
+        }
+        else if(events[i].events & EPOLLOUT)
+        {
+            pEvent->pAgent->sendData();
+        }
+        else if(events[i].events & EPOLLOUT)
+        {
+            pEvent->pAgent->recevData();
+        }
+        else
+        {
+            perror("unknown thing happened");
+        }
+    }
 }
 
 CLEpoll::CLEpoll()
 {
-	m_epfd = epoll_create(3000);
+	m_epfd = epoll_create(MAXN);
 }
 
 CLEpoll::~CLEpoll()
 {
-
+    close(m_epfd);
 }
