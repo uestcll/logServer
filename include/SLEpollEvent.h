@@ -23,7 +23,7 @@ class CLAgent;
 
 struct SLEpollEvent
 {
-    CLAgent *m_pAgent;
+    CLAgent *pAgent;
     int fd;
     int op;
     int events;

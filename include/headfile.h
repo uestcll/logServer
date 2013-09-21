@@ -40,5 +40,5 @@ const int FAILED = -1;
 //const int AFTERCONNECTTED = 0;
 const int IPV4 = 4;
 const int IPV6 = 6;
-
+const int MAXN = 3000;
 #endif
