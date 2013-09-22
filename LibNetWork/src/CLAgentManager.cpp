@@ -77,5 +77,15 @@ CLAgentManager::CLAgentManager()
 
 CLAgentManager::~CLAgentManager()
 {
-
+    CLAgent *pAgent;
+    list<int>::iterator it = m_list.begin();
+    while(m_list.end() != it)
+    {
+        int id;
+        findAgent(id, &pAgent);
+        if(NULL != pAgent)
+        {
+            delete pAgent;
+        }
+    }
 }

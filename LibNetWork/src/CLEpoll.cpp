@@ -18,7 +18,7 @@
 
 #include "../include/headfile.h"
 #include "../include/CLEpoll.h"
-#include "../include/SLEpollEvent.h"
+#include "../include/CLEpollEvent.h"
 #include "../include/CLAgent.h"
 
 CLEpoll* CLEpoll::m_epoll = NULL;
@@ -33,7 +33,7 @@ CLEpoll* CLEpoll::getInstance()
     return m_epoll;
 }
 
-int CLEpoll::addToEpoll(SLEpollEvent *event)
+int CLEpoll::addToEpoll(CLEpollEvent *event)
 {
 	struct epoll_event ev;
     memset(&ev, 0, sizeof( struct epoll_event));
@@ -46,7 +46,7 @@ int CLEpoll::addToEpoll(SLEpollEvent *event)
     return 0; 
 }
 
-int CLEpoll::modifyEpollEvent(SLEpollEvent *event)
+int CLEpoll::modifyEpollEvent(CLEpollEvent *event)
 {
 	struct epoll_event ev;
     memset(&ev, 0, sizeof( struct epoll_event));
@@ -59,7 +59,7 @@ int CLEpoll::modifyEpollEvent(SLEpollEvent *event)
     return 0; 
 }
 
-int CLEpoll::deleteFromEpoll(SLEpollEvent *event)
+int CLEpoll::deleteFromEpoll(CLEpollEvent *event)
 {
     if( epoll_ctl(m_epfd, event->op, event->fd, NULL) < 0)
     {
@@ -75,7 +75,7 @@ void CLEpoll::runEpoll(const int waittime)
 
     for(int i = 0; i < ndfs; ++i)
     {
-        SLEpollEvent *pEvent = (SLEpollEvent*)events[i].data.ptr;
+        CLEpollEvent *pEvent = (CLEpollEvent*)events[i].data.ptr;
 
         if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR)
         {

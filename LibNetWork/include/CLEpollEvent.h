@@ -16,17 +16,23 @@
  * =====================================================================================
  */
 
-#ifndef SLEPOLLEVENT_H
-#define SLEPOLLEVENT_H
+#ifndef CLEPOLLEVENT_H
+#define CLEPOLLEVENT_H
 
 class CLAgent;
 
-struct SLEpollEvent
+struct CLEpollEvent
 {
-    CLAgent *pAgent;
-    int fd;
-    int op;
-    int events;
+    public:
+        explicit CLEpollEvent();
+        ~CLEpollEvent();
+        void setParameter(CLAgent *pAgent, int fd, int op, int events);
+
+    public:        
+        CLAgent *pAgent;
+        int fd;
+        int op;
+        int events;
 };
 
 #endif

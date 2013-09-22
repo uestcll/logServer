@@ -1,7 +1,7 @@
 #include "../include/CLListenAgent.h"
 #include "../include/CLSocket.h"
 
-CLListenAgent::CLListenAgent(SLAddress IPAddress) : CLAgent(IPAddress)
+CLListenAgent::CLListenAgent(int id, SLAddress IPAddress) : CLAgent(id, IPAddress)
 {
 }
 

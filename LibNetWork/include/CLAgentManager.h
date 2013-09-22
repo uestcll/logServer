@@ -20,17 +20,20 @@
 #define CLAGENTMANAGER_H
 
 #include <map>
+#include <list>
+#include "SLAddress.h"
 class CLAgent;
 
 class CLAgentManager
 {
     public:
         static CLAgentManager* getInstance();
-        template<typename Type> Type* createAgent(int id)
+        template<typename Type> Type* createAgent(int id, SLAddress address)
         {
-            Type *agent = new Type(id);
+            Type *agent = new Type(id, address);
 
             insertAgent(id, (CLAgent*)agent);
+            m_list.push_back(id);
         }
 
         int insertAgent(int id, CLAgent *pAgent);
@@ -48,6 +51,7 @@ class CLAgentManager
     private:
         static CLAgentManager *m_manager;
         map<int, CLAgent*> m_map;
+        list<int> m_list;
 };
 
 #endif

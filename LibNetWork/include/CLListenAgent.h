@@ -8,13 +8,11 @@
 class CLListenAgent : public CLAgent
 {
 public:
-	explicit CLListenAgent(SLAddress IPAddress);
+	explicit CLListenAgent(int id, SLAddress IPAddress);
 	~CLListenAgent();
 	int recevData();
     int sendData();
 
-private:
-	struct sockaddr_in m_address;
 };
 
 #endif

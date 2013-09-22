@@ -18,7 +18,7 @@
 #include "../include/CLBuffer.h"
 #include "../include/CLSocket.h"
 
-CLBuffer::CLBuffer() : m_readlength(0), m_lastchange(NULL)
+CLBuffer::CLBuffer() : m_readlength(0), m_lastchange(NULL),m_pAgent(NULL)
 {
 }
 
@@ -90,6 +90,10 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 	else
 	{
 		m_readlength += n;
+        if(m_request.finished && m_readlength == m_request.len)
+        {
+            return FINISHED;
+        }
 		return SUCCESSFUL;
 	}
 }
@@ -156,11 +160,21 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 
 void CLBuffer::processError()
 {
-	delete m_pAgent;
+	if(NULL == m_pAgent)
+    {
+        perror("m_pAgent is null");
+        return;
+    }
+
+    m_pAgent->setState(false);
 }
 
-void CLBuffer::setAgent(CLAgent *pAgent)
+void CLBuffer::setRelayAgent(CLRelayAgent *pAgent)
 {
 	m_pAgent = pAgent;
 }
 
+SLRequest CLBuffer::getRequest()
+{
+    return m_request;
+}
