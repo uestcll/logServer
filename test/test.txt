@@ -1,1 +1,0 @@
-test each class using googletest
