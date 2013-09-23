@@ -8,7 +8,7 @@
 class CLListenAgent : public CLAgent
 {
 public:
-	explicit CLListenAgent(int id, SLAddress IPAddress);
+	explicit CLListenAgent(const int fd = -1);
 	~CLListenAgent();
 	int recevData();
     int sendData();

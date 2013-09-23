@@ -1,5 +1,5 @@
-libnetwork.a : CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpoll.o CLListenAgent.o CLRelayAgent.o 
-	ar -rc libnetwork.a CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpoll.o CLListenAgent.o CLRelayAgent.o
+libnetwork.a : CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLRelayAgent.o 
+	ar -rc libnetwork.a CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLRelayAgent.o
 	rm *.o
 
 CLSocket.o : ./src/CLSocket.cpp
@@ -10,6 +10,8 @@ CLBuffer.o : ./src/CLBuffer.cpp
 	g++ -o CLBuffer.o -c ./src/CLBuffer.cpp -I./include -g
 CLAgentManager.o : ./src/CLAgentManager.cpp
 	g++ -o CLAgentManager.o -c ./src/CLAgentManager.cpp -I./include -g
+CLEpollEvent.o : ./src/CLEpollEvent.cpp
+	g++ -o CLEpollEvent.o -c ./src/CLEpollEvent.cpp -I./include -g
 CLEpoll.o : ./src/CLEpoll.cpp
 	g++ -o CLEpoll.o -c ./src/CLEpoll.cpp -I./include -g
 CLListenAgent.o : ./src/CLListenAgent.cpp

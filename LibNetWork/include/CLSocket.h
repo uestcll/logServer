@@ -8,8 +8,9 @@ struct SLAddress;
 class CLSocket
 {
     public:
-        explicit CLSocket(const SLAddress address);
+        explicit CLSocket(int fd);
         ~CLSocket();
+        void initSocket(const SLAddress address);
         int getFd();
         int readSocket(char *buffer, const int len);
         int writeSocket(const struct iovec *iov, int cnt);

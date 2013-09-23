@@ -28,8 +28,8 @@ CLEpollEvent::~CLEpollEvent()
 
 void CLEpollEvent::setParameter(CLAgent *pAgent, int fd, int op, int events)
 {
-    this.pAgent = pAgent;
-    this.fd = fd;
-    this.op = op;
-    this.events = events;
+    this->pAgent = pAgent;
+    this->fd = fd;
+    this->op = op;
+    this->events = events;
 }

@@ -25,12 +25,14 @@ struct SLAddress;
 class CLAgent
 {
     public:
-        explicit CLAgent(const int id, const SLAddress address);
+        explicit CLAgent(const int fd = -1);
         virtual ~CLAgent();
+        void initAgent(const SLAddress address);
         virtual int recevData();
         virtual int sendData();
-        int getID();
+        int getId();
         int getFd();
+        void setId(const int id);
 
     protected:
         CLSocket *m_socket;

@@ -28,12 +28,10 @@ class CLAgentManager
 {
     public:
         static CLAgentManager* getInstance();
-        template<typename Type> Type* createAgent(int id, SLAddress address)
+        template<typename Type> Type* createAgent(const int fd = -1)
         {
-            Type *agent = new Type(id, address);
-
-            insertAgent(id, (CLAgent*)agent);
-            m_list.push_back(id);
+            Type *agent = new Type(fd);
+            m_list.push_back(agent);
         }
 
         int insertAgent(int id, CLAgent *pAgent);
@@ -51,7 +49,7 @@ class CLAgentManager
     private:
         static CLAgentManager *m_manager;
         map<int, CLAgent*> m_map;
-        list<int> m_list;
+        list<CLAgent*> m_list;
 };
 
 #endif

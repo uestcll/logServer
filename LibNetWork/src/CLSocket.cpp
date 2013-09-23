@@ -18,26 +18,9 @@
 #include "../include/CLSocket.h"
 #include "../include/SLAddress.h"
 
-CLSocket::CLSocket(const SLAddress address) : Qlen(3000)
+CLSocket::CLSocket(int fd) : Qlen(3000)
 {
-    m_socketfd = socket(PF_INET, SOCK_STREAM, 0);
-
-    if(m_socketfd < 0)
-    {
-        perror("socket create error\n");
-    }
-
-    bzero(&m_address, sizeof(m_address));
-    m_address.sin_family = AF_INET;
-    m_address.sin_port = htons(address.port);
-    if(!address.isServer)
-    {
-        inet_pton(AF_INET, address.IPAddress, &m_address.sin_addr);
-    }
-    else
-    {
-        m_address.sin_addr.s_addr = htonl(INADDR_ANY);
-    }
+    m_socketfd = fd;
 }
 
 CLSocket::~CLSocket()
@@ -47,6 +30,32 @@ CLSocket::~CLSocket()
         perror("close error");
     }
 }
+
+void CLSocket::initSocket(const SLAddress address)
+{
+    if(-1 == m_socketfd)
+    {
+        m_socketfd = socket(PF_INET, SOCK_STREAM, 0);
+
+        if(m_socketfd < 0)
+        {
+            perror("socket create error\n");
+        }
+
+        bzero(&m_address, sizeof(m_address));
+        m_address.sin_family = AF_INET;
+        m_address.sin_port = htons(address.port);
+        if(!address.isServer)
+        {
+            inet_pton(AF_INET, address.IPAddress, &m_address.sin_addr);
+        }
+        else
+        {
+            m_address.sin_addr.s_addr = htonl(INADDR_ANY);
+        }
+    }
+}
+
 
 int CLSocket::getFd()
 {

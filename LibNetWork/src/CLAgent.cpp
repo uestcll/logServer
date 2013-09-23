@@ -21,9 +21,14 @@
 #include "../include/headfile.h"
 #include "../include/SLAddress.h"
 
-CLAgent::CLAgent(const int id, const SLAddress address) : m_id(id)
+CLAgent::CLAgent(const int fd)
 {
-    m_socket = new CLSocket(address);
+    m_socket = new CLSocket(fd);
+}
+
+void CLAgent::initAgent(const SLAddress address)
+{
+    m_socket->initSocket(address);
 }
 
 CLAgent::~CLAgent()
@@ -44,7 +49,7 @@ int CLAgent::sendData()
     return SUCCESSFUL;
 }
 
-int CLAgent::getID()
+int CLAgent::getId()
 {
     return m_id;
 }
@@ -53,3 +58,9 @@ int CLAgent::getFd()
 {
     return m_socket->getFd();
 }
+
+void CLAgent::setId(const int id)
+{
+    m_id = id;
+}
+

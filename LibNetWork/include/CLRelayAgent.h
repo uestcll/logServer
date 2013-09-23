@@ -11,7 +11,7 @@ class CLBuffer;
 class CLRelayAgent : public CLAgent
 {
 public:
-	explicit CLRelayAgent(const int id, const SLAddress IPAddress);
+	explicit CLRelayAgent(const int fd = -1);
 	~CLRelayAgent();
 
 	int recevData();
