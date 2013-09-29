@@ -4,7 +4,7 @@
 #include "../include/headfile.h"
 #include "../include/SLResponse.h"
 
-CLRelayAgent::CLRelayAgent(const int fd) : CLAgent(fd), m_state(true), m_process(NULL)
+CLRelayAgent::CLRelayAgent(const int fd, CLProcessRequest *process) : CLAgent(fd), m_state(true), m_process(process)
 {
     m_buffer = new CLBuffer();
     m_buffer->setRelayAgent(this);

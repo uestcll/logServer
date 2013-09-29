@@ -87,4 +87,11 @@ CLAgentManager::~CLAgentManager()
             delete pAgent;
         }
     }
+
+    delete m_process;
+}
+
+void CLAgentManager::setProcessor(CLProcessRequest *process)
+{
+	m_process = process;
 }
