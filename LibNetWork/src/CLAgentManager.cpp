@@ -46,10 +46,17 @@ int CLAgentManager::insertAgent(int id, CLAgent *pAgent)
 
 int CLAgentManager::deleteAgent(int id)
 {
+	CLAgent *pAgent;
+	findAgent(id, &pAgent);
+
 	if(0 == m_map.erase(id))
 	{
 		perror("erase error");
 		return FAILED;
+	}
+	else
+	{
+		delete pAgent;
 	}
 
 	return SUCCESSFUL;
@@ -72,12 +79,11 @@ int CLAgentManager::findAgent(int id, CLAgent **pAgent)
 
 CLAgentManager::CLAgentManager()
 {
-
 }
 
 CLAgentManager::~CLAgentManager()
 {
-    CLAgent *pAgent;
+    /*CLAgent *pAgent;
     list<CLAgent*>::iterator it = m_list.begin();
     while(m_list.end() != it)
     {
@@ -86,12 +92,5 @@ CLAgentManager::~CLAgentManager()
         {
             delete pAgent;
         }
-    }
-
-    delete m_process;
-}
-
-void CLAgentManager::setProcessor(CLProcessRequest *process)
-{
-	m_process = process;
+    }*/
 }

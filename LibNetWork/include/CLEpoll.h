@@ -24,9 +24,10 @@ class CLEpoll
 {
     public:
         static CLEpoll* getInstance();
-        int addToEpoll(CLEpollEvent *event);
+        int workWithEpoll(CLEpollEvent *event);
+        /*int addToEpoll(CLEpollEvent *event);
         int modifyEpollEvent(CLEpollEvent *event);
-        int deleteFromEpoll(CLEpollEvent *event);
+        int deleteFromEpoll(CLEpollEvent *event);*/
         void runEpoll(const int waittime = -1);
 
     private:

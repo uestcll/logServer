@@ -17,8 +17,11 @@
  */
 #include "../include/CLBuffer.h"
 #include "../include/CLSocket.h"
+#include "../include/CLEpoll.h"
+#include "../include/CLEpollEvent.h"
+#include "../include/headfile.h"
 
-CLBuffer::CLBuffer() : m_readlength(0), m_lastchange(NULL),m_pAgent(NULL)
+CLBuffer::CLBuffer() : m_readlength(0), m_lastchange(NULL),m_pAgent(NULL), m_epollstate(EPOLLIN)
 {
 }
 
@@ -92,6 +95,7 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 		m_readlength += n;
         if(m_request.finished && m_readlength == m_request.len)
         {
+        	m_queue.push_back(m_request);
             return FINISHED;
         }
 		return SUCCESSFUL;
@@ -100,6 +104,15 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 
 int CLBuffer::writeBuffer(CLSocket *mysocket)
 {
+    if(EPOLLIN == m_epollstate)
+    {
+        CLEpollEvent myevent;
+        myevent.setParameter(m_pAgent, m_pAgent->getFd(), EPOLL_CTL_MOD, EPOLLIN | EPOLLOUT);
+        m_epollstate = EPOLLIN | EPOLLOUT;
+        CLEpoll *epoll = CLEpoll::getInstance();
+        epoll->workWithEpoll(&myevent);
+    }
+
 	int len = m_list.size();
     int cnt = 0;
 	struct iovec *output;
@@ -151,8 +164,18 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 			m_lastchange = (*pIt).io.iov_base;
 			(*pIt).io.iov_base = (void*)((char*)(*pIt).io.iov_base + n);
 			(*pIt).io.iov_len -= n;
+            break;
 		}
 	}
+
+    if(m_list.end() == aIt && NULL == m_lastchange)
+    {
+        CLEpollEvent myevent;
+        myevent.setParameter(m_pAgent, m_pAgent->getFd(), EPOLL_CTL_MOD, EPOLLIN);
+        m_epollstate = EPOLLIN;
+        CLEpoll *epoll = CLEpoll::getInstance();
+        epoll->workWithEpoll(&myevent);
+    }
 
 	delete[] output;
     return ret;
@@ -169,12 +192,20 @@ void CLBuffer::processError()
     m_pAgent->setState(false);
 }
 
-void CLBuffer::setRelayAgent(CLRelayAgent *pAgent)
+void CLBuffer::setCommunicationAgent(setCommunicationAgent *pAgent)
 {
 	m_pAgent = pAgent;
 }
 
-SLRequest CLBuffer::getRequest()
+void CLBuffer::getRequest(SLRequest *request)
 {
-    return m_request;
+    if(!m_queue.empty())
+    {
+    	*request = m_queue.front();
+    	m_queue.pop();
+    }
+    else
+    {
+    	request = NULL;
+    }
 }

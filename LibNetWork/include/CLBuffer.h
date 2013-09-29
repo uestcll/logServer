@@ -23,7 +23,7 @@
 #include "CLSocket.h"
 #include "headfile.h"
 #include "SLRequest.h"
-#include "CLRelayAgent.h"
+#include "CLCommunicationAgent.h"
 
 class CLRelayAgent;
 
@@ -36,8 +36,8 @@ class CLBuffer
         int readBuffer(CLSocket *mysocket);
         int writeBuffer(CLSocket *mysocket);
         void processError();
-        void setRelayAgent(CLRelayAgent *pAgent);
-        SLRequest getRequest();
+        void setCommunicationAgent(setCommunicationAgent *pAgent);
+        void getRequest(SLRequest *request);
                
     private:
         CLBuffer(CLBuffer&);
@@ -45,10 +45,12 @@ class CLBuffer
 
     private:
         list<SLResponse> m_list;
+        queue<SLRequest> m_queue;
         void *m_lastchange;
         int m_readlength;
         SLRequest m_request;
         CLRelayAgent *m_pAgent;
+        int m_epollstate;
 };
 
 #endif

@@ -1,22 +1,22 @@
-#include "../include/CLRelayAgent.h"
+#include "../include/CLCommunication.h"
 #include "../include/CLSocket.h"
 #include "../include/CLBuffer.h"
 #include "../include/headfile.h"
 #include "../include/SLResponse.h"
 
-CLRelayAgent::CLRelayAgent(const int fd, CLProcessRequest *process) : CLAgent(fd), m_state(true), m_process(process)
+CLCommunication::CLCommunication(const int fd) : CLAgent(fd), m_state(true), m_process(NULL)
 {
     m_buffer = new CLBuffer();
-    m_buffer->setRelayAgent(this);
+    m_buffer->setCommunicationAgent(this);
 }
 
-CLRelayAgent::~CLRelayAgent()
+CLCommunication::~CLCommunication()
 {
     if(NULL != m_buffer)
         delete m_buffer;
 }
 
-int CLRelayAgent::recevData()
+int CLCommunication::recevData()
 {
     if(!m_state)
         return FAILED;
@@ -29,14 +29,15 @@ int CLRelayAgent::recevData()
         SLResponse response;
         response.io = result;
         response.finished = true;
-        m_buffer->addToBuffer(response);
+        if(NULL != result.iov_base)
+            m_buffer->addToBuffer(response);
     }
 
     return n;
 
 }
 
-int CLRelayAgent::sendData()
+int CLCommunication::sendData()
 {
     if(!m_state)
         return FAILED;
@@ -44,12 +45,12 @@ int CLRelayAgent::sendData()
 	return m_buffer->writeBuffer(m_socket);
 }
 
-void CLRelayAgent::setState(bool state)
+void CLCommunication::setState(bool state)
 {
     m_state = state;
 }
 
-void CLRelayAgent::setProcess(CLProcessRequest *process)
+void CLCommunication::setProcess(CLProcessRequest *process)
 {
     m_process = process;
 }

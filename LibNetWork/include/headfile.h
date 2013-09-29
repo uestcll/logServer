@@ -32,6 +32,7 @@
 #include <memory.h>
 #include <errno.h>
 #include <list>
+#include <queue>
 using namespace std;
 
 const int SUCCESSFUL = 0;
@@ -42,4 +43,5 @@ const int IPV4 = 4;
 const int IPV6 = 6;
 const int MAXN = 3000;
 const int FINISHED = -2;
+
 #endif

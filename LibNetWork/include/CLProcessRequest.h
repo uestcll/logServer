@@ -30,7 +30,7 @@ class CLProcessRequest
         virtual void work();
         virtual struct iovec getResult();
 
-    private:
+    protected:
         SLRequest m_request;
 };
 

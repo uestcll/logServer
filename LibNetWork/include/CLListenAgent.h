@@ -5,6 +5,7 @@
 #include "headfile.h"
 #include "SLAddress.h"
 
+template<typename T>
 class CLListenAgent : public CLAgent
 {
 public:

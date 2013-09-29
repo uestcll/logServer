@@ -1,5 +1,5 @@
-#ifndef CLRELAYAGENT_H
-#define CLRELAYAGENT_H
+#ifndef CLCOMMUNICATION_H
+#define CLCOMMUNICATION_H
 
 #include "SLAddress.h"
 #include "CLBuffer.h"
@@ -8,11 +8,11 @@
 
 class CLBuffer;
 
-class CLRelayAgent : public CLAgent
+class CLCommunication : public CLAgent
 {
 public:
-	explicit CLRelayAgent(const int fd = -1);
-	~CLRelayAgent();
+	explicit CLCommunication(const int fd = -1);
+	~CLCommunication();
 
 	int recevData();
 	int sendData();
