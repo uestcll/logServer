@@ -10,6 +10,7 @@ class CLListenAgent : public CLAgent
 {
 public:
 	explicit CLListenAgent(const int fd = -1);
+	explicit CLListenAgent(const SLAddress address);
 	~CLListenAgent();
 	int recevData();
     int sendData();

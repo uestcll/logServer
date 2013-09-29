@@ -10,6 +10,10 @@ CLListenAgent::CLListenAgent(const int fd) : CLAgent(fd)
 {
 }
 
+CLListenAgent::CLListenAgent(const SLAddress address) : CLAgent(address)
+{
+}
+
 CLListenAgent::~CLListenAgent()
 {
 

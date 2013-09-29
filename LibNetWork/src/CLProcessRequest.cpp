@@ -25,12 +25,12 @@ CLProcessRequest::~CLProcessRequest()
 {
 }
 
-void CLProcessRequest::setRequest(SLRequest request)
+/*void CLProcessRequest::setRequest(SLRequest request)
 {
     m_request = request;
-}
+}*/
 
-void CLProcessRequest::work()
+void CLProcessRequest::work(SLRequest *request)
 {
 }
 

@@ -24,13 +24,20 @@ int CLCommunication::recevData()
 	int n = m_buffer->readBuffer(m_socket);
     if(FINISHED == n)
     {
-        m_process->work();
-        struct iovec result = m_process->getResult();
-        SLResponse response;
-        response.io = result;
-        response.finished = true;
-        if(NULL != result.iov_base)
-            m_buffer->addToBuffer(response);
+        SLRequest *request;
+        while(true)
+        {
+            m_buffer->getRequest(request);
+            if(NULL == request)
+                break;
+            m_process->work(request);
+            struct iovec result = m_process->getResult();
+            SLResponse response;
+            response.io = result;
+            response.finished = true;
+            if(NULL != result.iov_base)
+                m_buffer->addToBuffer(response);
+        }
     }
 
     return n;
@@ -54,3 +61,8 @@ void CLCommunication::setProcess(CLProcessRequest *process)
 {
     m_process = process;
 }
+
+/*void CLCommunication::getRequest(SLRequest *request)
+{
+    m_buffer->getRequest(request);
+}*/

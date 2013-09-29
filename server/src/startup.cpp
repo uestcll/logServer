@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 #include "headfile.h"
+#include "../include/CLLoggerProcess.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,12 +30,12 @@ int main(int argc, char *argv[])
     address.isServer = true;
     memcpy(address.type, "tcp");
     address.port = atoi(argv[1]);
-    CLListenAgent listenAgent(address);
+    CLListenAgent listenAgent<CLLoggerProcess>(address);
 
     CLEpollEvent myevent;
     myevent.setParameter(&listenAgent, listenAgent.getFd(), EPOLL_CTL_ADD, EPOLLIN);
     CLEpoll *pEpoll = CLEpoll::getInstance();
-    pEpoll->addToEpoll(&myevent);
+    pEpoll->workWithEpoll(&myevent);
 
     pEpoll->run();
     return 0;

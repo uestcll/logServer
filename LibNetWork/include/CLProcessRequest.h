@@ -26,8 +26,8 @@ class CLProcessRequest
     public:
         explicit CLProcessRequest();
         virtual ~CLProcessRequest();
-        void setRequest(SLRequest request);
-        virtual void work();
+        //void setRequest(SLRequest request);
+        virtual void work(SLRequest *request);
         virtual struct iovec getResult();
 
     protected:

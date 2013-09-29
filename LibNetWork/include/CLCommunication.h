@@ -18,6 +18,7 @@ public:
 	int sendData();
     void setState(bool state);
     void setProcess(CLProcessRequest *process);
+    //void getRequest(SLRequest *request);
 
 private:
 	CLBuffer *m_buffer;

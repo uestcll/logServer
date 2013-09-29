@@ -26,7 +26,7 @@ CLLoggerProcess::~CLLoggerProcess()
 {
 }
 
-void CLLoggerProcess::work()
+void CLLoggerProcess::work(SLRequest *request)
 {
     string query;
     query = "insert into lemon values";
