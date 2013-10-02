@@ -17,8 +17,9 @@
  */
 
 #include "../include/CLLoggerProcess.h"
+#include "../include/CLPraseManager.h"
 
-CLLoggerProcess::CLLoggerProcess()
+CLLoggerProcess::CLLoggerProcess(CLPraseManager *manager) : m_manager(manager)
 {
 }
 
@@ -28,9 +29,10 @@ CLLoggerProcess::~CLLoggerProcess()
 
 void CLLoggerProcess::work(SLRequest *request)
 {
-    string query;
-    query = "insert into lemon values";
-    query += m_request.readbuffer;
-    CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->querySQL(query.c_str());
+    m_manager->process(request.readbuffer);
+}
+
+struct iovec CLLoggerProcess::getResult()
+{
+
 }
