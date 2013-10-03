@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
     address.port = atoi(argv[2]);
     address.isServer = false;
 
-    int conncetnumber = atoi(argv[3]);
-    for(int i = 0; i < conncetnumber; ++i)
+    int connectnumber = atoi(argv[3]);
+    for(int i = 0; i < connectnumber; ++i)
     {
         CLCommunication *pAgent = new CLCommunication();
-        pAgent->initAgent(address);
+        pAgent->initAgent(address, false);
         CLEpollEvent myevent;
         myevent.setParameter((CLAgent*)pAgent, pAgent->getFd(), EPOLL_CTL_ADD, EPOLLIN);
         pEpoll->workWithEpoll(&myevent);

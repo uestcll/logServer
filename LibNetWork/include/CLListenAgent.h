@@ -12,14 +12,14 @@ template<typename T>
 class CLListenAgent : public CLAgent
 {
 public:
-	explicit CLListenAgent(const int fd = -1) : CLAgent(fd)
+explicit CLListenAgent(const int fd = -1) : CLAgent(fd)
 {}
 
-	explicit CLListenAgent(const SLAddress address) : CLAgent(address)
+explicit CLListenAgent(const SLAddress address) : CLAgent(address)
 {}
-	~CLListenAgent()
+~CLListenAgent()
 {}
-	int recevData()
+int recevData()
 {
     int tempfd = m_socket->acceptSocket();
 	T *pT = new T();
@@ -32,11 +32,19 @@ public:
 
     return tempfd;
 }
-    int sendData()
+int sendData()
 {
     return SUCCESSFUL;
 }
 
+/*
+void initListenAgent(const SLAddress address)
+{
+    initAgent(address);
+    m_socket->bindSocket();
+    m_socket->listenSocket();
+}
+*/
 };
 
 #endif

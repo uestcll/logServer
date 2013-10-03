@@ -21,6 +21,10 @@
 CLSocket::CLSocket(int fd) : Qlen(3000)
 {
     m_socketfd = fd;
+    if(-1 != m_socketfd)
+    {
+        setNonBlock();
+    }
 }
 
 CLSocket::~CLSocket()
@@ -31,7 +35,7 @@ CLSocket::~CLSocket()
     }
 }
 
-void CLSocket::initSocket(const SLAddress address)
+void CLSocket::initSocket(const SLAddress address, const bool block)
 {
     if(-1 == m_socketfd)
     {
@@ -48,10 +52,18 @@ void CLSocket::initSocket(const SLAddress address)
         if(!address.isServer)
         {
             inet_pton(AF_INET, address.IPAddress, &m_address.sin_addr);
+            connectSocket();
         }
         else
         {
             m_address.sin_addr.s_addr = htonl(INADDR_ANY);
+            bindSocket();
+            listenSocket();
+        }
+
+        if(!block)
+        {
+            setNonBlock();
         }
     }
 }
@@ -146,5 +158,5 @@ int CLSocket::acceptSocket()
         return FAILED;
     }
 
-    return SUCCESSFUL;
+    return n;
 }

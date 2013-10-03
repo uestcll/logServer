@@ -26,9 +26,9 @@ CLAgent::CLAgent(const int fd)
     m_socket = new CLSocket(fd);
 }
 
-void CLAgent::initAgent(const SLAddress address)
+void CLAgent::initAgent(const SLAddress address, const bool block)
 {
-    m_socket->initSocket(address);
+    m_socket->initSocket(address, block);
 }
 
 CLAgent::~CLAgent()

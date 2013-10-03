@@ -10,7 +10,7 @@ class CLSocket
     public:
         explicit CLSocket(int fd);
         ~CLSocket();
-        void initSocket(const SLAddress address);
+        void initSocket(const SLAddress address, const bool block);
         int getFd();
         int readSocket(char *buffer, const int len);
         int writeSocket(const struct iovec *iov, int cnt);

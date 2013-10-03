@@ -8,16 +8,16 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    CLEpoll *pEpoll = CLEpoll::getInstance();
     SLAddress address;
     address.port = atoi(argv[1]);
     address.isServer = true;
     CLListenAgent<CLEchoServer> myAgent;
-    myAgent.initAgent(address);
+    myAgent.initAgent(address, true);
 
     CLEpollEvent myevent;
     myevent.setParameter(&myAgent, myAgent.getFd(), EPOLL_CTL_ADD, EPOLLIN);
 
-    CLEpoll *pEpoll = CLEpoll::getInstance();
     pEpoll->workWithEpoll(&myevent);
     pEpoll->runEpoll();
 

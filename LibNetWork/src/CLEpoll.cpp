@@ -84,27 +84,29 @@ int CLEpoll::deleteFromEpoll(CLEpollEvent *event)
 void CLEpoll::runEpoll(const int waittime)
 {
     struct epoll_event events[MAXN];
-    int ndfs = epoll_wait(m_epfd, events, MAXN, waittime);
-
-    for(int i = 0; i < ndfs; ++i)
+    while(true)
     {
-        CLEpollEvent *pEvent = (CLEpollEvent*)events[i].data.ptr;
+        int ndfs = epoll_wait(m_epfd, events, MAXN, waittime);
+        for(int i = 0; i < ndfs; ++i)
+        {
+            CLEpollEvent *pEvent = (CLEpollEvent*)events[i].data.ptr;
 
-        if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR)
-        {
-            perror("EPOLLHUP or EPOLLERR happened");
-        }
-        else if(events[i].events & EPOLLOUT)
-        {
-            pEvent->pAgent->sendData();
-        }
-        else if(events[i].events & EPOLLOUT)
-        {
-            pEvent->pAgent->recevData();
-        }
-        else
-        {
-            perror("unknown thing happened");
+            if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR)
+            {
+                perror("EPOLLHUP or EPOLLERR happened");
+            }
+            else if(events[i].events & EPOLLOUT)
+            {
+                pEvent->pAgent->sendData();
+            }
+            else if(events[i].events & EPOLLIN)
+            {
+                pEvent->pAgent->recevData();
+            }
+            else
+            {
+                perror("unknown thing happened");
+            }
         }
     }
 }

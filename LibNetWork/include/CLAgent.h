@@ -27,7 +27,7 @@ class CLAgent
     public:
         explicit CLAgent(const int fd = -1);
         virtual ~CLAgent();
-        void initAgent(const SLAddress address);
+        void initAgent(const SLAddress address, const bool block);
         virtual int recevData();
         virtual int sendData();
         int getId();
