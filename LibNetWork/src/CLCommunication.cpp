@@ -7,7 +7,7 @@
 CLCommunication::CLCommunication(const int fd) : CLAgent(fd), m_state(true), m_process(NULL)
 {
     m_buffer = new CLBuffer();
-    m_buffer->setCommunicationAgent(this);
+    m_buffer->setCommunication(this);
 }
 
 CLCommunication::~CLCommunication()

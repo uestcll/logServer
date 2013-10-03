@@ -1,5 +1,5 @@
-libnetwork.a : CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLCommunication.o 
-	ar -rc libnetwork.a CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLRelayAgent.o
+libnetwork.a : CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLCommunication.o CLProcessRequest.o 
+	ar -rc libnetwork.a CLSocket.o CLAgent.o CLBuffer.o CLAgentManager.o CLEpollEvent.o CLEpoll.o CLListenAgent.o CLCommunication.o CLProcessRequest.o
 	rm *.o
 
 CLSocket.o : ./src/CLSocket.cpp
@@ -18,3 +18,5 @@ CLListenAgent.o : ./src/CLListenAgent.cpp
 	g++ -o CLListenAgent.o -c ./src/CLListenAgent.cpp -I./include -g
 CLCommunication.o : ./src/CLCommunication.cpp
 	g++ -o CLCommunication.o -c ./src/CLCommunication.cpp -I./include -g
+CLProcessRequest.o : ./src/CLProcessRequest.cpp
+	g++ -o CLProcessRequest.o -c ./src/CLProcessRequest.cpp -I./include -g

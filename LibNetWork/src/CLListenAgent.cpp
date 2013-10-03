@@ -1,32 +1,36 @@
 #include "../include/CLListenAgent.h"
 #include "../include/CLSocket.h"
-#include "../include/CLCommunicationAgent.h"
+#include "../include/CLCommunication.h"
 #include "../include/CLAgentManager.h"
 #include "../include/CLEpoll.h"
 #include "../include/CLEpollEvent.h"
 #include "../include/CLProcessRequest.h"
 
-CLListenAgent::CLListenAgent(const int fd) : CLAgent(fd)
+template<typename T>
+CLListenAgent<T>::CLListenAgent(const int fd) : CLAgent(fd)
 {
 }
 
-CLListenAgent::CLListenAgent(const SLAddress address) : CLAgent(address)
+template<typename T>
+CLListenAgent<T>::CLListenAgent(const SLAddress address) : CLAgent(address)
 {
 }
 
-CLListenAgent::~CLListenAgent()
+template<typename T>
+CLListenAgent<T>::~CLListenAgent()
 {
 
 }
 
-int CLListenAgent::recevData()
+template<typename T>
+int CLListenAgent<T>::recevData()
 {
 	int tempfd = m_socket->acceptSocket();
 	T *pT = new T();
-    CLAgent *pAgent = new CLCommunicationAgent(tempfd);
+    CLCommunication *pAgent = new CLCommunication(tempfd);
     pAgent->setProcess((CLProcessRequest*)pT);
     CLEpollEvent myevent;
-    myevent.setParameter(pAgent, tempfd, EPOLL_CTL_ADD, EPOLLIN);
+    myevent.setParameter((CLAgent*)pAgent, tempfd, EPOLL_CTL_ADD, EPOLLIN);
     CLEpoll *pEpoll = CLEpoll::getInstance();
     pEpoll->workWithEpoll(&myevent);
 
@@ -34,7 +38,8 @@ int CLListenAgent::recevData()
 
 }
 
-int CLListenAgent::sendData()
+template<typename T>
+int CLListenAgent<T>::sendData()
 {
     return SUCCESSFUL;
 }

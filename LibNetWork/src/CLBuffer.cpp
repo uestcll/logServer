@@ -95,7 +95,7 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 		m_readlength += n;
         if(m_request.finished && m_readlength == m_request.len)
         {
-        	m_queue.push_back(m_request);
+        	m_queue.push(m_request);
             return FINISHED;
         }
 		return SUCCESSFUL;
@@ -192,7 +192,7 @@ void CLBuffer::processError()
     m_pAgent->setState(false);
 }
 
-void CLBuffer::setCommunicationAgent(setCommunicationAgent *pAgent)
+void CLBuffer::setCommunication(CLCommunication *pAgent)
 {
 	m_pAgent = pAgent;
 }
