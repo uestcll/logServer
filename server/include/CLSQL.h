@@ -24,9 +24,10 @@ class CLSQL
 {
     public:
         static CLSQL* getInstance();
-        void connectSQL(const char *hostname, const char *username, const char *password, const char *dbname, const int port);
+        void connectSQL(const char *hostname, const char *username, const char *password, const char *dbname);
         int querySQL(const char *query);
-        MYSQL_RES* getResult();
+        void fetchResult();
+        vector<string> getResult();
     private:
         explicit CLSQL();
         ~CLSQL();
@@ -37,6 +38,9 @@ class CLSQL
         MYSQL_RES *m_result;
         MYSQL_FIELD *m_fd;
         MYSQL_ROW m_row;
+        MYSQL_RES *m_sqlres;
+        vector<string> m_result;
         //char m_querybuffer[300];
 };
+
 #endif

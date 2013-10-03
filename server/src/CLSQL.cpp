@@ -30,20 +30,39 @@ CLSQL* CLSQL::getInstance()
     return m_pSQL;
 }
 
-void CLSQL::connectSQL(const char *hostname, const char *username, const char *password, const char *dbname, const int prot)
+void CLSQL::connectSQL(const char *hostname, const char *username, const char *password, const char *dbname)
 {
-    mysql_init(&m_sql);
-    mysql_real_connect(&m_sql, hostname, username, password, dbname, 0, NULL, 0);
+    mysql_init(m_sql);
+    mysql_real_connect(m_sql, hostname, username, password, dbname, 0, NULL, 0);
 }
 
 int CLSQL::querySQL(const char *query)
 {
-    return mysql_query(&m_sql, query);
+    return mysql_query(m_sql, query);
 }
 
-MYSQL_RES* CLSQL::getResult()
+void CLSQL::fetchResult()
 {
-    return mysql_store_result(&m_sql);
+     m_sqlres = mysql_store_result(&m_sql);
+     if(m_sqlres)
+     {
+         while((m_row = mysql_fetch_row(m_sqlres)))
+         {}
+     }
+
+}
+
+vector<string> CLSQL::getResult()
+{
+    fetchResult();
+    int cnt = 0;
+    while(cnt < mysql_field_count(m_sql))
+    {
+        m_result.push_back(m_row[cnt]);
+        cnt++;
+    }
+
+    return m_result;
 }
 
 CLSQL::CLSQL()

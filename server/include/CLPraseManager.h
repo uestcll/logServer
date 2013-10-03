@@ -20,6 +20,7 @@ public:
 	int praseHead(char* buffer, SLLogHead &head);
 	void praseContent(int id, char *buffer);
 	void process(char *buffer);
+    void initSQL();
 
 private:
 	map<int, CLPraseContent*> m_map;

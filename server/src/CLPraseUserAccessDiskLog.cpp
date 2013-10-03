@@ -1,4 +1,5 @@
 #include "../include/CLPraseUserAccessDiskLog.h"
+#include "../include/CLSQL.h"
 
 CLPraseUserAccessDiskLog::CLPraseUserAccessDiskLog()
 {}
@@ -22,5 +23,10 @@ void CLPraseUserAccessDiskLog::praseLog(char *buffer)
 
 void CLPraseUserAccessDiskLog::insertToSQL()
 {
-	
+    string query;
+    INSERT INTO children(fname, age) VALUES('ann', 3)"); 
+    query = "insert into userAccessDiskLog valuse (" + 
+   m_disklog.userID + "," + m_disklog.departmentIDOfUser +"," + m_disklog.diskID  +"," + m_disklog.position  +"," + m_disklog.range + ");";
+     CLSQL *pSQL = CLSQL::getInstance();
+     pSQL->querySQL(query.c_str());
 }

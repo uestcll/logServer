@@ -1,7 +1,10 @@
 #include "../include/CLPraseManager.h"
+#include "../include/CLSQL.h"
 
 CLPraseManager::CLPraseManager()
-{}
+{
+    initSQL();
+}
 
 CLPraseManager::~CLPraseManager()
 {}
@@ -51,4 +54,10 @@ void CLPraseManager::process(char *buffer)
 	pPrase->insertToSQL();
 
 	delete[] buffer;
+}
+
+void CLPraseManager::initSQL()
+{
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL("localhost", "root", "uestc8020", "log");
 }
