@@ -38,7 +38,7 @@ int CLEpoll::workWithEpoll(CLEpollEvent *event)
     struct epoll_event ev;
     memset(&ev, 0, sizeof( struct epoll_event));
     ev.events = event->events;
-    ev.data.ptr = event;
+    ev.data.ptr = event->pAgent;
     if( epoll_ctl( m_epfd, event->op, event->fd, &ev) < 0)
     {
         return FAILED;
@@ -89,7 +89,7 @@ void CLEpoll::runEpoll(const int waittime)
         int ndfs = epoll_wait(m_epfd, events, MAXN, waittime);
         for(int i = 0; i < ndfs; ++i)
         {
-            CLEpollEvent *pEvent = (CLEpollEvent*)events[i].data.ptr;
+            CLAgent *pAgent = (CLAgent*)events[i].data.ptr;
 
             if(events[i].events & EPOLLHUP || events[i].events & EPOLLERR)
             {
@@ -97,11 +97,11 @@ void CLEpoll::runEpoll(const int waittime)
             }
             else if(events[i].events & EPOLLOUT)
             {
-                pEvent->pAgent->sendData();
+                pAgent->sendData();
             }
             else if(events[i].events & EPOLLIN)
             {
-                pEvent->pAgent->recevData();
+                pAgent->recevData();
             }
             else
             {

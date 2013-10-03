@@ -14,6 +14,8 @@ CLCommunication::~CLCommunication()
 {
     if(NULL != m_buffer)
         delete m_buffer;
+    if(NULL != m_process)
+        delete m_process;
 }
 
 int CLCommunication::recevData()

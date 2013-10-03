@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     {
         CLCommunication *pAgent = new CLCommunication();
         pAgent->initAgent(address, false);
+        pAgent->setProcess(new CLEchoClient());
         CLEpollEvent myevent;
         myevent.setParameter((CLAgent*)pAgent, pAgent->getFd(), EPOLL_CTL_ADD, EPOLLIN);
         pEpoll->workWithEpoll(&myevent);
