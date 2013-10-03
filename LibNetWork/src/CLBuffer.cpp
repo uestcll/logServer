@@ -57,6 +57,7 @@ int CLBuffer::addToBuffer(SLResponse response)
         m_epollstate = EPOLLIN | EPOLLOUT;
         CLEpoll *epoll = CLEpoll::getInstance();
         epoll->workWithEpoll(&myevent);
+        m_epollstate = EPOLLIN | EPOLLOUT;
     }
 
 	return SUCCESSFUL;
@@ -65,7 +66,7 @@ int CLBuffer::addToBuffer(SLResponse response)
 int CLBuffer::readBuffer(CLSocket *mysocket)
 {
 	int len = sizeof(SLMessageHead);
-    int n;
+    int n = 0;
 
 	if(m_readlength < len && !m_request.finished)
 	{
@@ -105,6 +106,8 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
         if(m_request.finished && m_readlength == m_request.len)
         {
         	m_queue.push(m_request);
+            m_request.finished = false;
+            m_request.len = 0;
             return FINISHED;
         }
 		return SUCCESSFUL;
@@ -140,7 +143,7 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 	while(m_list.end() != aIt)
 	{
 		pIt = aIt++;
-		if(n > (*pIt).io.iov_len)
+		if(n >= (*pIt).io.iov_len)
 		{
 			n -= (*pIt).io.iov_len;
 			if((*pIt).finished)
@@ -168,7 +171,7 @@ int CLBuffer::writeBuffer(CLSocket *mysocket)
 		}
 	}
 
-    if(m_list.end() == aIt && NULL == m_lastchange)
+    if(0 == m_list.size())
     {
         CLEpollEvent myevent;
         myevent.setParameter(m_pAgent, m_pAgent->getFd(), EPOLL_CTL_MOD, EPOLLIN);
@@ -197,7 +200,7 @@ void CLBuffer::setCommunication(CLCommunication *pAgent)
 	m_pAgent = pAgent;
 }
 
-void CLBuffer::getRequest(SLRequest *request)
+void CLBuffer::getRequest(SLRequest* &request)
 {
     if(!m_queue.empty())
     {

@@ -23,9 +23,13 @@ int main(int argc, char *argv[])
         myevent.setParameter((CLAgent*)pAgent, pAgent->getFd(), EPOLL_CTL_ADD, EPOLLIN);
         pEpoll->workWithEpoll(&myevent);
         struct iovec io;
-        io.iov_base = new char[5];
-        memcpy(io.iov_base, "hello", 5);
-        io.iov_len = 5;
+        SLMessageHead head;
+        head.length = 5;
+        head.cmd = head.reserved = 0;
+        io.iov_base = new char[5 + sizeof(SLMessageHead)];
+        memcpy(io.iov_base, &head, sizeof(SLMessageHead));
+        memcpy((char*)io.iov_base + sizeof(SLMessageHead), "hello", 5);
+        io.iov_len = 5 + sizeof(SLMessageHead);
         pAgent->writeToServer(io);
     }
 

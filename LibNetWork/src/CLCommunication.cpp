@@ -24,13 +24,15 @@ int CLCommunication::recevData()
 	int n = m_buffer->readBuffer(m_socket);
     if(FINISHED == n)
     {
-        SLRequest *request;
+        SLRequest *request = new SLRequest;
         while(true)
         {
             m_buffer->getRequest(request);
             if(NULL == request)
                 break;
             m_process->work(request);
+            delete[] request->readbuffer;
+            delete request;
             struct iovec result = m_process->getResult();
             SLResponse response;
             response.io = result;

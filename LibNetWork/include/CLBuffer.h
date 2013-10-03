@@ -37,7 +37,7 @@ class CLBuffer
         int writeBuffer(CLSocket *mysocket);
         void processError();
         void setCommunication(CLCommunication *pAgent);
-        void getRequest(SLRequest *request);
+        void getRequest(SLRequest* &request);
                
     private:
         CLBuffer(CLBuffer&);
