@@ -19,6 +19,7 @@ public:
     void setState(bool state);
     void setProcess(CLProcessRequest *process);
     //void getRequest(SLRequest *request);
+    void writeToServer(struct iovec hello);
 
 private:
 	CLBuffer *m_buffer;

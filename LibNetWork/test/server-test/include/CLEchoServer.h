@@ -1,7 +1,9 @@
 #ifndef CLECHOSERVER_H
 #define CLECHOSERVER_H
 
-class CLEchoServer : public CLProcessRequset
+#include "LibNetWork.h"
+
+class CLEchoServer : public CLProcessRequest
 {
 public:
 	explicit CLEchoServer();
@@ -10,7 +12,7 @@ public:
 	virtual struct iovec getResult();
 
 private:
-	struct iovec *m_iovec;
+	struct iovec m_iovec;
 };
 
 #endif

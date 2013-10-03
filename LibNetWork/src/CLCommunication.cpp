@@ -66,3 +66,11 @@ void CLCommunication::setProcess(CLProcessRequest *process)
 {
     m_buffer->getRequest(request);
 }*/
+
+void CLCommunication::writeToServer(struct iovec hello)
+{
+    SLResponse response;
+    response.io = hello;
+    response.finished = true;
+    m_buffer->addToBuffer(response);
+}

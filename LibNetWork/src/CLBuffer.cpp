@@ -50,6 +50,15 @@ int CLBuffer::addToBuffer(SLResponse response)
 {
 	m_list.push_back(response);
 
+    if(EPOLLIN == m_epollstate)
+    {
+        CLEpollEvent myevent;
+        myevent.setParameter(m_pAgent, m_pAgent->getFd(), EPOLL_CTL_MOD, EPOLLIN | EPOLLOUT);
+        m_epollstate = EPOLLIN | EPOLLOUT;
+        CLEpoll *epoll = CLEpoll::getInstance();
+        epoll->workWithEpoll(&myevent);
+    }
+
 	return SUCCESSFUL;
 }
 
@@ -104,15 +113,6 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 
 int CLBuffer::writeBuffer(CLSocket *mysocket)
 {
-    if(EPOLLIN == m_epollstate)
-    {
-        CLEpollEvent myevent;
-        myevent.setParameter(m_pAgent, m_pAgent->getFd(), EPOLL_CTL_MOD, EPOLLIN | EPOLLOUT);
-        m_epollstate = EPOLLIN | EPOLLOUT;
-        CLEpoll *epoll = CLEpoll::getInstance();
-        epoll->workWithEpoll(&myevent);
-    }
-
 	int len = m_list.size();
     int cnt = 0;
 	struct iovec *output;
