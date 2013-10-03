@@ -29,10 +29,12 @@ CLLoggerProcess::~CLLoggerProcess()
 
 void CLLoggerProcess::work(SLRequest *request)
 {
+    m_iov.iov_base = NULL;
+    m_iov.iov_len = 0;
     m_manager->process(request.readbuffer);
 }
 
 struct iovec CLLoggerProcess::getResult()
 {
-
+    return m_iov;
 }

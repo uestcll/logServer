@@ -13,6 +13,7 @@ class CLLoggerProcess : public CLProcessRequest
 
     private:
     	CLPraseManager *m_manager;
+        struct iovec m_iov;
 };
 
 #endif
