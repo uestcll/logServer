@@ -43,7 +43,7 @@ int CLSQL::querySQL(const char *query)
 
 void CLSQL::fetchResult()
 {
-     m_sqlres = mysql_store_result(&m_sql);
+     m_sqlres = mysql_store_result(m_sql);
      if(m_sqlres)
      {
          while((m_row = mysql_fetch_row(m_sqlres)))
@@ -58,11 +58,11 @@ vector<string> CLSQL::getResult()
     int cnt = 0;
     while(cnt < mysql_field_count(m_sql))
     {
-        m_result.push_back(m_row[cnt]);
+        m_store.push_back(m_row[cnt]);
         cnt++;
     }
 
-    return m_result;
+    return m_store;
 }
 
 CLSQL::CLSQL()

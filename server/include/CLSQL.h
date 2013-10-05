@@ -18,8 +18,12 @@
 
 #ifndef CLSQL_H
 #define CLSQL_H
-
 #include <mysql/mysql.h>
+#include <iostream>
+#include <vector>
+using namespace std;
+//#include "LibNetWork.h"
+
 class CLSQL
 {
     public:
@@ -34,12 +38,12 @@ class CLSQL
 
     private:
         static CLSQL *m_pSQL;
-        MYSQL m_sql;
+        MYSQL *m_sql;
         MYSQL_RES *m_result;
         MYSQL_FIELD *m_fd;
         MYSQL_ROW m_row;
         MYSQL_RES *m_sqlres;
-        vector<string> m_result;
+        vector<string> m_store;
         //char m_querybuffer[300];
 };
 

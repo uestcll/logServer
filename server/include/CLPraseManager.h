@@ -1,29 +1,27 @@
 #ifndef CLPRASEMANAGER_H
 #define CLPRASEMANAGER_H
 
-struct SLLogHead
-{
-	uint32_t logType;                       
-　　uint32_t lengthOfLoad;                  
-　　uint32_t lengthOfRemark;               
-　　uint32_t *remark;       
-　　uint64_t eventOccurTimeSec;     
-　　uint64_t eventOccurTimeUsec;
-};
+#include "CLMessage.h"
+#include <iostream>
+#include <map>
+using namespace std;
 
 class CLPraseManager
 {
 public:
-	explicit CLPraseManager();
-	~CLPraseManager();
-	void register(int id, CLPraseContent *pContent);
-	int praseHead(char* buffer, SLLogHead &head);
-	void praseContent(int id, char *buffer);
+    static CLPraseManager* getInstance();
+	void registerHandle(int id, CLMessage *pContent);
 	void process(char *buffer);
     void initSQL();
 
 private:
-	map<int, CLPraseContent*> m_map;
+    explicit CLPraseManager();
+	~CLPraseManager();
+
+
+private:
+	map<int, CLMessage*> m_map;
+    static CLPraseManager *m_manager;
 };
 
 #endif

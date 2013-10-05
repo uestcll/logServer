@@ -1,6 +1,8 @@
 #ifndef CLLOGGERPROCESS_H
 #define CLLOGGERPROCESS_H
 
+#include "LibNetWork.h"
+
 class CLPraseManager;
 
 class CLLoggerProcess : public CLProcessRequest
