@@ -17,9 +17,13 @@
  */
 
 #include <iostream>
+#include "CLSQL.h"
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL("localhost", "root", "go", "test");
+    pSQL->querySQL("insert into person values(20, 'bling');");
     return 0;
 }

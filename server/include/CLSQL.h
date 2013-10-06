@@ -38,13 +38,10 @@ class CLSQL
 
     private:
         static CLSQL *m_pSQL;
-        MYSQL *m_sql;
-        MYSQL_RES *m_result;
-        MYSQL_FIELD *m_fd;
+        MYSQL m_sql;
+        MYSQL_RES *m_res;
         MYSQL_ROW m_row;
-        MYSQL_RES *m_sqlres;
         vector<string> m_store;
-        //char m_querybuffer[300];
 };
 
 #endif
