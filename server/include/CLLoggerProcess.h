@@ -8,7 +8,7 @@ class CLPraseManager;
 class CLLoggerProcess : public CLProcessRequest
 {
     public:
-        explicit CLLoggerProcess(CLPraseManager *manager);
+        explicit CLLoggerProcess();
         ~CLLoggerProcess();
         virtual void work(SLRequest *request);
         virtual struct iovec getResult();

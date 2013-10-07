@@ -19,8 +19,9 @@
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLPraseManager.h"
 
-CLLoggerProcess::CLLoggerProcess(CLPraseManager *manager) : m_manager(manager)
+CLLoggerProcess::CLLoggerProcess()
 {
+    m_manager = CLPraseManager::getInstance();
 }
 
 CLLoggerProcess::~CLLoggerProcess()

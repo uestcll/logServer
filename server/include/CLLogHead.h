@@ -1,13 +1,17 @@
 #ifndef CLLOGHEAD_H
 #define CLLOGHEAD_H
 
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+
 class CLLogHead
 {
     public:
         explicit CLLogHead()
         {
         }
-        ~CLLogHead();
+        ~CLLogHead()
         {
         }
         char* serialize()
@@ -37,16 +41,16 @@ class CLLogHead
             memcpy(remark, buffer, len);
             buffer += len;
             len = 8;
-            memcpy(eventOccurTimeSec, buffer, len);
+            memcpy(&eventOccurTimeSec, buffer, len);
             buffer += len;
-            memcpy(eventOccurTimeUsec, buffer, len);
+            memcpy(&eventOccurTimeUsec, buffer, len);
         }
 
         int getLength()
         {
             return 12 + lengthOfRemark + 16;
         }
-    private:
+    public:
         int logType;
         int lengthOfLoad;
         int lengthOfRemark;
