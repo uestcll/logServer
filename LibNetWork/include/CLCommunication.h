@@ -7,6 +7,7 @@
 #include "CLProcessRequest.h"
 
 class CLBuffer;
+class CLProcessRequest;
 
 class CLCommunication : public CLAgent
 {

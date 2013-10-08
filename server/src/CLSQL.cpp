@@ -76,6 +76,11 @@ vector<string> CLSQL::getResult()
     return m_store;
 }
 
+void CLSQL::closeSQL()
+{
+    mysql_close(&m_sql);
+}
+
 CLSQL::CLSQL()
 {
 

@@ -32,6 +32,8 @@ class CLSQL
         int querySQL(const char *query);
         void fetchResult();
         vector<string> getResult();
+        void closeSQL();
+        
     private:
         explicit CLSQL();
         ~CLSQL();

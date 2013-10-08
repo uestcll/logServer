@@ -39,9 +39,3 @@ void CLPraseManager::process(char *buffer)
 
 	delete[] buffer;
 }
-
-void CLPraseManager::initSQL()
-{
-    CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->connectSQL("localhost", "root", "uestc8020", "log");
-}

@@ -16,9 +16,9 @@
  * =====================================================================================
  */
 
-#include "CLClientRequest.h"
+#include "CLClientProcess.h"
 
-int main()
+int main(int argc, char *argv[])
 {
     if(4 != argc)
     {
@@ -42,7 +42,8 @@ int main()
         CLEpollEvent myevent;
         myevent.setParameter((CLAgent*)pAgent, pAgent->getFd(), EPOLL_CTL_ADD, EPOLLIN);
         pEpoll->workWithEpoll(&myevent);
-        struct iovec io;
+        p->init();
+        /*struct iovec io;
         SLMessageHead head;
         head.length = 5;
         head.cmd = head.reserved = 0;
@@ -53,6 +54,7 @@ int main()
         io.iov_len = 28 + sizeof(SLMessageHead);
         delete buffer;
         pAgent->writeToServer(io);
+        */
     }
 
     pEpoll->runEpoll();

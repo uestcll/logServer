@@ -20,7 +20,9 @@
 
 #include "../include/headfile.h"
 #include "../include/SLRequest.h"
+#include "../include/CLCommunication.h"
 
+class CLCommunication;
 class CLProcessRequest
 {
     public:
@@ -29,9 +31,11 @@ class CLProcessRequest
         //void setRequest(SLRequest request);
         virtual void work(SLRequest *request);
         virtual struct iovec getResult();
+        void setCommunication(CLCommunication *communication);
 
     protected:
         SLRequest m_request;
+        CLCommunication *m_communication;
 };
 
 #endif

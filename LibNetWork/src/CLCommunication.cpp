@@ -64,6 +64,7 @@ void CLCommunication::setState(bool state)
 void CLCommunication::setProcess(CLProcessRequest *process)
 {
     m_process = process;
+    m_process->setCommunication(this);
 }
 
 /*void CLCommunication::getRequest(SLRequest *request)

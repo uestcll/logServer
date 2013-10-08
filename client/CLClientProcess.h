@@ -19,15 +19,23 @@
 #ifndef CLCLIENTPROCESS_H
 #define CLCLIENTPROCESS_H
 
+#include "LibNetWork.h"
+#include "CLLogHead.h"
+#include "CLUserAccessDiskLog.h"
+
 class CLClientProcess : public CLProcessRequest
 {
     public:
         virtual void work(SLRequest *request)
         {
-
+            char len = request->len;
+            char *buffer = new char[len + 1];
+            memcpy(buffer, request->readbuffer, len);
+            buffer[len] = '\0';
+            cout << buffer << endl;
         }
 
-        char* init()
+        void init()
         {
             CLLogHead head;
             CLUserAccessDiskLog userlog;
@@ -40,10 +48,18 @@ class CLClientProcess : public CLProcessRequest
 
             userlog.userID = userlog.departmentIDOfUser = userlog.diskID = userlog.position = userlog.range = 1;
 
+            SLMessageHead myhead;
             int len = head.getLength() + userlog.getLength();
+            myhead.length = len;
+            len += sizeof(SLMessageHead);
             char *buffer = new char[len];
-            memcpy(buffer, head.serialize(), head.getLength());
-            memcpy(buffer + head.getLength(), userlog.serialize(), userlog.getLength());
+            memcpy(buffer, &myhead, sizeof(SLMessageHead));
+            memcpy(buffer + sizeof(SLMessageHead), head.serialize(), head.getLength());
+            memcpy(buffer + head.getLength() + sizeof(SLMessageHead), userlog.serialize(), userlog.getLength());
+            struct iovec hello;
+            hello.iov_base = buffer;
+            hello.iov_len = len;
+            m_communication->writeToServer(hello);
 
         }
 

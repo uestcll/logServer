@@ -37,3 +37,8 @@ void CLProcessRequest::work(SLRequest *request)
 struct iovec CLProcessRequest::getResult()
 {
 }
+
+void CLProcessRequest::setCommunication(CLCommunication *communication)
+{
+	m_communication = communication;
+}

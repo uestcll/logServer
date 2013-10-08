@@ -12,7 +12,6 @@ public:
     static CLPraseManager* getInstance();
 	void registerHandle(int id, CLMessage *pContent);
 	void process(char *buffer);
-    void initSQL();
 
 private:
     explicit CLPraseManager();

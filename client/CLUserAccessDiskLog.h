@@ -2,23 +2,21 @@
 #define CLUSERACCESSDISKLOG_H
 
 #include "LibNetWork.h"
-#include "CLMessage.h"
-#include "CLPraseManager.h"
-#include "CLSQL.h"
 
-class CLUserAccessDiskLog : public CLMessage
+class CLUserAccessDiskLog
 {
 public:
 	explicit CLUserAccessDiskLog()
     {}
 	~CLUserAccessDiskLog()
     {}
-    void init(int id)
+    /*void init(int id)
     {
         CLPraseManager *manager = CLPraseManager::getInstance();
         manager->registerHandle(id, this);
 
     }
+    */
     char* serialize()
     {
         int len = 28;
@@ -42,14 +40,14 @@ public:
     {
         return 12 + 16;
     }
-    virtual void insertToSQL()
+    /*virtual void insertToSQL()
     {
         char query[1000];
         memset(query, 0, sizeof(query));
         sprintf(query, "insert into userAccessDiskLog values(%d, %d, %d, %lld, %lld)", userID, departmentIDOfUser, diskID, position, range);
         CLSQL *pSQL = CLSQL::getInstance();
         pSQL->querySQL(query);
-    }
+    }*/
 
 public:
     int userID;

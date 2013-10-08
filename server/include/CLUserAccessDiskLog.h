@@ -13,6 +13,7 @@ public:
     {}
 	~CLUserAccessDiskLog()
     {}
+    
     void init(int id)
     {
         CLPraseManager *manager = CLPraseManager::getInstance();
@@ -44,11 +45,14 @@ public:
     }
     virtual void insertToSQL()
     {
+        CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL("localhost", "root", "uestc8020", "log");
         char query[1000];
         memset(query, 0, sizeof(query));
         sprintf(query, "insert into userAccessDiskLog values(%d, %d, %d, %lld, %lld)", userID, departmentIDOfUser, diskID, position, range);
         CLSQL *pSQL = CLSQL::getInstance();
         pSQL->querySQL(query);
+        pSQL->closeSQL();
     }
 
 public:
