@@ -17,7 +17,6 @@ CLPraseManager* CLPraseManager::getInstance()
 }
 CLPraseManager::CLPraseManager()
 {
-    initSQL();
 }
 
 CLPraseManager::~CLPraseManager()
@@ -37,5 +36,4 @@ void CLPraseManager::process(char *buffer)
 	pPrase->deserialize(buffer + head.getLength());
 	pPrase->insertToSQL();
 
-	delete[] buffer;
 }

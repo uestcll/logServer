@@ -29,6 +29,8 @@ public:
         memcpy(buffer + 8, &diskID, 4);
         memcpy(buffer + 12, &position, 8);
         memcpy(buffer + 20, &range, 8);
+
+        return buffer;
     }
     void deserialize(char *buffer)
     {
@@ -46,11 +48,10 @@ public:
     virtual void insertToSQL()
     {
         CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->connectSQL("localhost", "root", "uestc8020", "log");
+    pSQL->connectSQL("localhost", "root", "go", "log");
         char query[1000];
         memset(query, 0, sizeof(query));
-        sprintf(query, "insert into userAccessDiskLog values(%d, %d, %d, %lld, %lld)", userID, departmentIDOfUser, diskID, position, range);
-        CLSQL *pSQL = CLSQL::getInstance();
+        sprintf(query, "insert into test values(%d, %d, %d, %lld, %lld);", userID, departmentIDOfUser, diskID, position, range);
         pSQL->querySQL(query);
         pSQL->closeSQL();
     }

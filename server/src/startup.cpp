@@ -1,4 +1,5 @@
-#include "../include/CLLogHead.h"
+#include "../include/CLLoggerProcess.h"
+#include "../include/CLUserAccessDiskLog.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,11 +9,13 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    CLUserAccessDiskLog access;
+    access.init(1);
     CLEpoll *pEpoll = CLEpoll::getInstance();
     SLAddress address;
     address.port = atoi(argv[1]);
     address.isServer = true;
-    CLListenAgent<CLLogHead> myAgent;
+    CLListenAgent<CLLoggerProcess> myAgent;
     myAgent.initAgent(address, true);
 
     CLEpollEvent myevent;

@@ -26,6 +26,8 @@ public:
         memcpy(buffer + 8, &diskID, 4);
         memcpy(buffer + 12, &position, 8);
         memcpy(buffer + 20, &range, 8);
+
+        return buffer;
     }
     void deserialize(char *buffer)
     {

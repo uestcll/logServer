@@ -44,7 +44,7 @@ class CLClientProcess : public CLProcessRequest
             head.lengthOfRemark = 2;
             head.remark = new char[2];
             memcpy(head.remark, "M", 2);
-            head.eventOccurTimeSec = head.eventOccurTimeUsec;
+            head.eventOccurTimeSec = head.eventOccurTimeUsec = 1;
 
             userlog.userID = userlog.departmentIDOfUser = userlog.diskID = userlog.position = userlog.range = 1;
 
