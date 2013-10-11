@@ -2,12 +2,18 @@
 #define CLQUERYBYLOG_H
 
 #include "CLMessage.h"
+#include "LibNetWork.h"
+#include "CLPraseManager.h"
+#include "CLSQL.h"
 
 class CLQueryByLog : public CLMessage
 {
 public:
-	explicit CLQueryByLog();
-	~CLQueryByLog();
+    void init(int id)
+    {
+        CLPraseManager *manager = CLPraseManager::getInstance();
+        manager->registerHandle(id, this);
+    }
 	char* serialize()
 	{
 		char *buffer = new char[12];
@@ -31,12 +37,18 @@ public:
     pSQL->connectSQL("localhost", "root", "go", "log");
         char query[1000];
         memset(query, 0, sizeof(query));
-        sprintf(query, "select * from test limited 2 offset 0;");
+        sprintf(query, "select * from test1 limit %d offset %d;", numberOfResponse, offsetOfResponse);
         pSQL->querySQL(query);
+        pSQL->fetchResult();
         pSQL->closeSQL();
 	}
 
-private:
+    int getLength()
+    {
+        return 12;
+    }
+
+public:
 	int typeOfLog;
 	int numberOfResponse;
 	int offsetOfResponse; 

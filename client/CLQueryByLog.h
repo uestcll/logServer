@@ -8,8 +8,6 @@ using namespace std;
 class CLQueryByLog
 {
 public:
-	explicit CLQueryByLog();
-	~CLQueryByLog();
 	char* serialize()
 	{
 		char *buffer = new char[12];
@@ -27,7 +25,12 @@ public:
 		memcpy(&offsetOfResponse, buffer + 8, 4);
 	}
 
-private:
+    int getLength()
+    {
+        return 12;
+    }
+
+public:
 	int typeOfLog;
 	int numberOfResponse;
 	int offsetOfResponse; 

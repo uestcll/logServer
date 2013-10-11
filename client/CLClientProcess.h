@@ -83,7 +83,7 @@ class CLClientProcess : public CLProcessRequest
             memcpy(head.remark, "N", 2);
             head.eventOccurTimeSec = head.eventOccurTimeUsec = 1;
 
-            userlog.adminidtratorID = userlog.departmentID = 3;
+            userlog.administratorID = userlog.departmentID = 3;
 
             SLMessageHead myhead;
             int len = head.getLength() + userlog.getLength();
@@ -111,7 +111,7 @@ class CLClientProcess : public CLProcessRequest
             head.eventOccurTimeSec = head.eventOccurTimeUsec = 1;
 
             query.typeOfLog = 2;
-            query.numberOfResponse = 10;
+            query.numberOfResponse = 2;
             query.offsetOfResponse = 0;
 
             SLMessageHead myhead;

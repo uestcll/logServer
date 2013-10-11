@@ -18,6 +18,7 @@
 
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLPraseManager.h"
+#include "../include/CLSQL.h"
 
 CLLoggerProcess::CLLoggerProcess()
 {
@@ -31,25 +32,29 @@ CLLoggerProcess::~CLLoggerProcess()
 void CLLoggerProcess::work(SLRequest *request)
 {
     m_manager->process(request->readbuffer);
-    getResult();
 }
 
 struct iovec CLLoggerProcess::getResult()
 {
 	string str;
-    if(!m_store.empty())
+    CLSQL *pSQL = CLSQL::getInstance();
+    vector<string> store = pSQL->getResult();
+    if(!store.empty())
     {
-    	for(int i = 0; i < m_store.size(); ++i)
+    	for(int i = 0; i < store.size(); ++i)
     	{
-    		str += m_store[i];
+    		str += store[i];
     	}
     	int len = str.size();
-    	char *buffer = new char[len + 1];
-    	memcpy(buffer, str.c_str(), len);
-    	buffer[len] = '\0';
+        SLMessageHead head;
+        head.length = len;
+        char *buffer = new char[len + sizeof(SLMessageHead)];
+        memcpy(buffer, &head, sizeof(SLMessageHead));
+    	memcpy(buffer + sizeof(SLMessageHead), str.c_str(), len);
     	m_iov.iov_base = buffer;
-    	m_iov.len = len;
+    	m_iov.iov_len = len;
 
+        pSQL->clearResult();
     	return m_iov;
     }
 

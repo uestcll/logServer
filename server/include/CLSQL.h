@@ -33,7 +33,7 @@ class CLSQL
         void fetchResult();
         vector<string> getResult();
         void closeSQL();
-        
+        void clearResult();
     private:
         explicit CLSQL();
         ~CLSQL();

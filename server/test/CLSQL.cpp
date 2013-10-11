@@ -55,14 +55,16 @@ void CLSQL::fetchResult()
      m_res = mysql_use_result(&m_sql);
      if(m_res)
      {
-         for(int i = 0; i <= mysql_field_count(&m_sql); ++i)
+         for(int i = 0; i < mysql_field_count(&m_sql); ++i)
          {
              m_row = mysql_fetch_row(m_res);
              if(m_row < 0) 
                  break;
              for(int j = 0; j < mysql_num_fields(m_res); ++j)
              {
-                 m_store.push_back(m_row[j]);
+                 string s = "";
+                 s = m_row[j];
+                 m_store.push_back(s);
              }
          }
      }

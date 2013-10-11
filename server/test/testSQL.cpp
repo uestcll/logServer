@@ -23,7 +23,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->connectSQL("localhost", "root", "go", "test");
-    pSQL->querySQL("insert into person values(20, 'bling');");
+    pSQL->connectSQL("localhost", "root", "go", "log");
+    pSQL->querySQL("select * from test1 limit 2 offset 0;");
+    pSQL->getResult();
     return 0;
 }

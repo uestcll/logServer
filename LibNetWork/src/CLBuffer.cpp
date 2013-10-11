@@ -105,6 +105,7 @@ int CLBuffer::readBuffer(CLSocket *mysocket)
 		m_readlength += n;
         if(m_request.finished && m_readlength == m_request.len)
         {
+            m_readlength = 0;
         	m_queue.push(m_request);
             m_request.finished = false;
             m_request.len = 0;

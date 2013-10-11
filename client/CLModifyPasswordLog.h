@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-class CLModifyPassWordLog
+class CLModifyPasswordLog
 {
     public:
         char* serialize()
