@@ -1,5 +1,7 @@
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLUserAccessDiskLog.h"
+#include "../include/CLModifyPasswordLog.h"
+#include "../include/CLQueryByLog.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +13,10 @@ int main(int argc, char *argv[])
 
     CLUserAccessDiskLog access;
     access.init(1);
+    CLModifyPasswordLog password;
+    password.init(2);
+    CLQueryByLog query;
+    query.init(3);
     CLEpoll *pEpoll = CLEpoll::getInstance();
     SLAddress address;
     address.port = atoi(argv[1]);

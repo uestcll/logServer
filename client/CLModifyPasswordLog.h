@@ -18,7 +18,7 @@ class CLModifyPassWordLog
         void deserialize(char *buffer)
         {
             administratorID = *((int*)buffer);
-            departmentID = *((int*)(buffer + 4_;
+            departmentID = *((int*)(buffer + 4));
         }
 
         int getLength()

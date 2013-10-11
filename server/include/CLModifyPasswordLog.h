@@ -1,10 +1,12 @@
 #ifndef CLMODIFYPASSWORDLOG_H
 #define CLMODIFYPASSWORDLOG_H
-#include <cstring>
-#include <iostream>
-using namespace std;
 
-class CLModifyPassWordLog
+#include "LibNetWork.h"
+#include "CLMessage.h"
+#include "CLPraseManager.h"
+#include "CLSQL.h"
+
+class CLModifyPassWordLog : public CLMessage
 {
     public:
         void init(int id)
@@ -25,7 +27,7 @@ class CLModifyPassWordLog
         void deserialize(char *buffer)
         {
             administratorID = *((int*)buffer);
-            departmentID = *((int*)(buffer + 4_;
+            departmentID = *((int*)(buffer + 4);
         }
 
         int getLength()

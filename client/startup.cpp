@@ -43,18 +43,6 @@ int main(int argc, char *argv[])
         myevent.setParameter((CLAgent*)pAgent, pAgent->getFd(), EPOLL_CTL_ADD, EPOLLIN);
         pEpoll->workWithEpoll(&myevent);
         p->init();
-        /*struct iovec io;
-        SLMessageHead head;
-        head.length = 5;
-        head.cmd = head.reserved = 0;
-        io.iov_base = new char[28 + sizeof(SLMessageHead)];
-        memcpy(io.iov_base, &head, sizeof(SLMessageHead));
-        char *buffer = p->init();
-        memcpy((char*)io.iov_base + sizeof(SLMessageHead), p->init(), 28);
-        io.iov_len = 28 + sizeof(SLMessageHead);
-        delete buffer;
-        pAgent->writeToServer(io);
-        */
     }
 
     pEpoll->runEpoll();
