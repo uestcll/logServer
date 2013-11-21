@@ -9,15 +9,6 @@
 class CLServerUpdatePublicKeyLog : public CLMessage
 {
 public:
-	explicit CLServerUpdatePublicKeyLog();
-	~CLServerUpdatePublicKeyLog();
-
-	void init(int id)
-	{
-		 CLPraseManager *manager = CLPraseManager::getInstance();
-        manager->registerHandle(id, this);
-	}
-
 	char* serialize()
 	{
 		int len = 4 + 16 + 4 + lengthOfHostname;
@@ -47,19 +38,19 @@ public:
 	virtual void insertToSQL()
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->connectSQL("localhost", "root", "go", "log");
-        char query[1000];
-        memset(query, 0, sizeof(query));
-        sprintf(query, "insert into test values(%d, %s, %d, %s);", IPType, IPAdress, lengthOfHostname, hostname);
-        pSQL->querySQL(query);
-        pSQL->closeSQL();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		char query[1000];
+		memset(query, 0, sizeof(query));
+		sprintf(query, "insert into test values(%d, %s, %d, %s);", IPType, IPAdress, lengthOfHostname, hostname);
+		pSQL->querySQL(query);
+		pSQL->closeSQL();
 	}
 
 private:
 	int IPType;
-　　char IPAdress[16];
-　　int lengthOfHostname;
-　　char *hostname;
+	char IPAdress[16];
+	int lengthOfHostname;
+    char *hostname;
 };
 
 #endif

@@ -1,11 +1,11 @@
-#ifndef CLOTHERTYPELOG_H
-#define CLOTHERTYPELOG_H
+#ifndef CLABNORMALANDERRNOLOG_H
+#define CLABNORMALANDERRNOLOG_H
 
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 
-class CLOtherTypeLog
+class CLAbnormalAndErrnoLog
 {
 public:
 	char* serialize()
