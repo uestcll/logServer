@@ -55,6 +55,23 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		userID = atoi(temp.c_str());
+		string temp = pSQL->m_store[1];
+		departmentIDOfUser = atoi(temp.c_str());
+		string temp = pSQL->m_store[2];
+		diskID = atoi(temp.c_str());
+		string temp = pSQL->m_store[3];
+		position = atoi(temp.c_str());
+		string temp = pSQL->m_store[4];
+		range = atoi(temp.c_str());
+		pSQL->closeSQL();
+	}
 
 public:
 	int userID;

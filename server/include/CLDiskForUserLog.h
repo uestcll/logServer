@@ -28,6 +28,11 @@ public:
 		memcpy(&departmentIDOfUser, buffer + 12, 4);
 		memcpy(&diskID, buffer + 16, 4);
 	}
+
+	int getLength()
+	{
+		return 20;
+	}
 	void insertToSQL()
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
@@ -38,6 +43,23 @@ public:
 			administratorID, departmentID, userID,
 			departmentIDOfUser, diskID);
 		pSQL->querySQL(query);
+		pSQL->closeSQL();
+	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		administratorID = atoi(temp.c_str());
+		temp = pSQL->m_store[1];
+		departmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[2];
+		userID = atoi(temp.c_str());
+		temp = pSQL->m_store[3];
+		departmentIDOfUser = atoi(temp.c_str());
+		temp = pSQL->m_store[4];
+		diskID = atoi(temp.c_str());
 		pSQL->closeSQL();
 	}
 private:

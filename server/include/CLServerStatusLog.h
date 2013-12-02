@@ -49,6 +49,31 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		IPType = atoi(temp.c_str());
+		temp = pSQL->m_store[1];
+		IPLength = temp.size();
+		IPAddress = new char[IPLength + 1];
+		memcpy(IPAddress, temp.c_str(), IPLength);
+		IPAddress[IPLength] = '\0';
+		temp = pSQL->m_store[2];
+		lengthOfHostname = temp.size();
+		hostname = new char[lengthOfHostname + 1];
+		memcpy(hostname, temp.c_str(), lengthOfHostname);
+		hostname[lengthOfHostname] = '\0';
+		string temp = pSQL->m_store[3];
+		cpu = atoi(temp.c_str());
+		string temp = pSQL->m_store[4];
+		network = atoi(temp.c_str());
+		string temp = pSQL->m_store[5];
+		memory = atoi(temp.c_str());
+		pSQL->closeSQL();
+	}
 	int getLength()
 	{
 		return 24 + IPLength + lengthOfHostname;

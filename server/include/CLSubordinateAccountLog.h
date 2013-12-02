@@ -40,6 +40,21 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		administratorID = atoi(temp.c_str());
+		string temp = pSQL->m_store[1];
+		departmentID = atoi(temp.c_str());
+		string temp = pSQL->m_store[2];
+		subordinateDepartmentID = atoi(temp.c_str());
+		string temp = pSQL->m_store[3];
+		userID = atoi(temp.c_str());
+		pSQL->closeSQL();
+	}
 private:
 	int administratorID;
 	int departmentID;

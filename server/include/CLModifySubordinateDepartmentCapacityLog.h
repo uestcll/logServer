@@ -40,6 +40,23 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		administrarorID = atoi(temp.c_str());
+		temp = pSQL->m_store[1];
+		departmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[2];
+		subordinateDepartmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[3];
+		capacityBeforeModify = atoi(temp.c_str());
+		temp = pSQL->m_store[4];
+		capacityAfterModify = atoi(temp.c_str());
+		pSQL->closeSQL();
+	}
 	int getLength()
 	{
 		return 28;

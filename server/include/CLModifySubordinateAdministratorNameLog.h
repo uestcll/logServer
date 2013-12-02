@@ -49,6 +49,32 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		administratorID = atoi(temp.c_str());
+		temp = pSQL->m_store[1];
+		departmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[2];
+		subordinateAdministorID = atoi(temp.c_str());
+		temp = pSQL->m_store[3];
+		subordinateDepartmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[4];
+		lengthOfNameBeforeModify = temp.size();
+		nameBeforeModify = new char[lengthOfNameBeforeModify + 1];
+		memcpy(nameBeforeModify, temp.c_str(), lengthOfNameBeforeModify);
+		nameBeforeModify[lengthOfNameBeforeModify] = '\0';
+		temp = pSQL->m_store[5];
+		lengthOfNameAfterModify = temp.size();
+		nameAfterModify = new char[lengthOfNameAfterModify + 1];
+		memcpy(nameAfterModify, temp.c_str(), lengthOfNameAfterModify);
+		nameAfterModify[lengthOfNameAfterModify] = '\0';
+		pSQL->closeSQL();
+	}
 	int getLength()
 	{
 		return 24 + lengthOfNameBeforeModify + lengthOfNameAfterModify;

@@ -39,6 +39,19 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		lengthOfExplain = atoi(temp.c_str());
+		temp = pSQL->m_store[1];
+		explain = new char[lengthOfExplain + 1];
+		memcpy(explain, temp.c_str(), lengthOfExplain);
+		explain[lengthOfExplain] = '\0';
+		pSQL->closeSQL();
+	}
 
 private:
 	int lengthOfExplain;

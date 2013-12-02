@@ -49,6 +49,24 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		userID = atoi(temp.c_str());
+		string temp = pSQL->m_store[1];
+		departmentIDOfUser = atoi(temp.c_str());
+		string temp = pSQL->m_store[2];
+		IPType = atoi(temp.c_str());
+		string temp = pSQL->m_store[3];
+		IPlength = temp.size();
+		loginIPAdress = new char[IPlength + 1];
+		memcpy(loginIPAdress, temp.c_str(), IPlength);
+		loginIPAdress[IPlength] = '\0';
+		pSQL->closeSQL();
+	}
 
 private:
 	int userID;
