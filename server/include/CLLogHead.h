@@ -50,6 +50,30 @@ public:
 	{
 		return 12 + lengthOfRemark + 16;
 	}
+	virtual void insertToSQL(string tablename)
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		char query[1000];
+		memset(query, 0, sizeof(query));
+		sprintf(query, "insert into test values(%d, %d, %s, %lld, %lld);",
+				logType, lengthOfLoad, remark, eventOccurTimeSec, eventOccurTimeUsec);
+		pSQL->querySQL(query);
+		pSQL->closeSQL();
+	}
+	void getResultFromSQL()
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		pSQL->connectSQL("localhost", "root", "go", "log");
+		pSQL->fetchResult();
+		string temp = pSQL->m_store[0];
+		logType = atoi(temp.c_str());
+		explain = new char[lengthOfExplain + 1];
+		temp = pSQL->m_store[1];
+		memcpy(explain, temp.c_str(), lengthOfExplain);
+		explain[lengthOfExplain] = '\0';
+		pSQL->closeSQL();
+	}
 public:
 	int logType;
 	int lengthOfLoad;
