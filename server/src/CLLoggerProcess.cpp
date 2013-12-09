@@ -31,7 +31,19 @@ CLLoggerProcess::~CLLoggerProcess()
 
 void CLLoggerProcess::work(SLRequest *request)
 {
-    m_manager->process(request->readbuffer);
+    SLPraseResult result = m_manager->process(request->readbuffer);
+    if(0 == result.type)
+    {
+        CLLogHead *pHead = result.pHead;
+        string name = m_manager->getName(pHead->logType);
+        string query;
+        query = pHead->insertToSQL(name);
+        query += pMessage->insertToSQL();
+        CLSQL *pSQL = CLSQL::getInstance();
+        pSQL->connectSQL("localhost", "root", "go", "log");
+        pSQL->querySQL(query.c_str());
+        pSQL->closeSQL();
+    }
 }
 
 struct iovec CLLoggerProcess::getResult()

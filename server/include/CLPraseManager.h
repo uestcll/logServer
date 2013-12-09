@@ -1,18 +1,30 @@
 #ifndef CLPRASEMANAGER_H
 #define CLPRASEMANAGER_H
 
+#include "CLHead.h"
 #include "CLMessage.h"
 #include <iostream>
 #include <map>
 #include <string>
 using namespace std;
 
+struct SLPraseResult
+{
+	CLHead *pHead;
+	CLMessage *pMessage;
+	int type;
+
+	SLPraseResult() : pHead(NULL), pMessage(NULL), type(-1)
+	{}
+};
+
 class CLPraseManager
 {
 public:
     static CLPraseManager* getInstance();
 	void registerHandle(CLMessage *pContent, int id, string name);
-	void process(char *buffer);
+	SLPraseResult praseProtocol(char *buffer);
+	string getName(int id);
 
 private:
     explicit CLPraseManager();

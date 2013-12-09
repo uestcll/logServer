@@ -97,3 +97,11 @@ CLSQL::~CLSQL()
 {
     mysql_close(&m_sql);
 }
+
+void setParameter(string IP, string name, string password, string databasename)
+{
+    m_IP = IP;
+    m_name = name;
+    m_password = password;
+    m_databasename = databasename;
+}

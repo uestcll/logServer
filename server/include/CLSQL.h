@@ -21,6 +21,7 @@
 #include <mysql/mysql.h>
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
 //#include "LibNetWork.h"
 
@@ -34,6 +35,7 @@ class CLSQL
         vector<string> getResult();
         void closeSQL();
         void clearResult();
+        void setParameter(string hostname, string name, string password, string databasename);
     private:
         explicit CLSQL();
         ~CLSQL();
@@ -44,6 +46,10 @@ class CLSQL
         MYSQL_RES *m_res;
         MYSQL_ROW m_row;
         vector<string> m_store;
+        string m_hostname;
+        string m_name;
+        string m_password;
+        string m_databasename;
 };
 
 #endif

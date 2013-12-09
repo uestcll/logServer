@@ -1,12 +1,13 @@
 #ifndef CLLOGHEAD_H
 #define CLLOGHEAD_H
 
+#include "CLHead.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
 
-class CLLogHead
+class CLLogHead : public CLHead
 {
 public:
 	explicit CLLogHead()
