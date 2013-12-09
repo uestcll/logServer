@@ -66,6 +66,15 @@ public:
 		loginIPAdress[IPLength] = '\0';
 		//pSQL->closeSQL();
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 110, "CLAdministratorLoginLog");
+		pManager->registerHandle(this, 111, "CLAdministratorLoginLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

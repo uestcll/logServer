@@ -57,7 +57,12 @@ public:
 		explain[lengthOfExplain] = '\0';
 		//pSQL->closeSQL();
 	}
-
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 400, "CLOtherTypeLog");
+	}
+	#endif
 private:
 	int lengthOfExplain;
 	char *explain;

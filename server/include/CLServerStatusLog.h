@@ -84,6 +84,14 @@ public:
 	{
 		return 24 + IPLength + lengthOfHostname;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 200, "CLServerStatusLog");
+	}
+	#endif
+
 private:
 	int IPType;
 	int IPLength;

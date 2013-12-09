@@ -64,6 +64,15 @@ public:
 		subordinateDepartmentID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 100, "CLSubordinateAdministratorLog");
+		pManager->registerHandle(this, 101, "CLSubordinateAdministratorLog");
+	}
+	#endif
+	
 private:
 	int administratorID;
 	int departmentID;

@@ -62,6 +62,13 @@ public:
 		//pSQL->closeSQL();
 	}
 
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 118, "CLModifyPasswordLog");
+	}
+	#endif
+
 public:
 	int administratorID;
 	int departmentID;

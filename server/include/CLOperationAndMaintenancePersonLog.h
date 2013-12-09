@@ -51,6 +51,15 @@ public:
 		operationStaffID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 112, "CLOperationAndMaintenancePersonLog");
+		pManager->registerHandle(this, 113, "CLOperationAndMaintenancePersonLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

@@ -59,6 +59,14 @@ public:
 	{
 		return 12;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 120, "CLModifyDiskAccessAuthorityLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

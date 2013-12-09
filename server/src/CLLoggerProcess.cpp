@@ -36,7 +36,8 @@ void CLLoggerProcess::work(SLRequest *request)
 
 struct iovec CLLoggerProcess::getResult()
 {
-	string str;
+	/*
+    string str;
     CLSQL *pSQL = CLSQL::getInstance();
     vector<string> store = pSQL->getResult();
     if(!store.empty())
@@ -62,4 +63,5 @@ struct iovec CLLoggerProcess::getResult()
     m_iov.iov_len = 0;
 
     return m_iov;
+    */
 }

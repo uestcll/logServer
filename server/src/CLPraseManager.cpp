@@ -22,9 +22,10 @@ CLPraseManager::CLPraseManager()
 CLPraseManager::~CLPraseManager()
 {}
 
-void CLPraseManager::registerHandle(int id, CLMessage *pContent)
+void CLPraseManager::registerHandle(CLMessage *pContent, int id, string name)
 {
 	m_map[id] = pContent;
+    m_namemap[id] = name;
 }
 
 void CLPraseManager::process(char *buffer)

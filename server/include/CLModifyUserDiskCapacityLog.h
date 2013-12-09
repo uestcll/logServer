@@ -75,6 +75,14 @@ public:
 	{
 		return 36;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 126, "CLModifyUserDiskCapacityLog");
+	}
+	#endif
+
 private:
 	int administrarorID;
 	int departmentID;

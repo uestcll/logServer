@@ -68,6 +68,15 @@ public:
 		diskID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 114, "CLDiskForUserLog");
+		pManager->registerHandle(this, 115, "CLDiskForUserLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID:

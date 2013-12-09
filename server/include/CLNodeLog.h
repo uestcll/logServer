@@ -70,6 +70,14 @@ public:
 	{
 		return 12 + IPLength + lengthOfHostname;
 	}
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 204, "CLNodeLog");
+		pManager->registerHandle(this, 205, "CLNodeLog");
+	}
+	#endif
+
 private:
 	int IPType;
 	int IPLength;

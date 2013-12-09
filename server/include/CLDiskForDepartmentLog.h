@@ -64,6 +64,15 @@ public:
 	{
 		return 16;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 116, "CLDiskForDepartmentLog");
+		pManager->registerHandle(this, 117, "CLDiskForDepartmentLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

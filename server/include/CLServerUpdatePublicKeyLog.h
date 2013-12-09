@@ -68,6 +68,14 @@ public:
 		memcpy(hostname, temp.c_str(), lengthOfHostname);
 		hostname[lengthOfHostname] = '\0';
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 201, "CLServerUpdatePublicKeyLog");
+	}
+	#endif
+
 private:
 	int IPType;
 	char IPAdress[16];

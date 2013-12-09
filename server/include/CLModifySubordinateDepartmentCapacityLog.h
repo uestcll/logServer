@@ -67,6 +67,12 @@ public:
 	{
 		return 28;
 	}
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 124, "CLModifySubordinateDepartmentCapacityLog");
+	}
+	#endif
 private:
 	int administrarorID;
 	int departmentID:

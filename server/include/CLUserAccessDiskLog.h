@@ -79,6 +79,14 @@ public:
 		//pSQL->closeSQL();
 	}
 
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 0, "CLUserAccessDiskLog");
+		pManager->registerHandle(this, 1, "CLUserAccessDiskLog");
+	}
+	#endif
+
 public:
 	int userID;
 	int departmentIDOfUser;

@@ -82,6 +82,15 @@ public:
 	{
 		return 28 + IPLength + lengthOfHostname;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 202, "CLChangeNodeCapacityLog");
+		pManager->registerHandle(this, 203, "CLChangeNodeCapacityLog");
+	}
+	#endif
+
 private:
 	int IPType;
 	int IPLength;

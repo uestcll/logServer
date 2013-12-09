@@ -80,6 +80,12 @@ class CLChangeNodeDiskLog : public CLMessage
 	{
 		return 28 + IPLength + lengthOfHostname;
 	}
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 206, "CLChangeNodeDiskLog");
+	}
+	#endif
 private:
 	int IPType;
 	int IPLength;

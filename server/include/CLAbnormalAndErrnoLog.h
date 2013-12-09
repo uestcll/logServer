@@ -56,6 +56,13 @@ public:
 		//pSQL->closeSQL();
 	}
 
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 300, "CLAbnormalAndErrnoLog");
+	}
+	#endif
+
 private:
 	int lengthOfExplain;
 	char *explain;

@@ -64,6 +64,14 @@ public:
 		//pSQL->closeSQL();
 	}
 
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 102, "CLAdministraotrAuthorityManagerLog");
+		pManager->registerHandle(this, 103, "CLAdministraotrAuthorityManagerLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

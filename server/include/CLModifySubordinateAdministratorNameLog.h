@@ -86,6 +86,14 @@ public:
 	{
 		return 24 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 123, "CLModifySubordinateAdministratorNameLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;

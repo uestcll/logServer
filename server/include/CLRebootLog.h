@@ -69,6 +69,12 @@ class rebootLog : public CLMessage
 	{
 		return 12 + IPLength + lengthOfHostname;
 	}
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 207, "rebootLog");
+	}
+	#endif
 private:
 	int IPType;
 	int IPLength;

@@ -61,6 +61,15 @@ public:
 		userID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
+
+	#ifdef SERVER
+	void register(CLPraseManager *pManager)
+	{
+		pManager->registerHandle(this, 104, "CLSubordinateAccountLog");
+		pManager->registerHandle(this, 105, "CLSubordinateAccountLog");
+	}
+	#endif
+
 private:
 	int administratorID;
 	int departmentID;
