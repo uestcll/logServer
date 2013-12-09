@@ -35,8 +35,9 @@ public:
 		return 8;
 	}
 
-	virtual void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -44,17 +45,21 @@ public:
 		sprintf(query, "insert into test1 values(%d, %d)", administratorID, departmentID);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = administratorID + ", " + departmentID + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 
 public:

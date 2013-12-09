@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 
-class CLModifySubordinateAdministratorNameLog
+class CLModifySubordinateAdministratorNameLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -37,8 +37,9 @@ public:
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, buffer + 24 + lengthOfNameBeforeModify, lengthOfNameAfterModify);
 	}
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -48,32 +49,38 @@ public:
 			subordinateDepartmentID, nameBeforeModify, nameAfterModify);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = administratorID + ", " + departmentID + ", " + subordinateAdministorID
+				+ ", " + subordinateDepartmentID + ", " + nameBeforeModify + ", "
+				+ nameAfterModify + ");";
+		return query;
 	}
 
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		temp = pSQL->m_store[2];
+		temp = pSQL->m_store[offset + 2];
 		subordinateAdministorID = atoi(temp.c_str());
-		temp = pSQL->m_store[3];
+		temp = pSQL->m_store[offset + 3];
 		subordinateDepartmentID = atoi(temp.c_str());
-		temp = pSQL->m_store[4];
+		temp = pSQL->m_store[offset + 4];
 		lengthOfNameBeforeModify = temp.size();
 		nameBeforeModify = new char[lengthOfNameBeforeModify + 1];
 		memcpy(nameBeforeModify, temp.c_str(), lengthOfNameBeforeModify);
 		nameBeforeModify[lengthOfNameBeforeModify] = '\0';
-		temp = pSQL->m_store[5];
+		temp = pSQL->m_store[offset + 5];
 		lengthOfNameAfterModify = temp.size();
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, temp.c_str(), lengthOfNameAfterModify);
 		nameAfterModify[lengthOfNameAfterModify] = '\0';
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 	int getLength()
 	{

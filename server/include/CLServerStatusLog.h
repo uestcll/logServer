@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 
-class CLServerStatusLog
+class CLServerStatusLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -38,8 +38,9 @@ public:
 		memcpy(&network, buffer + 16 + IPLength + lengthOfHostname, 4);
 		memcpy(&memory, buffer + 20 + IPLength + lengthOfHostname, 4);
 	}
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -48,31 +49,36 @@ public:
 			IPType, IPAddress, hostname, cpu, network, memory);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = IPType + ", " + IPAddress + ", " + hostname + ", " 
+				+cpu + ", " + network + ", " + memory + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		IPType = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		IPLength = temp.size();
 		IPAddress = new char[IPLength + 1];
 		memcpy(IPAddress, temp.c_str(), IPLength);
 		IPAddress[IPLength] = '\0';
-		temp = pSQL->m_store[2];
+		temp = pSQL->m_store[offset + 2];
 		lengthOfHostname = temp.size();
 		hostname = new char[lengthOfHostname + 1];
 		memcpy(hostname, temp.c_str(), lengthOfHostname);
 		hostname[lengthOfHostname] = '\0';
-		string temp = pSQL->m_store[3];
+		string temp = pSQL->m_store[offset + 3];
 		cpu = atoi(temp.c_str());
-		string temp = pSQL->m_store[4];
+		string temp = pSQL->m_store[offset + 4];
 		network = atoi(temp.c_str());
-		string temp = pSQL->m_store[5];
+		string temp = pSQL->m_store[offset + 5];
 		memory = atoi(temp.c_str());
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 	int getLength()
 	{

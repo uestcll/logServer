@@ -6,7 +6,7 @@
 #include <cstring>
 #include <string>
 
-class CLUserLoginLog
+class CLUserLoginLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -38,8 +38,9 @@ public:
 		return 16 + IPlength;
 	}
 
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -48,24 +49,29 @@ public:
 			    userID, departmentIDOfUser, IPType, loginIPAdress);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = userID + ", " + departmentIDOfUser + ", " + IPType + ", "
+				+ loginIPAdress + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		userID = atoi(temp.c_str());
-		string temp = pSQL->m_store[1];
+		string temp = pSQL->m_store[offset + 1];
 		departmentIDOfUser = atoi(temp.c_str());
-		string temp = pSQL->m_store[2];
+		string temp = pSQL->m_store[offset + 2];
 		IPType = atoi(temp.c_str());
-		string temp = pSQL->m_store[3];
+		string temp = pSQL->m_store[offset + 3];
 		IPlength = temp.size();
 		loginIPAdress = new char[IPlength + 1];
 		memcpy(loginIPAdress, temp.c_str(), IPlength);
 		loginIPAdress[IPlength] = '\0';
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 
 private:

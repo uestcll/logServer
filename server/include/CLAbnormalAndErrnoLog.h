@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstring>
 
-class CLAbnormalAndErrnoLog
+class CLAbnormalAndErrnoLog : public CLMessage
 {
 public:
 	char* serialize()
@@ -29,8 +29,9 @@ public:
 	{
 		return 4 + lengthOfExplain;
 	}
-	virtual void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -38,19 +39,21 @@ public:
 		sprintf(query, "insert into test values(%d, %s);", lengthOfExplain, explain);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = lengthOfExplain + ", " + explain + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		string temp = pSQL->m_store[offset + 0];
 		lengthOfExplain = atoi(temp.c_str());
 		explain = new char[lengthOfExplain + 1];
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		memcpy(explain, temp.c_str(), lengthOfExplain);
 		explain[lengthOfExplain] = '\0';
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 
 private:

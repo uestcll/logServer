@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 class CLLogHead
 {
@@ -50,30 +51,43 @@ public:
 	{
 		return 12 + lengthOfRemark + 16;
 	}
-	virtual void insertToSQL(string tablename)
+	string insertToSQL(string tablename)
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
 		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %s, %lld, %lld);",
+		sprintf(query, "insert into %s values(%d, %d, %s, %lld, %lld);",
 				logType, lengthOfLoad, remark, eventOccurTimeSec, eventOccurTimeUsec);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = "insert into " + tablename + " values(" + logType + ", " + lengthOfLoad
+			    ", " + remark + ", " + eventOccurTimeSec + ", " + eventOccurTimeUsec + ", ";
+
+		return query;
 	}
-	void getResultFromSQL()
+	int getResultFromSQL()
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
 		string temp = pSQL->m_store[0];
 		logType = atoi(temp.c_str());
-		explain = new char[lengthOfExplain + 1];
 		temp = pSQL->m_store[1];
-		memcpy(explain, temp.c_str(), lengthOfExplain);
-		explain[lengthOfExplain] = '\0';
-		pSQL->closeSQL();
+		lengthOfLoad = atoi(temp.c_str());
+		temp = pSQL->m_store[2];
+		lengthOfRemark = temp.size();
+		remark = new char[lengthOfRemark + 1];
+		memcpy(remark, temp.c_str(), lengthOfRemark);
+		remark[lengthOfRemark] = '\0';
+		temp = pSQL->m_store[3];
+		eventOccurTimeSec = atoi(temp.c_str());
+		temp = pSQL->m_store[4];
+
+		return 5;
 	}
+	
 public:
 	int logType;
 	int lengthOfLoad;

@@ -35,8 +35,9 @@ public:
 		return 24 + lengthOfHostname;
 	}
 
-	virtual void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -44,26 +45,28 @@ public:
 		sprintf(query, "insert into test values(%d, %s, %d, %s);", IPType, IPAdress, lengthOfHostname, hostname);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		stirng query;
+		query = IPType + ", " + IPAdress + ", " + lengthOfHostname + ", " + hostname + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		IPType = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		IPLength = temp.size();
 		IPAddress = new char[IPLength + 1];
 		memcpy(IPAddress, temp.c_str(), IPLength);
 		IPAddress[IPLength] = '\0';
-		temp = pSQL->m_store[2];
+		temp = pSQL->m_store[offset + 2];
 		lengthOfHostname = temp.size();
 		hostname = new char[lengthOfHostname + 1];
 		memcpy(hostname, temp.c_str(), lengthOfHostname);
 		hostname[lengthOfHostname] = '\0';
-		string temp = pSQL->m_store[3];
-		pSQL->closeSQL();
 	}
 private:
 	int IPType;

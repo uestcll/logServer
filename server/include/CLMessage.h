@@ -1,6 +1,8 @@
 #ifndef CLMESSAGE_H
 #define CLMESSAGE_H
 
+#include <string>
+
 class CLMessage
 {
     public:
@@ -8,7 +10,8 @@ class CLMessage
         virtual ~CLMessage(){}
         virtual char* serialize(){}
         virtual void deserialize(char *buffer){}
-        virtual void insertToSQL(){}
+        virtual string insertToSQL(){}
+        virtual void getResultFromSQL(int offset){}
 };
 
 #endif

@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstirng>
 
-class CLDiskForUserLog
+class CLDiskForUserLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -33,8 +33,9 @@ public:
 	{
 		return 20;
 	}
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -44,23 +45,28 @@ public:
 			departmentIDOfUser, diskID);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = administratorID + ", " + departmentID + ", " + userID + ", "
+				departmentIDOfUser + ", " + diskID + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		temp = pSQL->m_store[2];
+		temp = pSQL->m_store[offset + 2];
 		userID = atoi(temp.c_str());
-		temp = pSQL->m_store[3];
+		temp = pSQL->m_store[offset + 3];
 		departmentIDOfUser = atoi(temp.c_str());
-		temp = pSQL->m_store[4];
+		temp = pSQL->m_store[offset + 4];
 		diskID = atoi(temp.c_str());
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 private:
 	int administratorID;

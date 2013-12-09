@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 
-class CLOperationAndMaintenancePersonLog
+class CLOperationAndMaintenancePersonLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -22,8 +22,9 @@ public:
 		memcpy(&departmentID, buffer + 4, 4);
 		memcpy(&operationStaffID, buffer + 8, 4);
 	}
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -32,19 +33,23 @@ public:
 			administratorID, departmentID, operationStaffID);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = administratorID + ", " + departmentID + ", " + operationStaffID + ");";
+		return query;
 	}
-	void getResultFromSQL()
+	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
-		string temp = pSQL->m_store[0];
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		temp = pSQL->m_store[1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		temp = pSQL->m_store[2];
+		temp = pSQL->m_store[offset + 2];
 		operationStaffID = atoi(temp.c_str());
-		pSQL->closeSQL();
+		//pSQL->closeSQL();
 	}
 private:
 	int administratorID;

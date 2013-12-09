@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 
-class CLModifyDiskAccessAuthorityLog
+class CLModifyDiskAccessAuthorityLog : public CLMessage
 {
 public:
 	char *serialize()
@@ -26,8 +26,9 @@ public:
 		memcpy(&diskID, buffer + 8, 4);
 	}
 
-	void insertToSQL()
+	string insertToSQL()
 	{
+		/*
 		CLSQL *pSQL = CLSQL::getInstance();
 		pSQL->connectSQL("localhost", "root", "go", "log");
 		char query[1000];
@@ -36,6 +37,22 @@ public:
 			administratorID, departmentID, diskID);
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
+		*/
+		string query;
+		query = administratorID + ", " + departmentID + ", " + diskID + ");";
+		return query;
+	}
+	void getResultFromSQL(int offset)
+	{
+		CLSQL *pSQL = CLSQL::getInstance();
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
+		string temp = pSQL->m_store[offset + 0];
+		administrarorID = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 1];
+		departmentID = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 2];
+		diskID = atoi(temp.c_str());
 	}
 
 	int getLength()
