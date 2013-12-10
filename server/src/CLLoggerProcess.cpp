@@ -32,18 +32,38 @@ CLLoggerProcess::~CLLoggerProcess()
 void CLLoggerProcess::work(SLRequest *request)
 {
     SLPraseResult result = m_manager->process(request->readbuffer);
-    if(0 == result.type)
+    if(-1 == result.type)
     {
-        CLLogHead *pHead = result.pHead;
-        string name = m_manager->getName(pHead->logType);
-        string query;
-        query = pHead->insertToSQL(name);
-        query += pMessage->insertToSQL();
-        CLSQL *pSQL = CLSQL::getInstance();
-        pSQL->connectSQL("localhost", "root", "go", "log");
-        pSQL->querySQL(query.c_str());
-        pSQL->closeSQL();
+        return;
     }
+    else if(0 == result.type)
+    {
+        handleInsert(result);
+    }
+    else 
+    {
+        handleQuery();
+    }
+}
+
+void CLLoggerProcess::handleInsert(SLPraseResult result)
+{
+    CLLogHead *pHead = result.pHead;
+    string name = m_manager->getName(pHead->logType);
+    string query;
+    query = pHead->insertToSQL(name);
+    query += pMessage->insertToSQL();
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL();
+    pSQL->querySQL(query.c_str());
+    pSQL->closeSQL();
+    delete pHead;
+}
+
+void CLLoggerProcess::setParameter(string hostname, string name, string password, string databasename)
+{
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->setParameter(hostname, name, password, databasename);
 }
 
 struct iovec CLLoggerProcess::getResult()

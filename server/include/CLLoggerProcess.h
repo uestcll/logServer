@@ -14,6 +14,9 @@ class CLLoggerProcess : public CLProcessRequest
         virtual struct iovec getResult();
 
     private:
+        void handleInsert(SLPraseResult result);
+
+    private:
     	CLPraseManager *m_manager;
         struct iovec m_iov;
 };

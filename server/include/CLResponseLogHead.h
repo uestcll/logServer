@@ -1,12 +1,9 @@
 #ifndef CLRESPONSELOGHEAD_H
 #define CLRESPONSELOGHEAD_H
 
-#include "LibNetWork.h"
-#include "CLMessage.h"
-#include "CLPraseManager.h"
-#include "CLSQL.h"
+#include "CLHead.h"
 
-class CLResponseLogHead
+class CLResponseLogHead : public CLHead
 {
 public:
 	explicit CLResponseLogHead();

@@ -1,23 +1,21 @@
 #ifndef CLQUERYLOGHEAD_H
 #define CLQUERYLOGHEAD_H
+#include "CLHead.h"
 
-#include "LibNetWork.h"
-#include "CLMessage.h"
-#include "CLPraseManager.h"
-#include "CLSQL.h"
-
-class CLQueryLogHead : public CLMessage
+class CLQueryLogHead : public CLHead
 {
 public:
 	explicit CLQueryLogHead(arguments);
 	~CLQueryLogHead();
 
-	void init(int id)
+	/*
+    void init(int id)
     {
         CLPraseManager *manager = CLPraseManager::getInstance();
         manager->registerHandle(id, this);
 
     }
+    */
 
     char *serialize()
     {
@@ -42,14 +40,10 @@ public:
     	return 12;
     }
 
-     virtual void insertToSQL()
-    {
-    }
-
 private:
 	int logType;
 	int lengthOfLoad;
-	int echoID;  
+	int echoID;
 	
 };
 

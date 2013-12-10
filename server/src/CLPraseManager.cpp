@@ -3,6 +3,8 @@
 #include <cstring>
 #include "../include/CLLogHead.h"
 #include "../include/CLPraseManager.h"
+#include "../include/CLQueryLogHead.h"
+#include "../include/CLResponseLogHead.h"
 
 CLPraseManager* CLPraseManager::m_manager = NULL;
 
@@ -39,20 +41,28 @@ SLPraseResult CLPraseManager::praseProtocol(char *buffer)
 	pPrase->insertToSQL();
     */
     int type = *((int*)buffer);
+    CLHead *pHead = NULL;
+    int logtype;
     if(type <500)
     {
-        CLLogHead *pHead = new CLLogHead;
+        *pHead = new CLLogHead;
         pHead->deserialize(buffer);
-        CLMessage *pMessage = m_map[pHead->logType];
-        pMessage->deserialize(buffer + head->getLength());
-        SLPraseResult result;
-        result.pHead = pHead;
-        result.pMessage = pMessage;
-        result.type = 0;
-
-        return result;
+        logtype = (CLLogHead*)pHead->logType;
     }
-
+    else
+    {
+        *pHead = new CLQueryLogHead;
+        pHead->deserialize(buffer);
+        logtype = (CLQueryLogHead*)pHead->logType;
+    }
+    
+    CLMessage *pMessage = m_map[logtype];
+    pMessage->deserialize(buffer + head->getLength());
+    SLPraseResult result;
+    result.pHead = pHead;
+    result.pMessage = pMessage;
+    result.type = 0;
+    return result;
 }
 
 string CLPraseManager::getName(int id)

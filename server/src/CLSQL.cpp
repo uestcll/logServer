@@ -30,10 +30,15 @@ CLSQL* CLSQL::getInstance()
     return m_pSQL;
 }
 
-void CLSQL::connectSQL(const char *hostname, const char *username, const char *password, const char *dbname)
+void CLSQL::connectSQL()
 {
+    if("" == m_hostname)
+    {
+        cerr << "error connecting to database : " << mysql_error(&m_sql) << endl;
+        return;
+    }
     mysql_init(&m_sql);
-    if(!mysql_real_connect(&m_sql, hostname, username, password, dbname, 0, NULL, 0))
+    if(!mysql_real_connect(&m_sql, m_hostname.c_str(), m_name, m_password, m_databasename, 0, NULL, 0))
     {
         cerr << "error connecting to database : " << mysql_error(&m_sql) << endl;
     }
@@ -98,9 +103,9 @@ CLSQL::~CLSQL()
     mysql_close(&m_sql);
 }
 
-void setParameter(string IP, string name, string password, string databasename)
+void CLSQL::setParameter(string hostname, string name, string password, string databasename)
 {
-    m_IP = IP;
+    m_hostname = hostname;
     m_name = name;
     m_password = password;
     m_databasename = databasename;

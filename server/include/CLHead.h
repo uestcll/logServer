@@ -10,6 +10,7 @@ public:
 	{}
 	virtual char* serialize(){}
 	virtual void deserialize(char *buffer){}
+	virtual int getLength(){}
 };
 
 #endif
