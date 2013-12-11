@@ -78,6 +78,7 @@ void CLSQL::fetchResult()
 
 vector<string> CLSQL::getResult()
 {
+    clearResult();
     fetchResult();
     
     return m_store;

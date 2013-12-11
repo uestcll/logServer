@@ -35,12 +35,21 @@ int CLCommunication::recevData()
             m_process->work(request);
             delete[] request->readbuffer;
             delete request;
-            struct iovec result = m_process->getResult();
+            vector<struct iovec> result = m_process->getResult();
             SLResponse response;
+            /*
             response.io = result;
             response.finished = true;
             if(NULL != result.iov_base)
                 m_buffer->addToBuffer(response);
+            */
+            vector<struct iovec>::iterator it = result.begin();
+            while(it != result.end())
+            {
+                response.io = *it++;
+                response.finished = true;
+                m_buffer->addToBuffer(response);
+            }
         }
     }
 

@@ -34,7 +34,7 @@ void CLProcessRequest::work(SLRequest *request)
 {
 }
 
-struct iovec CLProcessRequest::getResult()
+vector<struct iovec> CLProcessRequest::getResult()
 {
 }
 

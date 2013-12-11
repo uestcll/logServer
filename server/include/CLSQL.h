@@ -29,7 +29,7 @@ class CLSQL
 {
     public:
         static CLSQL* getInstance();
-        void connectSQL(const char *hostname, const char *username, const char *password, const char *dbname);
+        void connectSQL();
         int querySQL(const char *query);
         void fetchResult();
         vector<string> getResult();

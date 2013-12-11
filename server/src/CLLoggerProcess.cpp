@@ -19,6 +19,13 @@
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLPraseManager.h"
 #include "../include/CLSQL.h"
+#include "../include/CLLogHead.h"
+#include "../include/CLQueryLogHead.h"
+#include "../include/CLQueryByLog.h"
+#include "../include/CLQueryByTime.h"
+#include "../include/CLQueryByIP.h"
+#include "../include/CLMessage.h"
+#include "../include/CLResponseHead.h"
 
 CLLoggerProcess::CLLoggerProcess()
 {
@@ -42,13 +49,14 @@ void CLLoggerProcess::work(SLRequest *request)
     }
     else 
     {
-        handleQuery();
+        handleQuery(result);
     }
 }
 
 void CLLoggerProcess::handleInsert(SLPraseResult result)
 {
-    CLLogHead *pHead = result.pHead;
+    CLLogHead *pHead = (CLLogHead*)result.pHead;
+    CLMessage *pMessage = result.pMessage;
     string name = m_manager->getName(pHead->logType);
     string query;
     query = pHead->insertToSQL(name);
@@ -60,40 +68,123 @@ void CLLoggerProcess::handleInsert(SLPraseResult result)
     delete pHead;
 }
 
+void CLLoggerProcess::handleQuery(SLPraseResult result)
+{
+    CLQueryLogHead *pHead = (CLQueryLogHead*)result.pHead;
+    int logtype = pHead->logType;
+    string name = m_manager->getName(logtype);
+    if(500 == logtype)
+    {
+        handleQueryByLog(result, name);
+    }
+    else if(502 == logtype)
+    {
+        handleQueryByTime(result, name);
+    }
+    else
+    {
+        handleQueryByIP(result, name);
+    }
+
+    delete pHead;
+}
+
+void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
+{
+    CLResponseLogHead responseHead;
+    responseHead.logType = 501;
+    responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
+    responseHead.numberOfResponse = (CLQueryByLog*)result.pMessage->numberOfResponse;
+    //responseHead.lengthOfLoad = responseHead.numberOfResponse *
+    struct iovec temp;
+    temp.iov_base  = responseHead.serialize();
+    temp.iov_len = responseHead.getLength();
+    m_iov.push_back(temp);
+    CLQueryByLog *pMessage = (CLQueryByLog*)result.pMessage;
+    int targetid = pMessage->typeOfLog;
+    string targetname = m_manager->getName(targetid);
+    string query;
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL();
+    for(int i = 0; i < pMessage->numberOfResponse; ++i)
+    {
+        query = "selet * from " + targetname + " limit " + "1"
+            + " offset " + pMessage->offsetOfResponse + i + ";";
+        if(pSQL->querySQL(query.c_str()))
+        {
+            break;
+        }
+        pSQL->getResult();
+        CLMessage *tempMessage = m_manager->getMessage(targetid);
+        CLLogHead head;
+        int n = head.getResultFromSQL();
+        temp.iov_base = head.deserialize();
+        temp.iov_len = head.getLength();
+        m_iov.push_back(temp);
+        tempMessage.getResultFromSQL(n);
+        temp.iov_base = tempMessage.deserialize();
+        temp.iov_len = tempMessage.getLength();
+        m_iov.push_back(temp);
+    }
+}
+
+void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
+{
+    CLResponseLogHead responseHead;
+    responseHead.logType = 501;
+    responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
+    responseHead.numberOfResponse = (CLQueryByLog*)result.pMessage->numberOfResponse;
+    struct iovec temp;
+    temp.iov_base  = responseHead.serialize();
+    temp.iov_len = responseHead.getLength();
+    m_iov.push_back(temp);
+    CLQueryByTime *pMessage = (CLQueryByLog*)result.pMessage;
+    int targetid = pMessage->typeOfLog;
+    string targetname = m_manager->getName(targetid);
+    string query;
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL();
+    for(int i = 0; i < pMessage->numberOfResponse; ++i)
+    {
+        query = "selet * from " + targetname + " limit " + "1"
+            + " offset " + pMessage->offsetOfResponse + i + ";";
+        if(pSQL->querySQL(query.c_str()))
+        {
+            break;
+        }
+        pSQL->getResult();
+        CLMessage *tempMessage = m_manager->getMessage(targetid);
+        CLLogHead head;
+        int n = head.getResultFromSQL();
+        if(((head.eventOccurTimeSec > pMessage->startTimeSec)
+           || (head.eventOccurTimeSec == pMessage->startTimeSec 
+           &&head.eventOccurTimeUsec >= pMessage->startTimeUsec))
+           &&((head.eventOccurTimeSec < pMessage->endTimeSec)
+           || (head.eventOccurTimeSec == pMessage->endTimeSec 
+           &&head.eventOccurTimeUsec <= pMessage->endTimeUsec)))
+        {
+            temp.iov_base = head.deserialize();
+            temp.iov_len = head.getLength();
+            m_iov.push_back(temp);
+            tempMessage.getResultFromSQL(n);
+            temp.iov_base = tempMessage.deserialize();
+            temp.iov_len = tempMessage.getLength();
+            m_iov.push_back(temp);
+        }
+        else
+        {
+            --i;
+        }
+    }
+}
+
 void CLLoggerProcess::setParameter(string hostname, string name, string password, string databasename)
 {
     CLSQL *pSQL = CLSQL::getInstance();
     pSQL->setParameter(hostname, name, password, databasename);
 }
 
-struct iovec CLLoggerProcess::getResult()
+vector<struct iovec> CLLoggerProcess::getResult()
 {
-	/*
-    string str;
-    CLSQL *pSQL = CLSQL::getInstance();
-    vector<string> store = pSQL->getResult();
-    if(!store.empty())
-    {
-    	for(int i = 0; i < store.size(); ++i)
-    	{
-    		str += store[i];
-    	}
-    	int len = str.size();
-        SLMessageHead head;
-        head.length = len;
-        char *buffer = new char[len + sizeof(SLMessageHead)];
-        memcpy(buffer, &head, sizeof(SLMessageHead));
-    	memcpy(buffer + sizeof(SLMessageHead), str.c_str(), len);
-    	m_iov.iov_base = buffer;
-    	m_iov.iov_len = len;
-
-        pSQL->clearResult();
-    	return m_iov;
-    }
-
-    m_iov.iov_base = NULL;
-    m_iov.iov_len = 0;
-
-    return m_iov;
-    */
+    return m_iov; 
 }

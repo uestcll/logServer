@@ -43,29 +43,35 @@ SLPraseResult CLPraseManager::praseProtocol(char *buffer)
     int type = *((int*)buffer);
     CLHead *pHead = NULL;
     int logtype;
+    SLPraseResult result;
     if(type <500)
     {
         *pHead = new CLLogHead;
         pHead->deserialize(buffer);
         logtype = (CLLogHead*)pHead->logType;
+        result.type = 0;
     }
     else
     {
         *pHead = new CLQueryLogHead;
         pHead->deserialize(buffer);
         logtype = (CLQueryLogHead*)pHead->logType;
+        result.type = 1;
     }
     
     CLMessage *pMessage = m_map[logtype];
     pMessage->deserialize(buffer + head->getLength());
-    SLPraseResult result;
     result.pHead = pHead;
     result.pMessage = pMessage;
-    result.type = 0;
     return result;
 }
 
 string CLPraseManager::getName(int id)
 {
     return m_namemap[id];
+}
+
+CLMessage* CLPraseManager::getMessage(int id)
+{
+    return m_map[id];
 }

@@ -5,8 +5,8 @@
 class CLQueryLogHead : public CLHead
 {
 public:
-	explicit CLQueryLogHead(arguments);
-	~CLQueryLogHead();
+	explicit CLQueryLogHead(){}
+	~CLQueryLogHead(){}
 
 	/*
     void init(int id)

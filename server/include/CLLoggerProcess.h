@@ -1,7 +1,8 @@
 #ifndef CLLOGGERPROCESS_H
 #define CLLOGGERPROCESS_H
 
-#include "LibNetWork.h"
+#include <string>
+#include <vector>
 
 class CLPraseManager;
 
@@ -11,14 +12,19 @@ class CLLoggerProcess : public CLProcessRequest
         explicit CLLoggerProcess();
         ~CLLoggerProcess();
         virtual void work(SLRequest *request);
-        virtual struct iovec getResult();
+        virtual vector<struct iovec> getResult();
+        void setParameter(string hostname, string name, string password, string databasename);
 
     private:
         void handleInsert(SLPraseResult result);
+        void handleQuery(SLPraseResult result);
+        void handleQueryByLog(SLPraseResult result, string name);
+        void handleQueryByTime(SLPraseResult result, string name);
+        void handleQueryByIP(SLPraseResult result, string name);
 
     private:
     	CLPraseManager *m_manager;
-        struct iovec m_iov;
+        vecotr<struct iovec> m_iov;
 };
 
 #endif

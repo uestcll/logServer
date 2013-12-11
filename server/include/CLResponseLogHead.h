@@ -6,8 +6,10 @@
 class CLResponseLogHead : public CLHead
 {
 public:
-	explicit CLResponseLogHead();
-	~CLResponseLogHead();
+	explicit CLResponseLogHead()
+    {
+    }
+	~CLResponseLogHead(){}
 
     char* serialize()
     {

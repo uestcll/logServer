@@ -30,7 +30,7 @@ class CLProcessRequest
         virtual ~CLProcessRequest();
         //void setRequest(SLRequest request);
         virtual void work(SLRequest *request);
-        virtual struct iovec getResult();
+        virtual vector<struct iovec> getResult();
         void setCommunication(CLCommunication *communication);
 
     protected:

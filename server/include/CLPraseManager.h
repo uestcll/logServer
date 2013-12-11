@@ -25,6 +25,7 @@ public:
 	void registerHandle(CLMessage *pContent, int id, string name);
 	SLPraseResult praseProtocol(char *buffer);
 	string getName(int id);
+	CLMessage* getMessage(int id);
 
 private:
     explicit CLPraseManager();
