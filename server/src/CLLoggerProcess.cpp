@@ -83,7 +83,7 @@ void CLLoggerProcess::handleQuery(SLPraseResult result)
     }
     else
     {
-        handleQueryByIP(result, name);
+        //handleQueryByIP(result, name);
     }
 
     delete pHead;
@@ -131,9 +131,9 @@ void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
 void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
 {
     CLResponseLogHead responseHead;
-    responseHead.logType = 501;
+    responseHead.logType = 503;
     responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
-    responseHead.numberOfResponse = (CLQueryByLog*)result.pMessage->numberOfResponse;
+    responseHead.numberOfResponse = (CLQueryByTime*)result.pMessage->numberOfResponse;
     struct iovec temp;
     temp.iov_base  = responseHead.serialize();
     temp.iov_len = responseHead.getLength();
@@ -177,6 +177,53 @@ void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
         }
     }
 }
+
+/*
+void CLLoggerProcess::handleQueryByIP(SLPraseResult result, string name)
+{
+    CLResponseLogHead responseHead;
+    responseHead.logType = 505;
+    responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
+    responseHead.numberOfResponse = (CLQueryByIP*)result.pMessage->numberOfResponse;
+    struct iovec temp;
+    temp.iov_base  = responseHead.serialize();
+    temp.iov_len = responseHead.getLength();
+    m_iov.push_back(temp);
+    CLQueryByIP *pMessage = (CLQueryByIP*)result.pMessage;
+    int targetid = pMessage->typeOfLog;
+    string targetname = m_manager->getName(targetid);
+    string query;
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->connectSQL();
+    for(int i = 0; i < pMessage->numberOfResponse; ++i)
+    {
+        query = "selet * from " + targetname + " limit " + "1"
+            + " offset " + pMessage->offsetOfResponse + i + ";";
+        if(pSQL->querySQL(query.c_str()))
+        {
+            break;
+        }
+        pSQL->getResult();
+        CLMessage *tempMessage = m_manager->getMessage(targetid);
+        CLLogHead head;
+        int n = head.getResultFromSQL();
+        if((head.)
+        {
+            temp.iov_base = head.deserialize();
+            temp.iov_len = head.getLength();
+            m_iov.push_back(temp);
+            tempMessage.getResultFromSQL(n);
+            temp.iov_base = tempMessage.deserialize();
+            temp.iov_len = tempMessage.getLength();
+            m_iov.push_back(temp);
+        }
+        else
+        {
+            --i;
+        }
+    }
+}
+*/
 
 void CLLoggerProcess::setParameter(string hostname, string name, string password, string databasename)
 {

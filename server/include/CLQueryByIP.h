@@ -1,3 +1,4 @@
+/*
 #ifndef CLQUERYBYIP_H
 #define CLQUERYBYIP_H
 
@@ -55,3 +56,5 @@ private:
 };
 
 #endif
+
+*/

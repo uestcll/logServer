@@ -20,7 +20,7 @@ class CLLoggerProcess : public CLProcessRequest
         void handleQuery(SLPraseResult result);
         void handleQueryByLog(SLPraseResult result, string name);
         void handleQueryByTime(SLPraseResult result, string name);
-        void handleQueryByIP(SLPraseResult result, string name);
+        //void handleQueryByIP(SLPraseResult result, string name);
 
     private:
     	CLPraseManager *m_manager;
