@@ -1,13 +1,27 @@
 #ifndef CLABNORMALANDERRNOLOG_H
 #define CLABNORMALANDERRNOLOG_H
 
+#include "CLSQL.h"
+#include "CLMessage.h"
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+using namespace std;
 
 class CLAbnormalAndErrnoLog : public CLMessage
 {
 public:
+    CLAbnormalAndErrnoLog() : lengthOfExplain(0), explain(NULL)
+    {
+    }
+    ~CLAbnormalAndErrnoLog()
+    {
+        if(NULL != explain)
+            delete[] explain;
+    }
 	char* serialize()
 	{
 		int len = lengthOfExplain + 4;
@@ -41,7 +55,9 @@ public:
 		pSQL->closeSQL();
 		*/
 		string query;
-		query = lengthOfExplain + ", " + explain + ");";
+        stringstream ss;
+		ss << lengthOfExplain << ", " << explain << ");";
+        query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)

@@ -69,7 +69,7 @@ void CLSQL::fetchResult()
              {
                  string s = "";
                  s = m_row[j];
-                 m_store.push_back(s);
+                 m_resultstore.push_back(s);
              }
          }
      }
@@ -81,7 +81,7 @@ vector<string> CLSQL::getResult()
     clearResult();
     fetchResult();
     
-    return m_store;
+    return m_resultstore;
 }
 
 void CLSQL::closeSQL()
@@ -91,10 +91,10 @@ void CLSQL::closeSQL()
 
 void CLSQL::clearResult()
 {
-    m_store.clear();
+    m_resultstore.clear();
 }
 
-CLSQL::CLSQL()
+CLSQL::CLSQL() : m_store(m_resultstore)
 {
 
 }

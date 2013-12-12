@@ -2,19 +2,25 @@
 #define CLLOGHEAD_H
 
 #include "CLHead.h"
+#include "CLSQL.h"
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <iostream>
+#include <sstream>
+using namespace std;
 
 class CLLogHead : public CLHead
 {
 public:
-	explicit CLLogHead()
+	explicit CLLogHead() : logType(-1), lengthOfLoad(0), lengthOfRemark(0), remark(NULL), eventOccurTimeSec(0), eventOccurTimeUsec(0)
 	{
 	}
 	~CLLogHead()
 	{
+        if(NULL != remark)
+            delete[] remark;
 	}
 	char* serialize()
 	{
@@ -39,8 +45,9 @@ public:
 		lengthOfRemark = *((int*)buffer);
 		buffer += len;
 		len = lengthOfRemark;
-		remark = new char[len];
+		remark = new char[len + 1];
 		memcpy(remark, buffer, len);
+        remark[len] = '\0';
 		buffer += len;
 		len = 8;
 		memcpy(&eventOccurTimeSec, buffer, len);
@@ -64,10 +71,11 @@ public:
 		pSQL->querySQL(query);
 		pSQL->closeSQL();
 		*/
+        stringstream ss;
 		string query;
-		query = "insert into " + tablename + " values(" + logType + ", " + lengthOfLoad
-			    ", " + remark + ", " + eventOccurTimeSec + ", " + eventOccurTimeUsec + ", ";
-
+		ss << "insert into " << tablename << " values(" << logType << ", " << lengthOfLoad <<
+			    ", " << remark << ", " << eventOccurTimeSec << ", " << eventOccurTimeUsec << ", ";
+        query = ss.str();
 		return query;
 	}
 	int getResultFromSQL()
