@@ -128,7 +128,7 @@ class CLClientProcess : public CLProcessRequest
             m_communication->writeToServer(hello);
         }
 
-        virtual struct iovec getResult()
+        virtual vector<struct iovec> getResult()
         {
 
         }
