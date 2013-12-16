@@ -50,6 +50,7 @@ class CLSQL
         string m_name;
         string m_password;
         string m_databasename;
+        bool m_isconnected;
 };
 
 #endif

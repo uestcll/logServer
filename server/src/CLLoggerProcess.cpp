@@ -19,13 +19,13 @@
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLPraseManager.h"
 #include "../include/CLSQL.h"
-#include "../include/CLLogHead.h"
-#include "../include/CLQueryLogHead.h"
-#include "../include/CLQueryByLog.h"
-#include "../include/CLQueryByTime.h"
-#include "../include/CLQueryByIP.h"
-#include "../include/CLMessage.h"
-#include "../include/CLResponseLogHead.h"
+#include "../../Message/CLLogHead.h"
+#include "../../Message/CLQueryLogHead.h"
+#include "../../Message/CLQueryByLog.h"
+#include "../../Message/CLQueryByTime.h"
+#include "../../Message/CLQueryByIP.h"
+#include "../../Message/CLMessage.h"
+#include "../../Message/CLResponseLogHead.h"
 #include <sstream>
 
 CLLoggerProcess::CLLoggerProcess()
@@ -229,12 +229,6 @@ void CLLoggerProcess::handleQueryByIP(SLPraseResult result, string name)
     }
 }
 */
-
-void CLLoggerProcess::setParameter(string hostname, string name, string password, string databasename)
-{
-    CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->setParameter(hostname, name, password, databasename);
-}
 
 vector<struct iovec> CLLoggerProcess::getResult()
 {

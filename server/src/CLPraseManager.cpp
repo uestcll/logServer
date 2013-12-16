@@ -1,10 +1,9 @@
 #include "../include/CLPraseManager.h"
 #include "../include/CLSQL.h"
 #include <cstring>
-#include "../include/CLLogHead.h"
-#include "../include/CLPraseManager.h"
-#include "../include/CLQueryLogHead.h"
-#include "../include/CLResponseLogHead.h"
+#include "../../Message/CLLogHead.h"
+#include "../../Message/CLQueryLogHead.h"
+#include "../../Message/CLResponseLogHead.h"
 
 CLPraseManager* CLPraseManager::m_manager = NULL;
 

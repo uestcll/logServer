@@ -32,6 +32,10 @@ CLSQL* CLSQL::getInstance()
 
 int CLSQL::connectSQL()
 {
+    if(m_isconnected)
+    {
+        return 0;
+    }
     if("" == m_hostname)
     {
         cerr << "error connecting to database : " << mysql_error(&m_sql) << endl;
@@ -45,6 +49,7 @@ int CLSQL::connectSQL()
         return -1;
     }
 
+    m_isconnected = true;
     return 0;
 }
 
@@ -100,7 +105,7 @@ void CLSQL::clearResult()
     m_resultstore.clear();
 }
 
-CLSQL::CLSQL() : m_store(m_resultstore)
+CLSQL::CLSQL() : m_store(m_resultstore), m_isconnected(false)
 {
 
 }

@@ -13,7 +13,7 @@ class CLLoggerProcess : public CLProcessRequest
         ~CLLoggerProcess();
         virtual void work(SLRequest *request);
         virtual vector<struct iovec> getResult();
-        void setParameter(string hostname, string name, string password, string databasename);
+        //void setParameter(string hostname, string name, string password, string databasename);
 
     private:
         void handleInsert(SLPraseResult result);

@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  lemon (zyl), lemon_wonder@163.com
+ *         Author:  lemon (lemon), lemon_wonder@163.com
  *   Organization:  
  *
  * =====================================================================================

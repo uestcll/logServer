@@ -1,8 +1,8 @@
 #ifndef CLPRASEMANAGER_H
 #define CLPRASEMANAGER_H
 
-#include "CLHead.h"
-#include "CLMessage.h"
+#include "../../Message/CLHead.h"
+#include "../../Message/CLMessage.h"
 #include <iostream>
 #include <map>
 #include <string>

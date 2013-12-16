@@ -32,6 +32,7 @@
 #include <memory.h>
 #include <errno.h>
 #include <list>
+ #include <vector>
 #include <queue>
 using namespace std;
 
