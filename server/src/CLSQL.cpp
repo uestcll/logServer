@@ -30,18 +30,22 @@ CLSQL* CLSQL::getInstance()
     return m_pSQL;
 }
 
-void CLSQL::connectSQL()
+int CLSQL::connectSQL()
 {
     if("" == m_hostname)
     {
         cerr << "error connecting to database : " << mysql_error(&m_sql) << endl;
-        return;
+        return -1;
     }
     mysql_init(&m_sql);
-    if(!mysql_real_connect(&m_sql, m_hostname.c_str(), m_name, m_password, m_databasename, 0, NULL, 0))
+ 
+    if(!mysql_real_connect(&m_sql, m_hostname.c_str(), m_name.c_str(), m_password.c_str(), m_databasename.c_str(), 0, NULL, 0))
     {
         cerr << "error connecting to database : " << mysql_error(&m_sql) << endl;
+        return -1;
     }
+
+    return 0;
 }
 
 int CLSQL::querySQL(const char *query)
@@ -63,7 +67,7 @@ void CLSQL::fetchResult()
          for(int i = 0; i < mysql_field_count(&m_sql); ++i)
          {
              m_row = mysql_fetch_row(m_res);
-             if(m_row < 0) 
+             if(m_row <= 0) 
                  break;
              for(int j = 0; j < mysql_num_fields(m_res); ++j)
              {
@@ -84,9 +88,11 @@ vector<string> CLSQL::getResult()
     return m_resultstore;
 }
 
-void CLSQL::closeSQL()
+int CLSQL::closeSQL()
 {
     mysql_close(&m_sql);
+
+    return 0;
 }
 
 void CLSQL::clearResult()

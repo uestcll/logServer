@@ -28,11 +28,11 @@ class CLSQL
 {
     public:
         static CLSQL* getInstance();
-        void connectSQL();
+        int connectSQL();
         int querySQL(const char *query);
         void fetchResult();
         vector<string> getResult();
-        void closeSQL();
+        int closeSQL();
         void clearResult();
         void setParameter(string hostname, string name, string password, string databasename);
     private:

@@ -40,7 +40,7 @@ public:
     	return 12;
     }
 
-private:
+public:
 	int logType;
 	int lengthOfLoad;
 	int echoID;

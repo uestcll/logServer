@@ -74,7 +74,7 @@ public:
         stringstream ss;
 		string query;
 		ss << "insert into " << tablename << " values(" << logType << ", " << lengthOfLoad <<
-			    ", " << remark << ", " << eventOccurTimeSec << ", " << eventOccurTimeUsec << ", ";
+			    ", " << lengthOfRemark << ", " << "\"" << remark << "\"" << ", " << eventOccurTimeSec << ", " << eventOccurTimeUsec << ", ";
         query = ss.str();
 		return query;
 	}
@@ -86,16 +86,51 @@ public:
 		temp = pSQL->m_store[1];
 		lengthOfLoad = atoi(temp.c_str());
 		temp = pSQL->m_store[2];
-		lengthOfRemark = temp.size();
+		lengthOfRemark = atoi(temp.c_str());
+        temp = pSQL->m_store[3];
 		remark = new char[lengthOfRemark + 1];
 		memcpy(remark, temp.c_str(), lengthOfRemark);
 		remark[lengthOfRemark] = '\0';
-		temp = pSQL->m_store[3];
-		eventOccurTimeSec = atoi(temp.c_str());
 		temp = pSQL->m_store[4];
+		eventOccurTimeSec = atoi(temp.c_str());
+		temp = pSQL->m_store[5];
+        eventOccurTimeUsec = atoi(temp.c_str());
 
-		return 5;
+		return 6;
 	}
+    void init(int type, int lengthofload, int lengthofremark,
+              char *remark, long long sec, long long usec)
+    {
+        logType = type;
+        lengthOfLoad = lengthofload;
+        lengthOfRemark = lengthofremark;
+        if(NULL != this->remark)
+        {
+            delete[] this->remark;
+        }
+        this->remark = new char[lengthofremark + 1];
+        memcpy(this->remark, remark, lengthofremark);
+        this->remark[lengthofremark] = '\0';
+        eventOccurTimeSec = sec;
+        eventOccurTimeUsec = usec;
+    }
+    bool operator==(const CLLogHead &head) const
+    {
+        if(logType != head.logType)
+            return false;
+        if(lengthOfLoad != head.lengthOfLoad)
+            return false;
+        if(lengthOfRemark != head.lengthOfRemark)
+            return false;
+        if(strcmp(remark, head.remark) != 0)
+            return false;
+        if(eventOccurTimeSec != head.eventOccurTimeSec)
+            return false;
+        if(eventOccurTimeUsec != head.eventOccurTimeUsec)
+            return false;
+
+        return true;
+    }
 	
 public:
 	int logType;

@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-
-class CLPraseManager;
+#include "LibNetWork.h"
+#include "CLPraseManager.h"
 
 class CLLoggerProcess : public CLProcessRequest
 {
@@ -24,7 +24,7 @@ class CLLoggerProcess : public CLProcessRequest
 
     private:
     	CLPraseManager *m_manager;
-        vecotr<struct iovec> m_iov;
+        vector<struct iovec> m_iov;
 };
 
 #endif

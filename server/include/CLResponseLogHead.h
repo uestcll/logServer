@@ -18,7 +18,7 @@ public:
     	memcpy(buffer, &logType, 4);
     	memcpy(buffer + 4, &lengthOfLoad, 4);
     	memcpy(buffer + 8, &echoID, 4);
-    	memcpy(buffer + 12, &numberOfRecord, 4);
+    	memcpy(buffer + 12, &numberOfResponse, 4);
 
     	return buffer;
     }
@@ -28,7 +28,7 @@ public:
     	memcpy(&logType, buffer, 4);
     	memcpy(&lengthOfLoad, buffer + 4, 4);
     	memcpy(&echoID, buffer + 8, 4);
-    	memcpy(&numberOfRecord, buffer + 12, 4);
+    	memcpy(&numberOfResponse, buffer + 12, 4);
     }
 
     int getLength()
@@ -36,11 +36,11 @@ public:
         return 16;
     }
 
-private:
+public:
 	int logType;
 	int lengthOfLoad;
 	int echoID;
-	int numberOfRecord;
+	int numberOfResponse;
 };
 
 #endif

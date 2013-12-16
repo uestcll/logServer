@@ -2,6 +2,8 @@
 #define CLMESSAGE_H
 
 #include <string>
+#include <iostream>
+using namespace std;
 
 class CLMessage
 {
@@ -10,6 +12,7 @@ class CLMessage
         virtual ~CLMessage(){}
         virtual char* serialize(){}
         virtual void deserialize(char *buffer){}
+        virtual int getLength(){}
         virtual string insertToSQL(){}
         virtual void getResultFromSQL(int offset){}
 };

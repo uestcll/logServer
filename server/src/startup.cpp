@@ -1,10 +1,8 @@
 #include "../include/CLLoggerProcess.h"
-#include "../include/CLUserAccessDiskLog.h"
-#include "../include/CLModifyPasswordLog.h"
-#include "../include/CLQueryByLog.h"
 
 int main(int argc, char *argv[])
 {
+    /*
     if(2 != argc)
     {
         cerr << "argv error, the parameter : port " << endl;
@@ -29,6 +27,7 @@ int main(int argc, char *argv[])
 
     pEpoll->workWithEpoll(&myevent);
     pEpoll->runEpoll();
+    */
 
     return 0;
 }

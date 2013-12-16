@@ -16,10 +16,17 @@
  * =====================================================================================
  */
 #include <gtest/gtest.h>
+#include "../include/CLSQL.h"
 
 int main(int argc, char* argv[])
 {
+    CLSQL *pSQL = CLSQL::getInstance();
+    pSQL->setParameter("localhost", "root", "go", "Log");
+    pSQL->connectSQL();
     testing::InitGoogleTest(&argc, argv);
 
-    return RUN_ALL_TESTS();
+    int r = RUN_ALL_TESTS();
+    pSQL->closeSQL();
+
+    return r;
 }

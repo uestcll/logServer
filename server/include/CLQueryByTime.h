@@ -44,7 +44,7 @@ public:
 	}
 	#endif
 
-private:
+public:
 	int typeOfLog;
 	long long startTimeSec;
 	long long startTimeUsec;

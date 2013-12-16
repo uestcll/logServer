@@ -56,7 +56,7 @@ public:
 		*/
 		string query;
         stringstream ss;
-		ss << lengthOfExplain << ", " << explain << ");";
+		ss << lengthOfExplain << ", " << "\"" << explain << "\"" << ");";
         query = ss.str();
 		return query;
 	}
@@ -78,6 +78,27 @@ public:
 		pManager->registerHandle(this, 300, "CLAbnormalAndErrnoLog");
 	}
 	#endif
+
+    void init(int len, char *ch)
+    {
+        lengthOfExplain = len;
+        if(NULL != explain)
+        {
+            delete[] explain;
+        }
+        explain = new char[lengthOfExplain + 1];
+        memcpy(explain, ch, lengthOfExplain);
+        explain[lengthOfExplain] = '\0';
+    }
+    bool operator==(const CLAbnormalAndErrnoLog &logger) const
+    {
+        if(lengthOfExplain != logger.lengthOfExplain)
+            return false;
+        if(strcmp(explain, logger.explain) != 0)
+            return false;
+
+        return true;
+    }
 
 private:
 	int lengthOfExplain;

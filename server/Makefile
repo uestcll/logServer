@@ -1,12 +1,12 @@
 server : CLLoggerProcess.o CLPraseManager.o CLSQL.o startup.o
-	g++ -o server CLLoggerProcess.o CLPraseManager.o CLSQL.o startup.o -L ../LibNetWork -lnetwork -I../LibNetWork/include -g -pg -lmysqlclient
+	g++ -I ../LibNetWork/include -L ../LibNetWork -o server CLLoggerProcess.o CLPraseManager.o CLSQL.o startup.o -lnetwork -g -lmysqlclient
 	rm *.o
 
 CLLoggerProcess.o : ./src/CLLoggerProcess.cpp
-	g++ -o CLLoggerProcess.o -c ./src/CLLoggerProcess.cpp -I./include -L ../LibNetWork -lnetwork -I../LibNetWork/include -g
+	g++ -I ./include -I ../LibNetWork/include -o CLLoggerProcess.o -c ./src/CLLoggerProcess.cpp -g
 CLPraseManager.o : ./src/CLPraseManager.cpp
-	g++ -o CLPraseManager.o -c ./src/CLPraseManager.cpp -I./include -g
+	g++ -I ./include -o CLPraseManager.o -c ./src/CLPraseManager.cpp -g
 CLSQL.o : ./src/CLSQL.cpp
-	g++ -o CLSQL.o -c ./src/CLSQL.cpp -I./include -g -lmysqlclient
+	g++ -I ./include -o CLSQL.o -c ./src/CLSQL.cpp -g
 startup.o : ./src/startup.cpp
-	g++ -o startup.o -c ./src/startup.cpp -I./include -L ../LibNetWork -lnetwork -I../LibNetWork/include -g
+	g++ -I ./include -I ../LibNetWork/include -o startup.o -c ./src/startup.cpp -g

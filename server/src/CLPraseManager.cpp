@@ -46,21 +46,21 @@ SLPraseResult CLPraseManager::praseProtocol(char *buffer)
     SLPraseResult result;
     if(type <500)
     {
-        *pHead = new CLLogHead;
+        pHead = new CLLogHead;
         pHead->deserialize(buffer);
-        logtype = (CLLogHead*)pHead->logType;
+        logtype = ((CLLogHead*)pHead)->logType;
         result.type = 0;
     }
     else
     {
-        *pHead = new CLQueryLogHead;
+        pHead = new CLQueryLogHead;
         pHead->deserialize(buffer);
-        logtype = (CLQueryLogHead*)pHead->logType;
+        logtype = ((CLQueryLogHead*)pHead)->logType;
         result.type = 1;
     }
     
     CLMessage *pMessage = m_map[logtype];
-    pMessage->deserialize(buffer + head->getLength());
+    pMessage->deserialize(buffer + pHead->getLength());
     result.pHead = pHead;
     result.pMessage = pMessage;
     return result;

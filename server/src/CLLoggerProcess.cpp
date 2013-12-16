@@ -25,7 +25,8 @@
 #include "../include/CLQueryByTime.h"
 #include "../include/CLQueryByIP.h"
 #include "../include/CLMessage.h"
-#include "../include/CLResponseHead.h"
+#include "../include/CLResponseLogHead.h"
+#include <sstream>
 
 CLLoggerProcess::CLLoggerProcess()
 {
@@ -38,7 +39,7 @@ CLLoggerProcess::~CLLoggerProcess()
 
 void CLLoggerProcess::work(SLRequest *request)
 {
-    SLPraseResult result = m_manager->process(request->readbuffer);
+    SLPraseResult result = m_manager->praseProtocol(request->readbuffer);
     if(-1 == result.type)
     {
         return;
@@ -93,8 +94,8 @@ void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
 {
     CLResponseLogHead responseHead;
     responseHead.logType = 501;
-    responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
-    responseHead.numberOfResponse = (CLQueryByLog*)result.pMessage->numberOfResponse;
+    responseHead.echoID = ((CLQueryLogHead*)result.pHead)->echoID;
+    responseHead.numberOfResponse = ((CLQueryByLog*)(result.pMessage))->numberOfResponse;
     //responseHead.lengthOfLoad = responseHead.numberOfResponse *
     struct iovec temp;
     temp.iov_base  = responseHead.serialize();
@@ -108,8 +109,10 @@ void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
     pSQL->connectSQL();
     for(int i = 0; i < pMessage->numberOfResponse; ++i)
     {
-        query = "selet * from " + targetname + " limit " + "1"
-            + " offset " + pMessage->offsetOfResponse + i + ";";
+        stringstream ss;
+        ss << "selet * from " << targetname << " limit " << "1"
+            << " offset " << pMessage->offsetOfResponse << i << ";";
+        query = ss.str();
         if(pSQL->querySQL(query.c_str()))
         {
             break;
@@ -118,12 +121,12 @@ void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
         CLMessage *tempMessage = m_manager->getMessage(targetid);
         CLLogHead head;
         int n = head.getResultFromSQL();
-        temp.iov_base = head.deserialize();
+        temp.iov_base = head.serialize();
         temp.iov_len = head.getLength();
         m_iov.push_back(temp);
-        tempMessage.getResultFromSQL(n);
-        temp.iov_base = tempMessage.deserialize();
-        temp.iov_len = tempMessage.getLength();
+        tempMessage->getResultFromSQL(n);
+        temp.iov_base = tempMessage->serialize();
+        temp.iov_len = tempMessage->getLength();
         m_iov.push_back(temp);
     }
 }
@@ -132,13 +135,13 @@ void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
 {
     CLResponseLogHead responseHead;
     responseHead.logType = 503;
-    responseHead.echoID = (CLQueryLogHead*)result.pHead->echo;
-    responseHead.numberOfResponse = (CLQueryByTime*)result.pMessage->numberOfResponse;
+    responseHead.echoID = ((CLQueryLogHead*)result.pHead)->echoID;
+    responseHead.numberOfResponse = ((CLQueryByTime*)result.pMessage)->numberOfResponse;
     struct iovec temp;
     temp.iov_base  = responseHead.serialize();
     temp.iov_len = responseHead.getLength();
     m_iov.push_back(temp);
-    CLQueryByTime *pMessage = (CLQueryByLog*)result.pMessage;
+    CLQueryByTime *pMessage = (CLQueryByTime*)result.pMessage;
     int targetid = pMessage->typeOfLog;
     string targetname = m_manager->getName(targetid);
     string query;
@@ -146,8 +149,10 @@ void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
     pSQL->connectSQL();
     for(int i = 0; i < pMessage->numberOfResponse; ++i)
     {
-        query = "selet * from " + targetname + " limit " + "1"
-            + " offset " + pMessage->offsetOfResponse + i + ";";
+        stringstream ss;
+        ss << "selet * from " << targetname << " limit " << "1"
+           << " offset " << pMessage->offsetOfResponse << i << ";";
+        query = ss.str();
         if(pSQL->querySQL(query.c_str()))
         {
             break;
@@ -163,12 +168,12 @@ void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
            || (head.eventOccurTimeSec == pMessage->endTimeSec 
            &&head.eventOccurTimeUsec <= pMessage->endTimeUsec)))
         {
-            temp.iov_base = head.deserialize();
+            temp.iov_base = head.serialize();
             temp.iov_len = head.getLength();
             m_iov.push_back(temp);
-            tempMessage.getResultFromSQL(n);
-            temp.iov_base = tempMessage.deserialize();
-            temp.iov_len = tempMessage.getLength();
+            tempMessage->getResultFromSQL(n);
+            temp.iov_base = tempMessage->serialize();
+            temp.iov_len = tempMessage->getLength();
             m_iov.push_back(temp);
         }
         else
