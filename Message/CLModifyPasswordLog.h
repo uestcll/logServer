@@ -1,20 +1,25 @@
 #ifndef CLMODIFYPASSWORDLOG_H
 #define CLMODIFYPASSWORDLOG_H
 
-#include "LibNetWork.h"
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
 #include "CLMessage.h"
-#include "CLPraseManager.h"
-#include "CLSQL.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLModifyPasswordLog : public CLMessage
 {
 public:
-	void init(int id)
-	{
-		CLPraseManager *manager = CLPraseManager::getInstance();
-		manager->registerHandle(id, this);
-
-	}
+	CLModifyPasswordLog() : administratorID(0), departmentID(0)
+	{}
+	~CLModifyPasswordLog()
+	{}
 
 	char* serialize()
 	{
@@ -35,19 +40,13 @@ public:
 		return 8;
 	}
 
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test1 values(%d, %d)", administratorID, departmentID);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administratorID + ", " + departmentID + ");";
+		ss << administratorID << ", " << departmentID << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
@@ -61,9 +60,7 @@ public:
 		departmentID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 118, "CLModifyPasswordLog");
 	}

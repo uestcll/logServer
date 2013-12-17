@@ -4,10 +4,22 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLSubordinateAdministratorLog : public CLMessage
 {
 public:
+	CLSubordinateAdministratorLog() : administratorID(0), departmentID(0), subordinateAdministrator(0), subordinateDepartmentID(0)
+	{}
+	~CLSubordinateAdministratorLog()
+	{}
 	char* serialize()
 	{
 		char *buffer = new char[16];
@@ -31,22 +43,15 @@ public:
 	{
 		return 16;
 	}
+
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %d);", 
-			    administratorID, departmentID, subordinateAdministrator,
-				subordinateDepartmentID);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administratorID + ", " + departmentID + ", " + subordinateAdministrator
-				+ ", " + subordinateDepartmentID + ");";
+		ss << administratorID << ", " << departmentID << ", " << subordinateAdministrator
+				<< ", " << subordinateDepartmentID << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
@@ -64,9 +69,7 @@ public:
 		subordinateDepartmentID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 100, "CLSubordinateAdministratorLog");
 		pManager->registerHandle(this, 101, "CLSubordinateAdministratorLog");

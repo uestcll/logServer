@@ -1,13 +1,30 @@
 #ifndef CLOTHERTYPELOG_H
 #define CLOTHERTYPELOG_H
 
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLOtherTypeLog : public CLMessage
 {
 public:
+	CLOtherTypeLog() : lengthOfExplain(0), explain(NULL)
+	{}
+	~CLOtherTypeLog()
+	{
+		if(NULL != explain)
+		{
+			delete[] explain;
+		}
+	}
 	char* serialize()
 	{
 		int len = lengthOfExplain + 4;
@@ -29,36 +46,27 @@ public:
 	{
 		return 4 + lengthOfExplain;
 	}
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %s);", lengthOfExplain, explain);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = lengthOfExplain + ", " + explain + ");";
+		ss << lengthOfExplain + ", " << "\"" << explain << "\"" << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		//pSQL->connectSQL("localhost", "root", "go", "log");
-		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		lengthOfExplain = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		explain = new char[lengthOfExplain + 1];
 		memcpy(explain, temp.c_str(), lengthOfExplain);
 		explain[lengthOfExplain] = '\0';
-		//pSQL->closeSQL();
 	}
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 400, "CLOtherTypeLog");
 	}

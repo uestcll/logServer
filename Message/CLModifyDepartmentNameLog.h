@@ -4,10 +4,31 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLModifyDepartmentNameLog : public CLMessage
 {
 public:
+	CLModifyDepartmentNameLog() : administrarorID(0), departmentID(0), departmentIDOfNameModify(0), lengthOfNameBeforeModify(0), nameBeforeModify(NULL), lengthOfNameAfterModify(0), nameAfterModify(NULL)
+	{}
+	~CLModifyDepartmentNameLog()
+	{
+		if(NULL != nameBeforeModify)
+		{
+			delete[] nameBeforeModify;
+		}
+		if(NULL != nameAfterModify)
+		{
+			delete[] nameAfterModify;
+		}
+	}
 	char *serialize()
 	{
 		int len = 20 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
@@ -34,25 +55,24 @@ public:
 		memcpy(&lengthOfNameAfterModify, buffer + 16 + lengthOfNameBeforeModify, 4);
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, buffer + 20 + lengthOfNameBeforeModify, lengthOfNameAfterModify);
+		nameAfterModify[lengthOfNameAfterModify] = '\0';
 	}
+	int getLength()
+	{
+		return 20 + lengthOfNameAfterModify + lengthOfNameBeforeModify;
+	}
+
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %s, %s);", 
-			administratorID, departmentID, departmentIDOfNameModify,
-			nameBeforeModify, nameAfterModify);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administrarorID + ", " + departmentID + ", " + departmentIDOfNameModify
-				+ ", " + nameBeforeModify + ", " + nameAfterModify + ");";
+		ss << administrarorID << ", " << departmentID + ", " << departmentIDOfNameModify
+		   << ", " << lengthOfNameBeforeModify << ", " << "\"" << nameBeforeModify << "\"" << ", " << lengthOfNameAfterModify << << ", " << "\"" << nameAfterModify << "\"" << ");";
+		query = ss.str();
 		return query;
 	}
+
 	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
@@ -65,25 +85,20 @@ public:
 		temp = pSQL->m_store[offset + 2];
 		departmentIDOfNameModify = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 3];
-		lengthOfNameBeforeModify = temp.size();
+		lengthOfNameBeforeModify = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 4];
 		nameBeforeModify = new char[lengthOfNameBeforeModify + 1];
 		memcpy(nameBeforeModify, temp.c_str(), lengthOfNameBeforeModify);
 		nameBeforeModify[lengthOfNameBeforeModify] = '\0';
-		temp = pSQL->m_store[offset + 4];
-		lengthOfNameAfterModify = temp.size();
+		temp = pSQL->m_store[offset + 5];
+		lengthOfNameAfterModify = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 6];
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, temp.c_str(), lengthOfNameAfterModify);
 		nameAfterModify[lengthOfNameAfterModify] = '\0';
 		//pSQL->closeSQL();
 	}
-
-	int getLength()
-	{
-		return 20 + lengthOfNameAfterModify + lengthOfNameBeforeModify;
-	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 121, "CLModifyDepartmentNameLog");
 	}

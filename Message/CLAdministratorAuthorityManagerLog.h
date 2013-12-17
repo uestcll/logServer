@@ -4,10 +4,27 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMEssage.h"
+
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
+
+using namespace std;
 
 class CLAdministraotrAuthorityManagerLog : public CLMessage
 {
 public:
+	explicit CLAdministraotrAuthorityManagerLog() : administratorID(0), departmentID(0),
+													subordinateDepartmentID(0),
+													subordinateAdministratorID(0)
+	{}
+	~CLAdministraotrAuthorityManagerLog(){}
+
 	char *serialize()
 	{
 		int len = 16;
@@ -28,26 +45,19 @@ public:
 		memcpy(&subordinateAdministratorID, buffer + 12, 4);
 	}
 
-	string insertToSQL()
-	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %d);", 
-			administratorID, departmentID, subordinateAdministrator, 
-			subordinateDepartmentID);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
-		string query = administratorID + ", " + departmentID + ", "
-					   + subordinateAdministrator + ", " + subordinateDepartmentID + ");";
-		return query; 
-	}
 	int getLength()
 	{
 		return 16;
+	}
+
+	#ifdef SERVER
+	string insertToSQL()
+	{
+		stringstream ss;
+		ss << administratorID << ", " << departmentID + ", "
+		   << subordinateAdministrator << ", " << subordinateDepartmentID << ");";
+		string query = ss.str();
+		return query; 
 	}
 
 	void getResultFromSQL(int offset)
@@ -61,11 +71,9 @@ public:
 		subordinateDepartmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 3];
 		subordinateAdministratorID = atoi(temp.c_str());
-		//pSQL->closeSQL();
 	}
 
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 102, "CLAdministraotrAuthorityManagerLog");
 		pManager->registerHandle(this, 103, "CLAdministraotrAuthorityManagerLog");

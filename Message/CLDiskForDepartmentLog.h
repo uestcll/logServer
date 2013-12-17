@@ -4,10 +4,23 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLDiskForDepartmentLog : public CLMessage
 {
 public:
+	CLDiskForDepartmentLog() : administratorID(0), departmentID(0), departmentIDOfDisk(0),
+	sharedDiskID(0)
+	{}
+	~CLDiskForDepartmentLog()
+	{}
 	char *serialize()
 	{
 		int len = 16;
@@ -26,30 +39,23 @@ public:
 		memcpy(departmentIDOfDisk, buffer + 8, 4);
 		memcpy(sharedDiskID, buffer + 12, 4);
 	}
-
+	int getLength()
+	{
+		return 16;
+	}
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %d);", 
-			administratorID, departmentID, departmentIDOfDisk,
-			sharedDiskID);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administratorID + ", " + departmentID + ", " + departmentIDOfDisk + ", "
-				sharedDiskID + ");";
+		ss << administratorID << ", " << departmentID << ", " << departmentIDOfDisk << ", "
+				sharedDiskID << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		//pSQL->connectSQL("localhost", "root", "go", "log");
-		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
@@ -60,13 +66,7 @@ public:
 		sharedDiskID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
-	int getLength()
-	{
-		return 16;
-	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 116, "CLDiskForDepartmentLog");
 		pManager->registerHandle(this, 117, "CLDiskForDepartmentLog");

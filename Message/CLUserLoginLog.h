@@ -5,10 +5,26 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLUserLoginLog : public CLMessage
 {
 public:
+	CLUserLoginLog() : userID(0), departmentIDOfUser(0), IPType(0), IPlength(0), loginIPAdress(NULL)
+	{}
+	~CLUserLoginLog()
+	{
+		if(NULL != loginIPAdress)
+		{
+			delete[] loginIPAdress;
+		}
+	}
 	char *serialize()
 	{
 		int len = 16 + IPlength;
@@ -37,22 +53,14 @@ public:
 	{
 		return 16 + IPlength;
 	}
-
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %s);", 
-			    userID, departmentIDOfUser, IPType, loginIPAdress);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = userID + ", " + departmentIDOfUser + ", " + IPType + ", "
-				+ loginIPAdress + ");";
+		ss << userID << ", " << departmentIDOfUser << ", " << IPType << ", "
+		   << IPlength << ", " << "\"" << loginIPAdress << "\"" << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
@@ -67,15 +75,14 @@ public:
 		string temp = pSQL->m_store[offset + 2];
 		IPType = atoi(temp.c_str());
 		string temp = pSQL->m_store[offset + 3];
-		IPlength = temp.size();
+		IPlength = atoi(temp.str());
+		string temp = pSQL->m_store[offset + 4];
 		loginIPAdress = new char[IPlength + 1];
 		memcpy(loginIPAdress, temp.c_str(), IPlength);
 		loginIPAdress[IPlength] = '\0';
 		//pSQL->closeSQL();
 	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 2, "CLUserLoginLog");
 		pManager->registerHandle(this, 3, "CLUserLoginLog");

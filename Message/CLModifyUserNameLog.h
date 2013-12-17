@@ -4,15 +4,36 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMessage.h"
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 
 class CLModifyUserNameLog : public CLMessage
 {
 public:
+	CLModifyUserNameLog() : administratorID(0), departmentID(0), userID(0), departmentIDOfUser(0), lengthOfNameBeforeModify(0), nameBeforeModify(NULL), lengthOfNameAfterModify(0), nameAfterModify(NULL)
+	{}
+	~CLModifyUserNameLog()
+	{
+		if(NULL != nameBeforeModify)
+		{
+			delete[] nameBeforeModify;
+		}
+		if(NULL != nameAfterModify)
+		{
+			delete[] nameAfterModify;
+		}
+	}
 	char *serialize()
 	{
 		int len = 24 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
 		char *buffer = new char[len];
-		memcpy(buffer, &administrarorID, 4);
+		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &userID, 4);
 		memcpy(buffer + 12, &departmentIDOfUser, 4);
@@ -25,7 +46,7 @@ public:
 	}
 	void deserialize(char *buffer)
 	{
-		memcpy(&administrarorID, buffer, 4);
+		memcpy(&administratorID, buffer, 4);
 		memcpy(&departmentID, buffer + 4, 4);
 		memcpy(&userID, buffer + 8, 4);
 		memcpy(&departmentIDOfUser, buffer + 12, 4);
@@ -37,23 +58,20 @@ public:
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, buffer + 24 + lengthOfNameBeforeModify, lengthOfNameAfterModify);
 	}
+	int getLength()
+	{
+		return 24 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
+	}
+
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %d, %s, %s);", 
-			administratorID, departmentID, userID, departmentIDOfUser, 
-			nameBeforeModify, nameAfterModify);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administrarorID + ", " + departmentID + ", " + userID + ", "
-				+ departmentIDOfUser + ", " + nameBeforeModify + ", "
-				+ nameAfterModify + ");";
+		ss << administratorID << ", " << departmentID << ", " << userID << ", "
+		   << departmentIDOfUser << ", " << lengthOfNameBeforeModify << ", " << "\"" << nameBeforeModify << "\"" << ", " << lengthOfNameAfterModify << ", " << "\""
+		   << nameAfterModify << "\"" << ");";
+		query = ss.str();
 		return query;
 	}
 	void getResultFromSQL(int offset)
@@ -62,7 +80,7 @@ public:
 		//pSQL->connectSQL("localhost", "root", "go", "log");
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
-		administrarorID = atoi(temp.c_str());
+		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 2];
@@ -70,31 +88,28 @@ public:
 		temp = pSQL->m_store[offset + 3];
 		departmentIDOfUser = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 4];
-		lengthOfNameBeforeModify = temp.size();
+		lengthOfNameBeforeModify = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 5];
 		nameBeforeModify = new char[lengthOfNameBeforeModify + 1];
 		memcpy(nameBeforeModify, temp.c_str(), lengthOfNameBeforeModify);
 		nameBeforeModify[lengthOfNameBeforeModify] = '\0';
-		temp = pSQL->m_store[offset + 5];
-		lengthOfNameAfterModify = temp.size();
+		temp = pSQL->m_store[offset + 6];
+		lengthOfNameAfterModify = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 7];
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, temp.c_str(), lengthOfNameAfterModify);
 		nameAfterModify[lengthOfNameAfterModify] = '\0';
 		//pSQL->closeSQL();
 	}
-	int getLength()
-	{
-		return 24 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
-	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 122, "CLModifyUserNameLog");
 	}
 	#endif
 
 private:
-	int administrarorID;
+	int administratorID;
 	int departmentID;
 	int userID;
 	int departmentIDOfUser;

@@ -4,10 +4,28 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include "CLMEssage.h"
 
+#ifdef SERVER
+#include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
+#endif
 class CLAdministratorLoginLog : public CLMessage
 {
 public:
+	explicit CLAdministratorLoginLog() : administratorID(0), departmentID(0), IPType(0),
+										 IPLength(0), loginIPAdress(NULL)
+	{}
+	~CLAdministratorLoginLog()
+	{
+		if(NULL != loginIPAdress)
+		{
+			delete loginIPAdress;
+		}
+	}
 	char *serialize()
 	{
 		int len = 16 + IPLength;
@@ -20,6 +38,12 @@ public:
 
 		return buffer;
 	}
+
+	int getLength()
+	{
+		return 20 + IPLength;
+	}
+
 	void deserialize(char *buffer)
 	{
 		memcpy(&administratorID, buffer, 4);
@@ -30,21 +54,14 @@ public:
 		memcpy(loginIPAdress, buffer + 16, IPLength);
 		loginIPAdress[IPLength] = '\0';
 	}
+	#ifdef SERVER
 	string insertToSQL()
 	{
-		/*
-		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		char query[1000];
-		memset(query, 0, sizeof(query));
-		sprintf(query, "insert into test values(%d, %d, %d, %s);", 
-			administratorID, departmentID, IPType, loginIPAdress);
-		pSQL->querySQL(query);
-		pSQL->closeSQL();
-		*/
+		stringstream ss;
 		string query;
-		query = administratorID + ", " + departmentID + ", "
-			    + IPType + ", " + loginIPAdress + ");";
+		ss << administratorID << ", " << departmentID << ", "
+		   << IPType << IPLength << ", " << "\"" << loginIPAdress << "\"" << ");";
+		query = ss.str();
 		return query;
 	}
 
@@ -60,15 +77,14 @@ public:
 		temp = pSQL->m_store[offset + 2];
 		IPType = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 3];
-		IPLength = temp.size();
+		IPLength = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 4];
 		loginIPAdress = new char[IPLength + 1];
 		memcpy(loginIPAdress, temp.c_str(), IPLength);
 		loginIPAdress[IPLength] = '\0';
 		//pSQL->closeSQL();
 	}
-
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 110, "CLAdministratorLoginLog");
 		pManager->registerHandle(this, 111, "CLAdministratorLoginLog");
