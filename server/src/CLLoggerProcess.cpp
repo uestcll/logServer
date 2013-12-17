@@ -110,8 +110,8 @@ void CLLoggerProcess::handleQueryByLog(SLPraseResult result, string name)
     for(int i = 0; i < pMessage->numberOfResponse; ++i)
     {
         stringstream ss;
-        ss << "selet * from " << targetname << " limit " << "1"
-            << " offset " << pMessage->offsetOfResponse << i << ";";
+        ss << "select * from " << targetname << " limit " << "1"
+            << " offset " << pMessage->offsetOfResponse + i << ";";
         query = ss.str();
         if(pSQL->querySQL(query.c_str()))
         {
@@ -150,7 +150,7 @@ void CLLoggerProcess::handleQueryByTime(SLPraseResult result, string name)
     for(int i = 0; i < pMessage->numberOfResponse; ++i)
     {
         stringstream ss;
-        ss << "selet * from " << targetname << " limit " << "1"
+        ss << "select * from " << targetname << " limit " << "1"
            << " offset " << pMessage->offsetOfResponse << i << ";";
         query = ss.str();
         if(pSQL->querySQL(query.c_str()))
@@ -232,5 +232,31 @@ void CLLoggerProcess::handleQueryByIP(SLPraseResult result, string name)
 
 vector<struct iovec> CLLoggerProcess::getResult()
 {
+    if(0 != m_iov.size())
+    {
+        int len = 0;
+        vector<struct iovec>::iterator it = m_iov.begin();
+        while(it != m_iov.end())
+        {
+            len += (*it).iov_len;
+            it++;
+        }
+        char *buffer = new char[len];
+        int cnt = 0;
+        it = m_iov.begin();
+        while(it != m_iov.end())
+        {
+            int temp = (*it).iov_len;
+            memcpy(buffer + cnt, (*it).iov_base, temp);
+            delete[] (char*)(*it).iov_base;
+            cnt += temp;
+            it++;
+        }
+        m_iov.clear();
+        struct iovec buf;
+        buf.iov_base = buffer;
+        buf.iov_len = len;
+        m_iov.push_back(buf);
+    }
     return m_iov; 
 }

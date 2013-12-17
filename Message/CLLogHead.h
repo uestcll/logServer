@@ -10,7 +10,7 @@
 #include <sstream>
 
 #ifdef SERVER
-#include "CLSQL.h"
+#include "../server/include/CLSQL.h"
 #endif
 using namespace std;
 
@@ -62,6 +62,7 @@ public:
 	{
 		return 12 + lengthOfRemark + 16;
 	}
+    #ifdef SERVER
 	string insertToSQL(string tablename)
 	{
         stringstream ss;
@@ -91,6 +92,7 @@ public:
 
 		return 6;
 	}
+    #endif
     void init(int type, int lengthofload, int lengthofremark,
               char *remark, long long sec, long long usec)
     {

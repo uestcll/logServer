@@ -1,5 +1,5 @@
 client : test.o
-	g++ -I ../LibNetWork/include -L ../LibNetWork -o test test.o -lnetwork -g
+	g++ -I ../LibNetWork/include -L ../LibNetWork -o client test.o -lnetwork -g
 	rm *.o
 
 test.o : ./test.cpp

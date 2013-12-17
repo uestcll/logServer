@@ -46,9 +46,11 @@ int CLCommunication::recevData()
             vector<struct iovec>::iterator it = result.begin();
             while(it != result.end())
             {
-                response.io = *it++;
-                response.finished = true;
-                m_buffer->addToBuffer(response);
+                //response.io = *it++;
+                //response.finished = true;
+                //m_buffer->addToBuffer(response);
+                writeToServer(*it);
+                it++;
             }
         }
     }
@@ -84,6 +86,14 @@ void CLCommunication::setProcess(CLProcessRequest *process)
 void CLCommunication::writeToServer(struct iovec hello)
 {
     SLResponse response;
+    SLMessageHead *pHead = new SLMessageHead;
+    pHead->length = hello.iov_len;
+    struct iovec head;
+    head.iov_base = pHead;
+    head.iov_len = sizeof(SLMessageHead);
+    response.io = head;
+    response.finished = true;
+    m_buffer->addToBuffer(response);
     response.io = hello;
     response.finished = true;
     m_buffer->addToBuffer(response);

@@ -2,6 +2,7 @@
 #define CLQUERYBYTIME_H
 
 #include "CLMessage.h"
+#include "../server/include/CLPraseManager.h"
 #include <cstring>
 
 class CLQueryByTime : public CLMessage
@@ -38,7 +39,7 @@ public:
 	}
 
 	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 502, "CLQueryByTime");
 	}

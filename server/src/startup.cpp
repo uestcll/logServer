@@ -1,6 +1,8 @@
 #include "../include/CLLoggerProcess.h"
 #include "../include/CLSQL.h"
 #include "../include/CLPraseManager.h"
+#include "../../Message/CLAbnormalAndErrnoLog.h"
+#include "../../Message/CLQueryByLog.h"
 #include "LibNetWork.h"
 
 void init();
@@ -33,13 +35,13 @@ int main(int argc, char *argv[])
     pEpoll->runEpoll();
     */
 
-    if(5 != argc)
+    if(6 != argc)
     {
-        cerr << "argv error, the parameter : port, mysql username, password, databasename " << endl;
+        cerr << "argv error, the parameter : port, IP, mysql username, password, databasename " << endl;
         exit(0);
     }
     CLSQL *pSQL = CLSQL::getInstance();
-    pSQL->setParameter(argv[2], argv[3], argv[4]);
+    pSQL->setParameter(argv[2], argv[3], argv[4], argv[5]);
     init();
     CLEpoll *pEpoll = CLEpoll::getInstance();
     SLAddress address;
@@ -60,5 +62,7 @@ void init()
 {
     CLPraseManager *pManager = CLPraseManager::getInstance();
     CLAbnormalAndErrnoLog  *pAbnormalAndErrnoLog = new CLAbnormalAndErrnoLog;
-    pAbnormalAndErrnoLog->register(pManager);
+    pAbnormalAndErrnoLog->registerIt(pManager);
+    CLQueryByLog *pQueryLog = new CLQueryByLog;
+    pQueryLog->registerIt(pManager);
 }

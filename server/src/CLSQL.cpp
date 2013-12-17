@@ -96,6 +96,7 @@ vector<string> CLSQL::getResult()
 int CLSQL::closeSQL()
 {
     mysql_close(&m_sql);
+    m_isconnected = false;
 
     return 0;
 }
@@ -113,6 +114,7 @@ CLSQL::CLSQL() : m_store(m_resultstore), m_isconnected(false)
 CLSQL::~CLSQL()
 {
     mysql_close(&m_sql);
+    m_isconnected = false;
 }
 
 void CLSQL::setParameter(string hostname, string name, string password, string databasename)

@@ -2,7 +2,7 @@
 #define CLQUERYBYLOG_H
 
 #include "CLMessage.h"
-#include "CLPraseManager.h"
+#include "../server/include/CLPraseManager.h"
 
 class CLQueryByLog : public CLMessage
 {
@@ -23,6 +23,10 @@ public:
 
 		return buffer;
 	}
+    int getLength()
+    {
+        return 12;
+    }
 
 	void deserialize(char *buffer)
 	{
@@ -32,7 +36,7 @@ public:
 	}
 
 	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 500, "CLQueryByLog");
 	}

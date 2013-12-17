@@ -31,11 +31,12 @@ class CLClientProcess : public CLProcessRequest
     public:
         virtual void work(SLRequest *request)
         {
-            char len = request->len;
-            char *buffer = new char[len + 1];
-            memcpy(buffer, request->readbuffer, len);
-            buffer[len] = '\0';
-            cout << buffer << endl;
+            CLResponseLogHead response;
+            response.deserialize(request->readbuffer);
+            CLLogHead head;
+            head.deserialize((char*)(request->readbuffer) + response.getLength());
+            CLAbnormalAndErrnoLog Log;
+            Log.deserialize((char*)(request->readbuffer) + response.getLength() + head.getLength());
         }
 
         void init()
@@ -75,7 +76,19 @@ class CLClientProcess : public CLProcessRequest
             head.init(500, 1, 1);
             CLQueryByLog Log;
             Log.init(300, 1, 0);
-            
+            char *buffer1 = head.serialize();
+            char *buffer2 = Log.serialize();
+            char *buffer;
+            int len = head.getLength() + Log.getLength();
+            buffer = new char[len];
+            memcpy(buffer, buffer1, head.getLength());
+            memcpy(buffer + head.getLength(), buffer2, Log.getLength());
+            delete[] buffer1;
+            delete[] buffer2;
+            struct iovec hello;
+            hello.iov_base = buffer;
+            hello.iov_len = len;
+            m_communication->writeToServer(hello);
         }
 
         /*

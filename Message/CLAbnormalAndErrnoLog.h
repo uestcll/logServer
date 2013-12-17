@@ -11,6 +11,7 @@
 
 #ifdef SERVER
 #include "../server/include/CLSQL.h"
+#include "../server/include/CLPraseManager.h"
 #endif
 
 using namespace std;
@@ -39,14 +40,16 @@ public:
 	void deserialize(char *buffer)
 	{
 		memcpy(&lengthOfExplain, buffer, 4);
-		explain = new char[lengthOfExplain];
+		explain = new char[lengthOfExplain + 1];
 		memcpy(explain, buffer + 4, lengthOfExplain);
+        explain[lengthOfExplain] = '\0';
 	}
 
 	int getLength()
 	{
 		return 4 + lengthOfExplain;
 	}
+    #ifdef SERVER
 	string insertToSQL()
 	{
 		string query;
@@ -66,8 +69,7 @@ public:
 		explain[lengthOfExplain] = '\0';
 	}
 
-	#ifdef SERVER
-	void register(CLPraseManager *pManager)
+	void registerIt(CLPraseManager *pManager)
 	{
 		pManager->registerHandle(this, 300, "CLAbnormalAndErrnoLog");
 	}

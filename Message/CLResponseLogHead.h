@@ -13,7 +13,7 @@ public:
 
     char* serialize()
     {
-    	int len = 12;
+    	int len = 16;
     	char *buffer = new char[len];
     	memcpy(buffer, &logType, 4);
     	memcpy(buffer + 4, &lengthOfLoad, 4);
