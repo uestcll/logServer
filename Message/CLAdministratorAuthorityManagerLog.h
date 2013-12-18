@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "CLMEssage.h"
+#include "CLMessage.h"
 
 #ifdef SERVER
 #include "../server/include/CLSQL.h"
@@ -16,14 +16,14 @@
 
 using namespace std;
 
-class CLAdministraotrAuthorityManagerLog : public CLMessage
+class CLAdministratorAuthorityManagerLog : public CLMessage                       
 {
 public:
-	explicit CLAdministraotrAuthorityManagerLog() : administratorID(0), departmentID(0),
+	explicit CLAdministratorAuthorityManagerLog() : administratorID(0), departmentID(0),
 													subordinateDepartmentID(0),
 													subordinateAdministratorID(0)
 	{}
-	~CLAdministraotrAuthorityManagerLog(){}
+	~CLAdministratorAuthorityManagerLog(){}
 
 	char *serialize()
 	{
@@ -54,8 +54,8 @@ public:
 	string insertToSQL()
 	{
 		stringstream ss;
-		ss << administratorID << ", " << departmentID + ", "
-		   << subordinateAdministrator << ", " << subordinateDepartmentID << ");";
+		ss << administratorID << ", " << departmentID << ", "
+		   << subordinateAdministratorID << ", " << subordinateDepartmentID << ");";
 		string query = ss.str();
 		return query; 
 	}
@@ -79,6 +79,26 @@ public:
 		pManager->registerHandle(this, 103, "CLAdministraotrAuthorityManagerLog");
 	}
 	#endif
+    void init(int id1, int id2, int id3, int id4)
+    {
+        administratorID = id1;
+        departmentID = id2;
+        subordinateDepartmentID = id4;
+        subordinateAdministratorID = id3;
+    }
+    bool operator==(const CLAdministratorAuthorityManagerLog Log) const
+    {
+        if(administratorID != Log.administratorID)
+            return false;
+        if(departmentID != Log.departmentID)
+            return false;
+        if(subordinateAdministratorID != Log.subordinateAdministratorID)
+            return false;
+        if(subordinateDepartmentID != Log.subordinateDepartmentID)
+            return false;
+
+        return true;
+    }
 
 private:
 	int administratorID;

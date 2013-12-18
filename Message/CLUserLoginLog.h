@@ -96,3 +96,5 @@ private:
 	int IPlength;
 	char* loginIPAdress;
 };
+
+#endif

@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "CLMEssage.h"
+#include "CLMessage.h"
 
 #ifdef SERVER
 #include "../server/include/CLSQL.h"

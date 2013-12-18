@@ -26,7 +26,7 @@ TEST(CLAbnormalAndErrnoLog, serializeAnddeserialize)
     char *ch = new char[6];
     memcpy(ch, "hello", 5);
     ch[5] = '\0';
-    head.init(300, 100, 5, ch, 1, 1);
+    head.init(300, 1, 5, ch, 1, 1);
     memcpy(ch, "nice!", 5);
     CLAbnormalAndErrnoLog Log;
     Log.init(5, ch);
