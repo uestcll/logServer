@@ -76,8 +76,8 @@ public:
 	void getResultFromSQL(int offset)
 	{
 		CLSQL *pSQL = CLSQL::getInstance();
-		pSQL->connectSQL("localhost", "root", "go", "log");
-		pSQL->fetchResult();
+		//pSQL->connectSQL("localhost", "root", "go", "log");
+		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		IPType = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];

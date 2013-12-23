@@ -29,21 +29,21 @@ TEST(CLAdministratorLoginLog, serializeAnddeserialize)
     ch[5] = '\0';
     head.init(110, 1, 5, ch, 1, 1);
     CLAdministratorLoginLog Log;
-    Log.init(2, 3, 4, 5);
+    Log.init(1, 2, 4, 5, ch);
     char *buffer = Log.serialize();
     delete[] buffer;
     string query;
-    query = head.insertToSQL("CLAdministratorAuthorityManagerLog");
+    query = head.insertToSQL("CLAdministratorLoginLog");
     query += Log.insertToSQL();
     CLSQL *pSQL = CLSQL::getInstance();
     pSQL->querySQL(query.c_str());
-    query = "select * from CLAdministratorAuthorityManagerLog limit 1 offset 0;";
+    query = "select * from CLAdministratorLoginLog limit 1 offset 0;";
     pSQL->querySQL(query.c_str());
     pSQL->getResult();
     CLLogHead temphead;
     int n = temphead.getResultFromSQL();
     EXPECT_TRUE(temphead == head);
-    CLAdministratorAuthorityManagerLog templog;
+    CLAdministratorLoginLog templog;
     templog.getResultFromSQL(n);
     EXPECT_TRUE(templog == Log);
 }

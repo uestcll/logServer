@@ -103,7 +103,7 @@ public:
 		memcpy(loginIPAdress, address, len);
 		loginIPAdress[len] = '\0';
 	}
-	bool operator(const CLUserLoginLog &Log) const 
+	bool operator==(const CLUserLoginLog &Log) const 
 	{
 		if(userID != Log.userID)
 			return false;
