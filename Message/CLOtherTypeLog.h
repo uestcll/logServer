@@ -71,6 +71,28 @@ public:
 		pManager->registerHandle(this, 400, "CLOtherTypeLog");
 	}
 	#endif
+
+	void init(int len, char *str)
+	{
+		lengthOfExplain = len;
+		if(NULL != explain)
+		{
+			delete[] explain;
+		}
+		explain =  new char[len + 1];
+		memcpy(explain, str, len);
+		explain[len] = '\0';
+	}
+	bool operator==(const CLOtherTypeLog &Log) const
+	{
+		if(lengthOfExplain != Log.lengthOfExplain)
+			return false;
+		if(strcmp(explain, Log.explain) != 0)
+			return false;
+
+		return true;
+	}
+	
 private:
 	int lengthOfExplain;
 	char *explain;

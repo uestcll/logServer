@@ -36,6 +36,27 @@ public:
         return 16;
     }
 
+    void init(int type, int len, int echo, int num)
+    {
+        logType = type;
+        lengthOfLoad = len;
+        echoID = echo;
+        numberOfResponse = num;
+    }
+    bool operator==(const CLResponseLogHead &Log) const
+    {
+        if(logType != Log.logType)
+            return false;
+        if(lengthOfLoad != Log.lengthOfLoad)
+            return false;
+        if(echoID != Log.echoID)
+            return false;
+        if(numberOfResponse != Log.numberOfResponse)
+            return false;
+
+        return true;
+    }
+
 public:
 	int logType;
 	int lengthOfLoad;

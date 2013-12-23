@@ -73,6 +73,27 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int id3, int id4)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		departmentIDOfDisk = id3;
+		sharedDiskID = id4;
+	}
+	bool operator==(const CLDiskForDepartmentLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(departmentIDOfDisk != Log.departmentIDOfDisk)
+			return false;
+		if(sharedDiskID != Log.sharedDiskID)
+			return false;
+
+		return true;
+	}
+
 private:
 	int administratorID;
 	int departmentID;

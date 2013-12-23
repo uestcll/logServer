@@ -67,6 +67,24 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int id3)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		operationStaffID = id3;
+	}
+	bool operator==(const CLOperationAndMaintenancePersonLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(operationStaffID != Log.operationStaffID)
+			return false;
+
+		return true;
+	}
+
 private:
 	int administratorID;
 	int departmentID;

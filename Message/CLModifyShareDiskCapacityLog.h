@@ -82,6 +82,33 @@ public:
 		pManager->registerHandle(this, 125, "CLModifyShareDiskCapacityLog");
 	}
 	#endif
+
+	void init(int id1, int id2, int id3, int id4, long long c1, long long c2)
+	{
+		administrarorID = id1;
+		departmentID = id2;
+		sharedDiskID = id3;
+		departmentIDOfDisk = id4;
+		capacityBeforeModify = c1;
+		capacityAfterModify = c2;
+	}
+	bool operator==(const CLModifyShareDiskCapacityLog &Log) const
+	{
+		if(administrarorID != Log.administrarorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(sharedDiskID != Log.sharedDiskID)
+			return false;
+		if(departmentIDOfDisk != Log.departmentIDOfDisk)
+			return false;
+		if(capacityBeforeModify != Log.capacityBeforeModify)
+			return false;
+		if(capacityAfterModify != Log.capacityAfterModify)
+			return false;
+
+		return true;
+	}
 private:
 	int administrarorID;
 	int departmentID;

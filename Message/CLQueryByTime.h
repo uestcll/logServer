@@ -45,6 +45,36 @@ public:
 	}
 	#endif
 
+	void init(int type, long long ssec, long long susec, long long esec, long long eusec, int num, int off)
+	{
+		typeOfLog = type;
+		ssec = startTimeSec;
+		susec = startTimeUsec;
+		esec = endTimeSec;
+		eusec = endTimeUsec;
+		numberOfResponse = num;
+		offsetOfResponse = off;
+	}
+	bool operator==(const CLQueryByTime &Log) const
+	{
+		if(typeOfLog != Log.typeOfLog)
+			return false;
+		if(startTimeSec != Log.startTimeSec)
+			return false;
+		if(startTimeUsec != Log.startTimeUsec)
+			return false;
+		if(endTimeSec != Log.endTimeSec)
+			return false;
+		if(endTimeUsec != Log.endTimeUsec)
+			return false;
+		if(numberOfResponse != Log.numberOfResponse)
+			return false;
+		if(offsetOfResponse != Log.offsetOfResponse)
+			return false;
+
+		return true;
+	}
+
 public:
 	int typeOfLog;
 	long long startTimeSec;

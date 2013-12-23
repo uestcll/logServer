@@ -57,7 +57,7 @@ public:
 		//pSQL->connectSQL("localhost", "root", "go", "log");
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
-		administrarorID = atoi(temp.c_str());
+		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 2];
@@ -69,8 +69,26 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int id3)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		diskID = id3;
+ 	}
+	bool operator==(const CLModifyDiskAccessAuthorityLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(diskID != Log.diskID)
+			return false;
+
+		return true;
+	}
+
 private:
-	int administratorID;
+	int administrator;
 	int departmentID;
 	int diskID;
 };

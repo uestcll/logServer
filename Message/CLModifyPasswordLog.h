@@ -66,6 +66,21 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2)
+	{
+		administratorID = id1;
+		departmentID = id2;
+ 	}
+	bool operator==(const CLModifyPasswordLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+
+		return true;
+	}
+
 public:
 	int administratorID;
 	int departmentID;

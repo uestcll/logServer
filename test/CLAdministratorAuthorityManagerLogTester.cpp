@@ -30,6 +30,8 @@ TEST(CLAdministratorAuthorityManagerLog, serializeAnddeserialize)
     head.init(102, 1, 5, ch, 1, 1);
     CLAdministratorAuthorityManagerLog Log;
     Log.init(2, 3, 4, 5);
+    char *buffer = Log.serialize();
+    delete[] buffer;
     string query;
     query = head.insertToSQL("CLAdministratorAuthorityManagerLog");
     query += Log.insertToSQL();

@@ -91,6 +91,36 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int type, int len, char *address)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		IPType = type;
+		IPLength = len;
+		if(NULL != loginIPAdress)
+		{
+			delete[] loginIPAdress;
+		}
+		loginIPAdress = new char[IPLength + 1];
+		memcpy(loginIPAdress, address, len);
+		loginIPAdress[len] = '\0';
+	}
+	bool operator==(const CLAdministratorLoginLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(IPType != Log.IPType)
+			return false;
+		if(IPLength != Log.IPLength)
+			return false;
+		if(strcmp(loginIPAdress, Log.loginIPAdress) != 0)
+			return false;
+
+		return true;
+	}
+	
 private:
 	int administratorID;
 	int departmentID;

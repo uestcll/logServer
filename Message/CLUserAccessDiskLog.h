@@ -79,6 +79,30 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int id3, int pos, int ran)
+	{
+		userID = id1;
+		departmentIDOfUser = id2;
+		diskID = id3;
+		position =pos;
+		range = ran;
+	}
+	bool operator==(const CLUserAccessDiskLog &Log) const 
+	{
+		if(userID != Log.userID)
+			return false;
+		if(departmentIDOfUser != Log.departmentIDOfUser)
+			return false;
+		if(diskID != Log.diskID)
+			return false;
+		if(position != Log.position)
+			return false;
+		if(range != Log.range)
+			return false;
+
+		return true;
+	}
+
 public:
 	int userID;
 	int departmentIDOfUser;

@@ -48,6 +48,17 @@ public:
 		numberOfResponse = num;
 		offsetOfResponse = offset;
 	}
+	bool operator==(const CLQueryByLog &Log) const
+	{
+		if(typeOfLog != Log.typeOfLog)
+			return false;
+		if(numberOfResponse != Log.numberOfResponse)
+			return false;
+		if(offsetOfResponse != Log.offsetOfResponse)
+			return false;
+
+		return true;
+	}
 
 public:
 	int typeOfLog;

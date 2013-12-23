@@ -77,9 +77,34 @@ public:
 		pManager->registerHandle(this, 124, "CLModifySubordinateDepartmentCapacityLog");
 	}
 	#endif
+
+	void init(int id1, int id2, int id3, int c1, int c2)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		subordinateDepartmentID = id3;
+		capacityBeforeModify = c1;
+		capacityAfterModify = c2;
+	}
+	bool operator==(const CLModifySubordinateDepartmentCapacityLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(subordinateDepartmentID != Log.subordinateDepartmentID)
+			return false;
+		if(capacityBeforeModify != Log.capacityBeforeModify)
+			return false;
+		if(capacityAfterModify != Log.capacityAfterModify)
+			return false;
+
+		return true;
+	}
+	
 private:
 	int administratorID;
-	int departmentID:
+	int departmentID;
 	int subordinateDepartmentID;
 	long long capacityBeforeModify;
 	long long capacityAfterModify;

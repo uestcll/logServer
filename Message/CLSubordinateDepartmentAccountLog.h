@@ -68,10 +68,28 @@ public:
 		pManager->registerHandle(this, 109, "CLSubordinateDepartmentAccountLog");
 	}
 	#endif
+
+	void init(int id1, int id2, int id3)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		subordinateDepartmentID = id3;
+	}
+	bool operator==(const CLSubordinateDepartmentAccountLog &Log) const 
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(subordinateDepartmentID != Log.subordinateDepartmentID)
+			return false;
+
+		return true;
+	}
 	
 private:
 	int administratorID;
-	int departmentID:
+	int departmentID;
 	int subordinateDepartmentID;
 };
 #endif

@@ -104,6 +104,48 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int id3, int len1, char *name1, int len2, char *name2)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		departmentIDOfNameModify = id3;
+		lengthOfNameBeforeModify = len1;
+		if(nameBeforeModify != NULL)
+		{
+			delete[] nameBeforeModify;
+		}
+		nameBeforeModify = new char[len1 + 1];
+		memcpy(nameBeforeModify, name1, len1);
+		nameBeforeModify[len1] = '\0';
+		lengthOfNameAfterModify = len2;
+		if(NULL != nameAfterModify)
+		{
+			delete[] nameAfterModify;
+		}
+		nameAfterModify = new char[len2 + 1];
+		memcpy(nameAfterModify, name2, len2);
+		nameAfterModify[len2] = '\0';
+ 	}
+	bool operator==(const CLModifyDepartmentNameLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(departmentIDOfNameModify != Log.departmentIDOfNameModify)
+			return false;
+		if(lengthOfNameBeforeModify != Log.lengthOfNameBeforeModify)
+			return false;
+		if(strcmp(nameBeforeModify, Log.nameBeforeModify) != 0)
+			return false;
+		if(lengthOfNameAfterModify != Log.lengthOfNameAfterModify)
+			return false;
+		if(strcmp(nameAfterModify, Log.nameAfterModify) != 0)
+			return false;
+
+		return true;
+	}
+
 private:
 	int administrarorID;
 	int departmentID;

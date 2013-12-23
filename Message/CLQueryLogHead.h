@@ -46,6 +46,17 @@ public:
         lengthOfLoad = len;
         echoID = id;
     }
+    bool operator==(const CLQueryLogHead &Log) const
+    {
+        if(logType != Log.logType)
+            return false;
+        if(lengthOfLoad != Log.lengthOfLoad)
+            return false;
+        if(echoID != Log.echoID)
+            return false;
+
+        return true;
+    }
 
 public:
 	int logType;

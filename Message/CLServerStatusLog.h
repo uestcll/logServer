@@ -105,6 +105,51 @@ public:
     }
 	#endif
 
+	void init(int type, int len1, char *address, int len2, char *name, int cp, int net, int mem)
+	{
+		IPType = type;
+		IPLength = len1;
+		if(NULL != IPAddress)
+		{
+			delete[] IPAddress;
+		}
+		IPAddress = new char[len1 + 1];
+		memcpy(IPAddress, address, len1);
+		IPAddress[len1] = '\0';
+		lengthOfHostname = len2;
+		if(NULL != hostname)
+		{
+			delete[] hostname;
+		}
+		hostname = new char[len2 + 1];
+		memcpy(hostname, name, len2);
+		hostname[len2] = '\0';
+		cpu = cp;
+		network = net;
+		memory = mem;
+	}
+	bool operator==(const CLServerStatusLog &Log) const
+	{
+		if(IPType != Log.IPType)
+			return false;
+		if(IPLength != Log.IPLength)
+			return false;
+		if(strcmp(IPAddress, Log.IPAddress) != 0)
+			return false;
+		if(lengthOfHostname != Log.lengthOfHostname)
+			return false;
+		if(strcmp(hostname, Log.hostname) != 0)
+			return false;
+		if(cpu != Log.cpu)
+			return false;
+		if(network != Log.network)
+			return false;
+		if(memory != Log.memory)
+			return false;
+
+		return true;
+	}
+
 private:
 	int IPType;
 	int IPLength;

@@ -98,6 +98,45 @@ public:
 		pManager->registerHandle(this, 119, "CLModifyNameLog");
 	}
 	#endif
+
+	void init(int id1, int id2, int len1, char *name1, int len2, char *name2)
+	{
+		administratorID = id1;
+		departmentID = id2;
+		lengthOfNameBeforeModify = len1;
+		if(NULL != nameBeforeModify)
+		{
+			delete[] nameBeforeModify;
+		}
+		nameBeforeModify = new char[len1 + 1];
+		memcpy(nameBeforeModify, name1, len1);
+		nameBeforeModify[len1] = '\0';
+		lengthOfNameAfterModify = len2;
+		if(NULL != nameAfterModify)
+		{
+			delete[] nameAfterModify;
+		}
+		nameAfterModify = new char[len2 + 1];
+		memcpy(nameAfterModify, name2, len2);
+		nameAfterModify[len2] = '\0';
+ 	}
+	bool operator==(const CLModifyNameLog &Log) const
+	{
+		if(administratorID != Log.administratorID)
+			return false;
+		if(departmentID != Log.departmentID)
+			return false;
+		if(lengthOfNameBeforeModify != Log.lengthOfNameBeforeModify)
+			return false;
+		if(strcmp(nameBeforeModify, name1) != 0)
+			return false;
+		if(lengthOfNameAfterModify != Log.lengthOfNameAfterModify)
+			return false;
+		if(strcmp(nameAfterModify, name2) != 0)
+			return false;
+
+		return true;
+	}
 private:
 	int administrarorID;
 	int departmentID;

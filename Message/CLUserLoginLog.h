@@ -16,7 +16,7 @@
 class CLUserLoginLog : public CLMessage
 {
 public:
-	CLUserLoginLog() : userID(0), departmentIDOfUser(0), IPType(0), IPlength(0), loginIPAdress(NULL)
+	CLUserLoginLog() : userID(0), departmentIDOfUser(0), IPType(0), IPLength(0), loginIPAdress(NULL)
 	{}
 	~CLUserLoginLog()
 	{
@@ -27,13 +27,13 @@ public:
 	}
 	char *serialize()
 	{
-		int len = 16 + IPlength;
+		int len = 16 + IPLength;
 		char *buffer = new char[len];
 		memcpy(buffer, &userID, 4);
 		memcpy(buffer + 4, &departmentIDOfUser, 4);
 		memcpy(buffer + 8, &IPType, 4);
-		memcpy(buffer + 12, &IPlength, 4);
-		memcpy(buffer + 16, &loginIPAdress, IPlength);
+		memcpy(buffer + 12, &IPLength, 4);
+		memcpy(buffer + 16, &loginIPAdress, IPLength);
 
 		return buffer;
 	}
@@ -43,15 +43,15 @@ public:
 		memcpy(&userID, buffer, 4);
 		memcpy(&departmentIDOfUser, buffer + 4, 4);
 		memcpy(&IPType, buffer + 8, 4);
-		memcpy(&IPlength, buffer + 12, 4);
-		loginIPAdress = new char[IPlength + 1];
-		memcpy(&loginIPAdress, buffer + 16, IPlength);
-		loginIPAdress[IPlength] = '\0';
+		memcpy(&IPLength, buffer + 12, 4);
+		loginIPAdress = new char[IPLength + 1];
+		memcpy(&loginIPAdress, buffer + 16, IPLength);
+		loginIPAdress[IPLength] = '\0';
 	}
 
 	int getLength()
 	{
-		return 16 + IPlength;
+		return 16 + IPLength;
 	}
 	#ifdef SERVER
 	string insertToSQL()
@@ -59,7 +59,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << userID << ", " << departmentIDOfUser << ", " << IPType << ", "
-		   << IPlength << ", " << "\"" << loginIPAdress << "\"" << ");";
+		   << IPLength << ", " << "\"" << loginIPAdress << "\"" << ");";
 		query = ss.str();
 		return query;
 	}
@@ -75,11 +75,11 @@ public:
 		string temp = pSQL->m_store[offset + 2];
 		IPType = atoi(temp.c_str());
 		string temp = pSQL->m_store[offset + 3];
-		IPlength = atoi(temp.str());
+		IPLength = atoi(temp.str());
 		string temp = pSQL->m_store[offset + 4];
-		loginIPAdress = new char[IPlength + 1];
-		memcpy(loginIPAdress, temp.c_str(), IPlength);
-		loginIPAdress[IPlength] = '\0';
+		loginIPAdress = new char[IPLength + 1];
+		memcpy(loginIPAdress, temp.c_str(), IPLength);
+		loginIPAdress[IPLength] = '\0';
 		//pSQL->closeSQL();
 	}
 	void registerIt(CLPraseManager *pManager)
@@ -89,11 +89,41 @@ public:
 	}
 	#endif
 
+	void init(int id1, int id2, int type, int len, char *address)
+	{
+		userID = id1;
+		departmentIDOfUser = id2;
+		IPType = type;
+		IPLength = len;
+		if(NULL != loginIPAdress)
+		{
+			delete[] loginIPAdress;
+		}
+		loginIPAdress = new char[len + 1];
+		memcpy(loginIPAdress, address, len);
+		loginIPAdress[len] = '\0';
+	}
+	bool operator(const CLUserLoginLog &Log) const 
+	{
+		if(userID != Log.userID)
+			return false;
+		if(departmentIDOfUser != Log.departmentIDOfUser)
+			return false;
+		if(IPType != Log.IPType)
+			return false;
+		if(IPLength != Log.IPLength)
+			return false;
+		if(strcmp(loginIPAdress, address) != 0)
+			return false;
+
+		return true;
+	}
+
 private:
 	int userID;
 	int departmentIDOfUser;
     int IPType;
-	int IPlength;
+	int IPLength;
 	char* loginIPAdress;
 };
 
