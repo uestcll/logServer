@@ -27,7 +27,7 @@ public:
 		char *buffer = new char[len];
 		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
-		memcpy(buffer + 12, &subordinateDepartmentID, 4);
+		memcpy(buffer + 8, &subordinateDepartmentID, 4);
 
 		return buffer;
 	}

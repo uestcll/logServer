@@ -16,7 +16,7 @@
 class CLModifyNameLog : public CLMessage
 {
 public:
-	CLModifyNameLog() : administrarorID(0), departmentID(0), lengthOfNameBeforeModify(0),
+	CLModifyNameLog() : administratorID(0), departmentID(0), lengthOfNameBeforeModify(0),
 	nameBeforeModify(NULL), lengthOfNameAfterModify(0), nameAfterModify(NULL)
 	{}
 	~CLModifyNameLog()
@@ -34,7 +34,7 @@ public:
 	{
 		int len = 20 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
 		char *buffer = new char[len];
-		memcpy(buffer, &administrarorID, 4);
+		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &lengthOfNameBeforeModify, 4);
 		memcpy(buffer + 12, nameBeforeModify, lengthOfNameBeforeModify);
@@ -45,7 +45,7 @@ public:
 	}
 	void deserialize(char * buffer)
 	{
-		memcpy(&administrarorID, buffer, 4);
+		memcpy(&administratorID, buffer, 4);
 		memcpy(&departmentID, buffer + 4, 4);
 		memcpy(&lengthOfNameBeforeModify, buffer + 8, 4);
 		nameBeforeModify = new char[lengthOfNameBeforeModify + 1];
@@ -75,7 +75,7 @@ public:
 		//pSQL->connectSQL("localhost", "root", "go", "log");
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
-		administrarorID = atoi(temp.c_str());
+		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 2];
@@ -128,17 +128,17 @@ public:
 			return false;
 		if(lengthOfNameBeforeModify != Log.lengthOfNameBeforeModify)
 			return false;
-		if(strcmp(nameBeforeModify, name1) != 0)
+		if(strcmp(nameBeforeModify, Log.nameBeforeModify) != 0)
 			return false;
 		if(lengthOfNameAfterModify != Log.lengthOfNameAfterModify)
 			return false;
-		if(strcmp(nameAfterModify, name2) != 0)
+		if(strcmp(nameAfterModify, Log.nameAfterModify) != 0)
 			return false;
 
 		return true;
 	}
 private:
-	int administrarorID;
+	int administratorID;
 	int departmentID;
 	int lengthOfNameBeforeModify;   
 	char *nameBeforeModify;

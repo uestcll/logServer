@@ -60,7 +60,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << administratorID << ", " << departmentID << ", "
-		   << IPType << IPLength << ", " << "\"" << loginIPAdress << "\"" << ");";
+		   << IPType << ", " << IPLength << ", " << "\"" << loginIPAdress << "\"" << ");";
 		query = ss.str();
 		return query;
 	}

@@ -3,7 +3,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <cstirng>
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -51,7 +51,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << administratorID << ", " << departmentID << ", " << userID << ", "
-				departmentIDOfUser << ", " << diskID << ");";
+		   << departmentIDOfUser << ", " << diskID << ");";
 		query = ss.str();
 		return query;
 	}

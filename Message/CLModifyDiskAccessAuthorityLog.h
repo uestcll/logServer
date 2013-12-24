@@ -88,7 +88,7 @@ public:
 	}
 
 private:
-	int administrator;
+	int administratorID;
 	int departmentID;
 	int diskID;
 };

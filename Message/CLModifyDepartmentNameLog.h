@@ -16,7 +16,7 @@
 class CLModifyDepartmentNameLog : public CLMessage
 {
 public:
-	CLModifyDepartmentNameLog() : administrarorID(0), departmentID(0), departmentIDOfNameModify(0), lengthOfNameBeforeModify(0), nameBeforeModify(NULL), lengthOfNameAfterModify(0), nameAfterModify(NULL)
+	CLModifyDepartmentNameLog() : administratorID(0), departmentID(0), departmentIDOfNameModify(0), lengthOfNameBeforeModify(0), nameBeforeModify(NULL), lengthOfNameAfterModify(0), nameAfterModify(NULL)
 	{}
 	~CLModifyDepartmentNameLog()
 	{
@@ -33,7 +33,7 @@ public:
 	{
 		int len = 20 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
 		char *buffer = new char[len];
-		memcpy(buffer, &administrarorID, 4);
+		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &departmentIDOfNameModify, 4);
 		memcpy(buffer + 12, &lengthOfNameBeforeModify, 4);
@@ -45,7 +45,7 @@ public:
 	}
 	void deserialize(char *buffer)
 	{
-		memcpy(&administrarorID, buffer, 4);
+		memcpy(&administratorID, buffer, 4);
 		memcpy(&departmentID, buffer + 4, 4);
 		memcpy(&departmentIDOfNameModify, buffer + 8, 4);
 		memcpy(&lengthOfNameBeforeModify, buffer + 12, 4);
@@ -67,8 +67,8 @@ public:
 	{
 		stringstream ss;
 		string query;
-		ss << administrarorID << ", " << departmentID + ", " << departmentIDOfNameModify
-		   << ", " << lengthOfNameBeforeModify << ", " << "\"" << nameBeforeModify << "\"" << ", " << lengthOfNameAfterModify << << ", " << "\"" << nameAfterModify << "\"" << ");";
+		ss << administratorID << ", " << departmentID << ", " << departmentIDOfNameModify
+		   << ", " << lengthOfNameBeforeModify << ", " << "\"" << nameBeforeModify << "\"" << ", " << lengthOfNameAfterModify << ", " << "\"" << nameAfterModify << "\"" << ");";
 		query = ss.str();
 		return query;
 	}
@@ -79,7 +79,7 @@ public:
 		//pSQL->connectSQL("localhost", "root", "go", "log");
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
-		administrarorID = atoi(temp.c_str());
+		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 2];
@@ -147,7 +147,7 @@ public:
 	}
 
 private:
-	int administrarorID;
+	int administratorID;
 	int departmentID;
 	int departmentIDOfNameModify;
 	int lengthOfNameBeforeModify;

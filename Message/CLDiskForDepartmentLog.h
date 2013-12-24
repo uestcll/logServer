@@ -27,8 +27,8 @@ public:
 		char *buffer = new char[len];
 		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
-		memcpy(buffer + 8, departmentIDOfDisk, 4);
-		memcpy(buffer + 12, sharedDiskID, 4);
+		memcpy(buffer + 8, &departmentIDOfDisk, 4);
+		memcpy(buffer + 12, &sharedDiskID, 4);
 
 		return buffer;
 	}
@@ -36,8 +36,8 @@ public:
 	{
 		memcpy(&administratorID, buffer, 4);
 		memcpy(&departmentID, buffer + 4, 4);
-		memcpy(departmentIDOfDisk, buffer + 8, 4);
-		memcpy(sharedDiskID, buffer + 12, 4);
+		memcpy(&departmentIDOfDisk, buffer + 8, 4);
+		memcpy(&sharedDiskID, buffer + 12, 4);
 	}
 	int getLength()
 	{
@@ -49,7 +49,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << administratorID << ", " << departmentID << ", " << departmentIDOfDisk << ", "
-				sharedDiskID << ");";
+		   << sharedDiskID << ");";
 		query = ss.str();
 		return query;
 	}
