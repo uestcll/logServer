@@ -143,11 +143,11 @@ public:
 			return false;
 		if(lengthOfNameBeforeModify != Log.lengthOfNameBeforeModify)
 			return false;
-		if(strcmp(nameBeforeModify, name1) != 0)
+		if(strcmp(nameBeforeModify, Log.nameBeforeModify) != 0)
 			return false;
 		if(lengthOfNameAfterModify != Log.lengthOfNameAfterModify)
 			return false;
-		if(strcmp(nameAfterModify, name2) != 0)
+		if(strcmp(nameAfterModify, Log.nameAfterModify) != 0)
 			return false;
 
 		return true;

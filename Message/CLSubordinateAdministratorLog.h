@@ -61,11 +61,11 @@ public:
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 1];
+	    temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 2];
-		subordinateDepartmentID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 3];
+		temp = pSQL->m_store[offset + 2];
+		subordinateAdministrator = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 3];
 		subordinateDepartmentID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
@@ -76,7 +76,7 @@ public:
 	}
 	#endif
 
-	void init(id1, int id2, int id3, int id4)
+	void init(int id1, int id2, int id3, int id4)
 	{
 		administratorID = id1;
 		departmentID = id2;

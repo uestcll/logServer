@@ -12,6 +12,7 @@
 #include "../server/include/CLSQL.h"
 #include "../server/include/CLPraseManager.h"
 #endif
+using namespace std;
 
 class CLSubordinateAccountLog : public CLMessage
 {
@@ -49,7 +50,7 @@ public:
 	{
 		stringstream ss;
 		string query;
-		ss << administratorID << ", " << departmentID << ", " << subordinateAdministrator
+		ss << administratorID << ", " << departmentID << ", " << subordinateDepartmentID
 				<< ", " << userID << ");";
 		query = ss.str();
 		return query;
@@ -61,11 +62,11 @@ public:
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 2];
+		temp = pSQL->m_store[offset + 2];
 		subordinateDepartmentID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 3];
+		temp = pSQL->m_store[offset + 3];
 		userID = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}
@@ -104,3 +105,5 @@ private:
 	int subordinateDepartmentID;
 	int userID;
 };
+
+#endif

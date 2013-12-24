@@ -55,9 +55,9 @@ public:
 		CLSQL *pSQL = CLSQL::getInstance();
 		string temp = pSQL->m_store[offset + 0];
 		administratorID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 1];
+		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 2];
+		temp = pSQL->m_store[offset + 2];
 		subordinateDepartmentID = atoi(temp.c_str());
 	}
 

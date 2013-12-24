@@ -51,7 +51,7 @@ public:
 	{
 		stringstream ss;
 		string query;
-		ss << lengthOfExplain + ", " << "\"" << explain << "\"" << ");";
+		ss << lengthOfExplain << ", " << "\"" << explain << "\"" << ");";
 		query = ss.str();
 		return query;
 	}

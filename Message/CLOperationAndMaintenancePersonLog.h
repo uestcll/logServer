@@ -27,6 +27,7 @@ public:
 		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &operationStaffID, 4);
+        return buffer;
 	}
 	void deserialize(char *buffer)
 	{

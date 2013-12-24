@@ -16,7 +16,7 @@
 class CLModifyShareDiskCapacityLog : public CLMessage
 {
 public:
-	CLModifyShareDiskCapacityLog() : administrarorID(0), departmentID(0), sharedDiskID(0), departmentIDOfDisk(0), capacityBeforeModify(0), capacityAfterModify(0)
+	CLModifyShareDiskCapacityLog() : administratorID(0), departmentID(0), sharedDiskID(0), departmentIDOfDisk(0), capacityBeforeModify(0), capacityAfterModify(0)
 	{}
 	~CLModifyShareDiskCapacityLog()
 	{}
@@ -24,7 +24,7 @@ public:
 	{
 		int len = 32;
 		char *buffer = new char[len];
-		memcpy(buffer, &administrarorID, 4);
+		memcpy(buffer, &administratorID, 4);
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &sharedDiskID, 4);
 		memcpy(buffer + 12, &departmentIDOfDisk, 4);
@@ -34,7 +34,7 @@ public:
 	}
 	void deserialize(char *buffer)
 	{
-		memcpy(&administrarorID, buffer, 4);
+		memcpy(&administratorID, buffer, 4);
 		memcpy(&departmentID, buffer + 4, 4);
 		memcpy(&sharedDiskID, buffer + 8, 4);
 		memcpy(&departmentIDOfDisk, buffer + 12, 4);
@@ -51,8 +51,8 @@ public:
 	{
 		stringstream ss;
 		string query;
-		ss << administrarorID << ", " << departmentID << ", " << sharedDiskID << ", "
-		   << departmentID << ", " << capacityBeforeModify << ", "
+		ss << administratorID << ", " << departmentID << ", " << sharedDiskID << ", "
+		   << departmentIDOfDisk << ", " << capacityBeforeModify << ", "
 		   << capacityAfterModify << ");";
 		query = ss.str();
 		return query;
@@ -63,7 +63,7 @@ public:
 		//pSQL->connectSQL("localhost", "root", "go", "log");
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
-		administrarorID = atoi(temp.c_str());
+		administratorID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 1];
 		departmentID = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 2];
@@ -85,7 +85,7 @@ public:
 
 	void init(int id1, int id2, int id3, int id4, long long c1, long long c2)
 	{
-		administrarorID = id1;
+		administratorID = id1;
 		departmentID = id2;
 		sharedDiskID = id3;
 		departmentIDOfDisk = id4;
@@ -94,7 +94,7 @@ public:
 	}
 	bool operator==(const CLModifyShareDiskCapacityLog &Log) const
 	{
-		if(administrarorID != Log.administrarorID)
+		if(administratorID != Log.administrarorID)
 			return false;
 		if(departmentID != Log.departmentID)
 			return false;
@@ -110,7 +110,7 @@ public:
 		return true;
 	}
 private:
-	int administrarorID;
+	int administratorID;
 	int departmentID;
 	int sharedDiskID;
 	int departmentIDOfDisk;

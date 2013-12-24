@@ -62,13 +62,13 @@ public:
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		userID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 1];
+		temp = pSQL->m_store[offset + 1];
 		departmentIDOfUser = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 2];
+		temp = pSQL->m_store[offset + 2];
 		diskID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 3];
+		temp = pSQL->m_store[offset + 3];
 		position = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 4];
+		temp = pSQL->m_store[offset + 4];
 		range = atoi(temp.c_str());
 		//pSQL->closeSQL();
 	}

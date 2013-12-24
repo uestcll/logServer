@@ -131,7 +131,7 @@ public:
 private:
 	int IPType;
 	int IPLength;
-	char *IPAdress;
+	char *IPAddress;
 	int lengthOfHostname;
     char *hostname;
 };

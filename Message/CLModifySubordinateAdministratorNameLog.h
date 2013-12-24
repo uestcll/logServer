@@ -69,7 +69,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << administratorID << ", " << departmentID << ", " << subordinateAdministorID 
-		   << ", " << subordinateDepartmentID << ", " << lengthOfNameBeforeModify << ", " << "\""  nameBeforeModify << "\"" << ", " << "\"" << nameAfterModify << "\"" << ");";
+		   << ", " << subordinateDepartmentID << ", " << lengthOfNameBeforeModify << ", " << "\"" << nameBeforeModify << "\"" << ", " << lengthOfNameAfterModify << ", " << "\"" << nameAfterModify << "\"" << ");";
 		query = ss.str();
 		return query;
 	}
@@ -129,6 +129,7 @@ public:
 		}
 		nameAfterModify = new char[len2 + 1];
 		memcpy(nameAfterModify, name2, len2);
+        nameAfterModify[len2] = '\0';
 	}
 	bool operator==(const CLModifySubordinateAdministratorNameLog &Log) const
 	{

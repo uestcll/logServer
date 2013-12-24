@@ -70,13 +70,13 @@ public:
 		//pSQL->fetchResult();
 		string temp = pSQL->m_store[offset + 0];
 		userID = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 1];
+		temp = pSQL->m_store[offset + 1];
 		departmentIDOfUser = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 2];
+		temp = pSQL->m_store[offset + 2];
 		IPType = atoi(temp.c_str());
-		string temp = pSQL->m_store[offset + 3];
-		IPLength = atoi(temp.str());
-		string temp = pSQL->m_store[offset + 4];
+		temp = pSQL->m_store[offset + 3];
+		IPLength = atoi(temp.c_str());
+		temp = pSQL->m_store[offset + 4];
 		loginIPAdress = new char[IPLength + 1];
 		memcpy(loginIPAdress, temp.c_str(), IPLength);
 		loginIPAdress[IPLength] = '\0';
@@ -113,7 +113,7 @@ public:
 			return false;
 		if(IPLength != Log.IPLength)
 			return false;
-		if(strcmp(loginIPAdress, address) != 0)
+		if(strcmp(loginIPAdress, Log.loginIPAdress) != 0)
 			return false;
 
 		return true;
