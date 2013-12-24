@@ -13,6 +13,9 @@ TEST(CLModifyDepartmentNameLog, serializeAnddeserialize)
     CLModifyDepartmentNameLog Log;
     Log.init(3, 4, 5, 4, "Mary", 3, "Ann");
     char *buffer = Log.serialize();
+    CLModifyDepartmentNameLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLModifyDepartmentNameLog");

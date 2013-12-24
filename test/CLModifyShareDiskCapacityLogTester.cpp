@@ -13,6 +13,9 @@ TEST(CLModifyShareDiskCapacityLog, serializeAnddeserialize)
     CLModifyShareDiskCapacityLog Log;
     Log.init(1, 2, 3, 4, 100, 200);
     char *buffer = Log.serialize();
+    CLModifyShareDiskCapacityLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLModifyShareDiskCapacityLog");

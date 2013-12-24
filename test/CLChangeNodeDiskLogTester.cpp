@@ -13,6 +13,9 @@ TEST(CLChangeNodeDiskLog, serializeAnddeserialize)
     CLChangeNodeDiskLog Log;
     Log.init(4, 11, "192.167.1.8", 5, "lemon", 20, 30);
     char *buffer = Log.serialize();
+    CLChangeNodeDiskLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLChangeNodeDiskLog");

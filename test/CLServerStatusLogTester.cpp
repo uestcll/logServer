@@ -13,6 +13,9 @@ TEST(CLServerStatusLog, serializeAnddeserialize)
     CLServerStatusLog Log;
     Log.init(4, 11, "192.168.1.1", 3, "Tom", 80, 100, 4000);
     char *buffer = Log.serialize();
+    CLServerStatusLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLServerStatusLog");

@@ -13,6 +13,9 @@ TEST(CLDiskForDepartmentLog, serializeAnddeserialize)
     CLDiskForDepartmentLog Log;
     Log.init(7, 8, 9, 10);
     char *buffer = Log.serialize();
+    CLDiskForDepartmentLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLDiskForDepartmentLog");

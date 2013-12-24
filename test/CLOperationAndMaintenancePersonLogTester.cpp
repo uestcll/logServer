@@ -13,6 +13,9 @@ TEST(CLOperationAndMaintenancePersonLog, serializeAnddeserialize)
     CLOperationAndMaintenancePersonLog Log;
     Log.init(1, 2, 3);
     char *buffer = Log.serialize();
+    CLOperationAndMaintenancePersonLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLOperationAndMaintenancePersonLog");

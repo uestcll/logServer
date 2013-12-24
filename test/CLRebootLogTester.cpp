@@ -13,6 +13,9 @@ TEST(CLRebootLog, serializeAnddeserialize)
     CLRebootLog Log;
     Log.init(4, 11, "192.168.1.1", 3, "Tom");
     char *buffer = Log.serialize();
+    CLRebootLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLRebootLog");

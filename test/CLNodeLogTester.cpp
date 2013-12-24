@@ -13,6 +13,9 @@ TEST(CLNodeLog, serializeAnddeserialize)
     CLNodeLog Log;
     Log.init(4, 11, "192.168.1.1", 5, "lemon");
     char *buffer = Log.serialize();
+    CLNodeLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLNodeLog");

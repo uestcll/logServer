@@ -13,6 +13,9 @@ TEST(CLChangeNodeCapacityLog, serializeAnddeserialize)
     CLChangeNodeCapacityLog Log;
     Log.init(4, 11, "192.168.1.1", 5, "lemon", 10, 20);
     char *buffer = Log.serialize();
+    CLChangeNodeCapacityLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLChangeNodeCapacityLog");

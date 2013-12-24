@@ -13,6 +13,9 @@ TEST(CLOtherTypeLog, serializeAnddeserialize)
     CLOtherTypeLog Log;
     Log.init(5, "hello");
     char *buffer = Log.serialize();
+    CLOtherTypeLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLOtherTypeLog");

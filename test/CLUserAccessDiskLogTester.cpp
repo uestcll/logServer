@@ -13,6 +13,9 @@ TEST(CLUserAccessDiskLog, serializeAnddeserialize)
     CLUserAccessDiskLog Log;
     Log.init(1, 2, 3, 4, 5);
     char *buffer = Log.serialize();
+    CLUserAccessDiskLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLUserAccessDiskLog");

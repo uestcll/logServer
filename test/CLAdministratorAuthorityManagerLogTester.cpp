@@ -31,6 +31,9 @@ TEST(CLAdministratorAuthorityManagerLog, serializeAnddeserialize)
     CLAdministratorAuthorityManagerLog Log;
     Log.init(2, 3, 4, 5);
     char *buffer = Log.serialize();
+    CLAdministratorAuthorityManagerLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLAdministratorAuthorityManagerLog");

@@ -33,6 +33,9 @@ TEST(CLAbnormalAndErrnoLog, serializeAnddeserialize)
     CLAbnormalAndErrnoLog Log;
     Log.init(5, ch);
     buffer = Log.serialize();
+    CLAbnormalAndErrnoLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLAbnormalAndErrnoLog");

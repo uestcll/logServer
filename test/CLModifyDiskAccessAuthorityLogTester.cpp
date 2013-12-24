@@ -13,6 +13,9 @@ TEST(CLModifyDiskAccessAuthorityLog, serializeAnddeserialize)
     CLModifyDiskAccessAuthorityLog Log;
     Log.init(4, 5, 6);
     char *buffer = Log.serialize();
+    CLModifyDiskAccessAuthorityLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLModifyDiskAccessAuthorityLog");

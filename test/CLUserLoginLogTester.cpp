@@ -13,6 +13,9 @@ TEST(CLUserLoginLog, serializeAnddeserialize)
     CLUserLoginLog Log;
     Log.init(1, 2, 4, 11, "192.168.1.1");
     char *buffer = Log.serialize();
+    CLUserLoginLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLUserLoginLog");

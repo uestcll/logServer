@@ -13,6 +13,9 @@ TEST(CLModifySubordinateAdministratorNameLog, serializeAnddeserialize)
     CLModifySubordinateAdministratorNameLog Log;
     Log.init(1, 2, 3, 4, 5, "Peter", 1, "A");
     char *buffer = Log.serialize();
+    CLModifySubordinateAdministratorNameLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLModifySubordinateAdministratorNameLog");

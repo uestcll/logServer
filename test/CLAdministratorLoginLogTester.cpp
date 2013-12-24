@@ -31,6 +31,9 @@ TEST(CLAdministratorLoginLog, serializeAnddeserialize)
     CLAdministratorLoginLog Log;
     Log.init(1, 2, 4, 5, ch);
     char *buffer = Log.serialize();
+    CLAdministratorLoginLog testLog;
+    testLog.deserialize(buffer);
+    EXPECT_TRUE(testLog == Log);
     delete[] buffer;
     string query;
     query = head.insertToSQL("CLAdministratorLoginLog");
