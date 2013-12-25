@@ -34,14 +34,14 @@ public:
 		memcpy(buffer + 4, &departmentID, 4);
 		memcpy(buffer + 8, &IPType, 4);
 		memcpy(buffer + 12, &IPLength, 4);
-		memcpy(buffer + 16, &loginIPAdress, IPLength);
+		memcpy(buffer + 16, loginIPAdress, IPLength);
 
 		return buffer;
 	}
 
 	int getLength()
 	{
-		return 20 + IPLength;
+		return 16 + IPLength;
 	}
 
 	void deserialize(char *buffer)

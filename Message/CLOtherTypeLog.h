@@ -38,8 +38,9 @@ public:
 	void deserialize(char *buffer)
 	{
 		memcpy(&lengthOfExplain, buffer, 4);
-		explain = new char[lengthOfExplain];
+		explain = new char[lengthOfExplain + 1];
 		memcpy(explain, buffer + 4, lengthOfExplain);
+        explain[lengthOfExplain] = '\0';
 	}
 
 	int getLength()

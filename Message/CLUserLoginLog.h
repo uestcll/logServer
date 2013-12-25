@@ -16,13 +16,13 @@
 class CLUserLoginLog : public CLMessage
 {
 public:
-	CLUserLoginLog() : userID(0), departmentIDOfUser(0), IPType(0), IPLength(0), loginIPAdress(NULL)
+	CLUserLoginLog() : userID(0), departmentIDOfUser(0), IPType(0), IPLength(0), loginIPAddress(NULL)
 	{}
 	~CLUserLoginLog()
 	{
-		if(NULL != loginIPAdress)
+		if(NULL != loginIPAddress)
 		{
-			delete[] loginIPAdress;
+			delete[] loginIPAddress;
 		}
 	}
 	char *serialize()
@@ -33,7 +33,7 @@ public:
 		memcpy(buffer + 4, &departmentIDOfUser, 4);
 		memcpy(buffer + 8, &IPType, 4);
 		memcpy(buffer + 12, &IPLength, 4);
-		memcpy(buffer + 16, &loginIPAdress, IPLength);
+		memcpy(buffer + 16, loginIPAddress, IPLength);
 
 		return buffer;
 	}
@@ -44,9 +44,9 @@ public:
 		memcpy(&departmentIDOfUser, buffer + 4, 4);
 		memcpy(&IPType, buffer + 8, 4);
 		memcpy(&IPLength, buffer + 12, 4);
-		loginIPAdress = new char[IPLength + 1];
-		memcpy(&loginIPAdress, buffer + 16, IPLength);
-		loginIPAdress[IPLength] = '\0';
+		loginIPAddress = new char[IPLength + 1];
+		memcpy(loginIPAddress, buffer + 16, IPLength);
+		loginIPAddress[IPLength] = '\0';
 	}
 
 	int getLength()
@@ -59,7 +59,7 @@ public:
 		stringstream ss;
 		string query;
 		ss << userID << ", " << departmentIDOfUser << ", " << IPType << ", "
-		   << IPLength << ", " << "\"" << loginIPAdress << "\"" << ");";
+		   << IPLength << ", " << "\"" << loginIPAddress << "\"" << ");";
 		query = ss.str();
 		return query;
 	}
@@ -77,9 +77,9 @@ public:
 		temp = pSQL->m_store[offset + 3];
 		IPLength = atoi(temp.c_str());
 		temp = pSQL->m_store[offset + 4];
-		loginIPAdress = new char[IPLength + 1];
-		memcpy(loginIPAdress, temp.c_str(), IPLength);
-		loginIPAdress[IPLength] = '\0';
+		loginIPAddress = new char[IPLength + 1];
+		memcpy(loginIPAddress, temp.c_str(), IPLength);
+		loginIPAddress[IPLength] = '\0';
 		//pSQL->closeSQL();
 	}
 	void registerIt(CLPraseManager *pManager)
@@ -95,13 +95,13 @@ public:
 		departmentIDOfUser = id2;
 		IPType = type;
 		IPLength = len;
-		if(NULL != loginIPAdress)
+		if(NULL != loginIPAddress)
 		{
-			delete[] loginIPAdress;
+			delete[] loginIPAddress;
 		}
-		loginIPAdress = new char[len + 1];
-		memcpy(loginIPAdress, address, len);
-		loginIPAdress[len] = '\0';
+		loginIPAddress = new char[len + 1];
+		memcpy(loginIPAddress, address, len);
+		loginIPAddress[len] = '\0';
 	}
 	bool operator==(const CLUserLoginLog &Log) const 
 	{
@@ -113,7 +113,7 @@ public:
 			return false;
 		if(IPLength != Log.IPLength)
 			return false;
-		if(strcmp(loginIPAdress, Log.loginIPAdress) != 0)
+		if(strcmp(loginIPAddress, Log.loginIPAddress) != 0)
 			return false;
 
 		return true;
@@ -124,7 +124,7 @@ private:
 	int departmentIDOfUser;
     int IPType;
 	int IPLength;
-	char* loginIPAdress;
+	char* loginIPAddress;
 };
 
 #endif

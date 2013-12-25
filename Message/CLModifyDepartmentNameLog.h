@@ -39,7 +39,7 @@ public:
 		memcpy(buffer + 12, &lengthOfNameBeforeModify, 4);
 		memcpy(buffer + 16, nameBeforeModify, lengthOfNameBeforeModify);
 		memcpy(buffer + 16 + lengthOfNameBeforeModify, &lengthOfNameAfterModify, 4);
-		memcpy(buffer + 20, nameAfterModify, lengthOfNameAfterModify);
+		memcpy(buffer + 20 + lengthOfNameBeforeModify, nameAfterModify, lengthOfNameAfterModify);
 
 		return buffer;
 	}

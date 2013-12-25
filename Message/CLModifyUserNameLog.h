@@ -57,6 +57,7 @@ public:
 		memcpy(&lengthOfNameAfterModify, buffer + 20 + lengthOfNameBeforeModify, 4);
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, buffer + 24 + lengthOfNameBeforeModify, lengthOfNameAfterModify);
+        nameAfterModify[lengthOfNameAfterModify] = '\0';
 	}
 	int getLength()
 	{

@@ -54,10 +54,11 @@ public:
 		memcpy(&lengthOfNameAfterModify, buffer + 12 + lengthOfNameBeforeModify, 4);
 		nameAfterModify = new char[lengthOfNameAfterModify + 1];
 		memcpy(nameAfterModify, buffer + 16 + lengthOfNameBeforeModify, lengthOfNameAfterModify);
+        nameAfterModify[lengthOfNameAfterModify] = '\0';
 	}
 	int getLength()
 	{
-		return 20 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
+		return 16 + lengthOfNameBeforeModify + lengthOfNameAfterModify;
 	}
 
 	#ifdef SERVER

@@ -94,7 +94,7 @@ public:
 	}
 	bool operator==(const CLModifyShareDiskCapacityLog &Log) const
 	{
-		if(administratorID != Log.administrarorID)
+		if(administratorID != Log.administratorID)
 			return false;
 		if(departmentID != Log.departmentID)
 			return false;
